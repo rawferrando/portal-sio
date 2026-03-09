@@ -54,26 +54,24 @@
 
 .cabecera-seccion {
   margin-bottom: 3rem;
+  text-align: left; /* Fuerza a que todo se alinee a la izquierda desde la raíz */
 }
 
 .cabecera-seccion h1 {
   color: #0056b3;
   font-size: 2.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .intro {
   font-size: 1.25rem;
   color: #0056b3;
-  max-width: 800px;
-  margin: 0 auto 1rem auto;
+  margin-bottom: 1.5rem;
   line-height: 1.6;
 }
 
 .descripcion {
   font-size: 1.1rem;
-  max-width: 900px;
-  margin: 0 auto;
   line-height: 1.6;
   color: #555;
 }
