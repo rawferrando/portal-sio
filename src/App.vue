@@ -1,7 +1,11 @@
 <script setup>
+import { ref } from 'vue'
 import QuienesSomos from './components/QuienesSomos.vue'
 import RecursosTecnicos from './components/RecursosTecnicos.vue'
 import IntranetFondeos from './components/IntranetFondeos.vue'
+
+// Este es el interruptor. Por defecto está en 'false' (muestra la web pública)
+const mostrarIntranet = ref(false)
 </script>
 
 <template>
@@ -12,15 +16,27 @@ import IntranetFondeos from './components/IntranetFondeos.vue'
       </div>
       <nav class="nav-idiomas">
         <a href="#" class="active">CA</a> | <a href="#">ES</a> | <a href="#">EN</a>
+        
+        <span class="separador">|</span>
+        <a href="#" @click.prevent="mostrarIntranet = !mostrarIntranet" class="enlace-privado" title="Área de Personal">
+          <span v-if="!mostrarIntranet">🔒</span>
+          <span v-else>Volver al portal</span>
+        </a>
       </nav>
     </header>
 
     <main class="contenedor-principal">
-      <QuienesSomos />
-      <hr />
-      <RecursosTecnicos />
-      <hr />
-      <IntranetFondeos />
+      
+      <div v-if="!mostrarIntranet">
+        <QuienesSomos />
+        <hr />
+        <RecursosTecnicos />
+      </div>
+
+      <div v-else>
+        <IntranetFondeos />
+      </div>
+
     </main>
 
     <footer class="footer-sio">
@@ -32,11 +48,9 @@ import IntranetFondeos from './components/IntranetFondeos.vue'
 
 <style>
 :root {
-  /* Este es el azul exacto extraído de la imagen del logo que me pasaste */
-  --azul-sio-real: #005596; 
+  var(--azul-sio-real): #005596; 
 }
 
-/* IMPORTANTE: Quitamos márgenes por defecto del navegador */
 body, html {
   margin: 0;
   padding: 0;
@@ -52,7 +66,7 @@ body, html {
 .header-icm {
   background-color: var(--azul-sio-real);
   color: white;
-  padding: 1rem 4%; /* 4% para que no toque los bordes pero se vea ancho */
+  padding: 1rem 4%; 
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -61,17 +75,44 @@ body, html {
 }
 
 .logo-img {
-  height: 90px; /* Tamaño un poco mayor para que destaque el logo */
+  height: 90px; 
   width: auto;
 }
 
-/* AQUÍ ESTÁ LA MAGIA PARA EL ANCHO TOTAL */
+.nav-idiomas {
+  display: flex;
+  align-items: center;
+}
+
+.nav-idiomas a {
+  color: white;
+  text-decoration: none;
+  margin: 0 5px;
+}
+
+/* Estilos para que el acceso sea muy discreto */
+.separador {
+  color: rgba(255, 255, 255, 0.3);
+  margin: 0 10px;
+}
+
+.enlace-privado {
+  color: rgba(255, 255, 255, 0.5) !important;
+  font-size: 0.85rem;
+  transition: opacity 0.3s;
+}
+
+.enlace-privado:hover {
+  opacity: 1;
+}
+
 .contenedor-principal {
-  width: 100% !important;   /* Ocupa el 100% de la pantalla */
-  max-width: none !important; /* Forzamos que no haya límite de ancho lateral */
+  width: 100% !important;   
+  max-width: none !important; 
   margin: 0;
   padding: 3rem 4%; 
-  box-sizing: border-box;   /* Evita que el padding sume ancho extra */
+  box-sizing: border-box;   
+  min-height: 60vh; /* Asegura que el pie de página no se suba mucho */
 }
 
 .footer-sio {
@@ -81,11 +122,6 @@ body, html {
   color: white;
   width: 100%;
   box-sizing: border-box;
-}
-
-.nav-idiomas a {
-  color: white;
-  text-decoration: none;
 }
 
 hr {
