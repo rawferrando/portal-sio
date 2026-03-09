@@ -75,7 +75,7 @@
 .descripcion {
   font-size: 1.1rem;
   line-height: 1.6;
-  color: #555;
+  color: #0056b3;
 }
 
 .servicios h2 {
