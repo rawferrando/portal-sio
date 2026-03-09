@@ -57,13 +57,12 @@
   text-align: left; /* Fuerza a que todo se alinee a la izquierda desde la raíz */
 }
 
-..cabecera-seccion h1 {
-  color: #0056b3;
+.cabecera-seccion h1 {
+  color: #0056b3; /* Esto le devuelve el color azul institucional */
   font-size: 2.5rem;
   margin-bottom: 1.5rem;
-  /* Estas dos líneas crean el subrayado */
-  border-bottom: 2px solid #e0e0e0;
-  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e0e0e0; /* Esto crea la línea gris */
+  padding-bottom: 0.5rem; /* Esto separa un poco el texto de la línea */
 }
 
 .intro {
