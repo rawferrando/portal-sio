@@ -90,13 +90,15 @@ body, html {
 }
 
 .enlace-privado {
-  color: rgba(255, 255, 255, 0.5) !important;
-  font-size: 0.85rem;
-  transition: opacity 0.3s;
+  color: rgba(255, 255, 255, 0.9) !important; /* Ahora es blanco casi sólido */
+  font-size: 1rem; /* Un pelín más grande para que se vea mejor */
+  transition: all 0.3s;
   cursor: pointer;
+  filter: drop-shadow(0 0 2px rgba(0,0,0,0.3)); /* Le da un poco de relieve */
 }
 
 .enlace-privado:hover {
+  color: #ffcc00 !important; /* Al pasar el ratón, se vuelve amarillo */
   opacity: 1;
 }
 
