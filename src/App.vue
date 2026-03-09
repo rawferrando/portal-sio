@@ -3,6 +3,7 @@ import Instrumentacion from './components/Instrumentacion.vue'
 import { ref } from 'vue'
 import QuienesSomos from './components/QuienesSomos.vue'
 import IntranetFondeos from './components/IntranetFondeos.vue'
+import Embarcacion from './components/Embarcacion.vue'
 
 const mostrarIntranet = ref(false)
 </script>
@@ -34,6 +35,10 @@ const mostrarIntranet = ref(false)
     <QuienesSomos @cambiar-pagina="paginaActual = $event" />
   </div>
 
+  <Embarcacion 
+  v-else-if="paginaActual === 'embarcacion'" 
+  @volver="paginaActual = 'inicio'" 
+/>
   <Instrumentacion 
     v-else-if="paginaActual === 'instrumentacion'" 
     @volver="paginaActual = 'inicio'" 
