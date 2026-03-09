@@ -20,7 +20,7 @@ const paginaActual = ref('inicio')
         />
       </div>
       <nav class="nav-idiomas">
-        <a href="#">CA</a> | <a href="#">ES</a> | <a href="#">EN</a>
+        <a href="#">CAT</a> | <a href="#">ES</a> | <a href="#">EN</a>
         <a href="#" @click.prevent="paginaActual = 'intranet'" class="enlace-privado">
           {{ paginaActual === 'intranet' ? '🔓 Volver' : '🔒' }}
         </a>
@@ -75,7 +75,7 @@ body { margin: 0; padding: 0; }
 
 /* Domamos el logo gigante */
 .logo-img {
-  height: 100px; /* <--- Esto es lo que lo hace pequeño y elegante */
+  height: 120px; /* <--- Esto es lo que lo hace pequeño y elegante */
   width: auto;
   cursor: pointer;
 }
