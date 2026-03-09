@@ -5,7 +5,7 @@ import Instrumentacion from './components/Instrumentacion.vue'
 import Embarcacion from './components/Embarcacion.vue'
 import IntranetFondeos from './components/IntranetFondeos.vue'
 
-// VITAL: Que ponga 'inicio' entre comillas y en minúsculas
+// Control de navegación
 const paginaActual = ref('inicio')
 </script>
 
@@ -13,11 +13,15 @@ const paginaActual = ref('inicio')
   <div id="layout-sio">
     <header class="header-icm">
       <div class="logo-area">
-        <img src="./assets/logo-sio.jpg" class="logo-img" @click="paginaActual = 'inicio'" style="cursor: pointer;" />
+        <img 
+          src="./assets/logo-sio.jpg" 
+          class="logo-img" 
+          @click="paginaActual = 'inicio'" 
+          alt="Logo SIO"
+        />
       </div>
       <nav class="nav-idiomas">
-        <a href="#" class="active">CA</a> | <a href="#">ES</a> | <a href="#">EN</a>
-        <span class="separador"></span>
+        <a href="#">CA</a> | <a href="#">ES</a> | <a href="#">EN</a>
         <a href="#" @click.prevent="paginaActual = 'intranet'" class="enlace-privado">
           {{ paginaActual === 'intranet' ? '🔓 Volver' : '🔒' }}
         </a>
@@ -29,25 +33,81 @@ const paginaActual = ref('inicio')
         v-if="paginaActual === 'inicio'" 
         @cambiar-pagina="paginaActual = $event" 
       />
-
       <Instrumentacion 
         v-else-if="paginaActual === 'instrumentacion'" 
         @volver="paginaActual = 'inicio'" 
       />
-
-      <Instrumentacion 
+      <Embarcacion 
         v-else-if="paginaActual === 'embarcacion'" 
         @volver="paginaActual = 'inicio'" 
       />
-
       <IntranetFondeos 
         v-else-if="paginaActual === 'intranet'" 
       />
     </main>
 
     <footer class="footer-sio">
-       <p>Institut de Ciències del Mar (ICM-CSIC)</p>
-       <p>📧 sio@icm.csic.es | 📍 Pg. Marítim de la Barceloneta, 37, 08003 Barcelona</p>
+      <p><strong>Institut de Ciències del Mar (ICM-CSIC)</strong></p>
+      <p>📧 sio@icm.csic.es | 📍 Pg. Marítim de la Barceloneta, 37, 08003 Barcelona</p>
     </footer>
   </div>
 </template>
+
+<style>
+/* Estilos Globales */
+#layout-sio {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header */
+.header-icm {
+  background-color: #005596;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 5%;
+}
+
+.logo-img {
+  height: 80px; /* Tamaño intermedio, ni gigante ni pequeño */
+  width: auto;
+  cursor: pointer;
+  background: white; /* Por si el logo tiene fondo transparente */
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.nav-idiomas a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  margin: 0 5px;
+}
+
+/* Contenedor central */
+.contenedor-principal {
+  flex: 1;
+  padding: 2rem 5%;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Footer Azul y Centrado */
+.footer-sio {
+  background-color: #005596;
+  color: white;
+  text-align: center; /* Aquí es donde se centra el texto */
+  padding: 2rem 1rem;
+  margin-top: auto;
+}
+
+.footer-sio p {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+}
+</style>
