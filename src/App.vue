@@ -48,7 +48,7 @@ const mostrarIntranet = ref(false)
 
 <style>
 :root {
-  var(--azul-sio-real): #005596; 
+  --azul-sio-real: #005596; 
 }
 
 body, html {
