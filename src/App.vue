@@ -10,7 +10,13 @@ const mostrarIntranet = ref(false)
   <div id="layout-sio">
     <header class="header-icm">
       <div class="logo-area">
-        <img src="./assets/logo-sio.jpg" alt="Logo SIO" class="logo-img" /> 
+<img 
+    src="./assets/logo-sio.jpg" 
+    alt="Logo SIO" 
+    class="logo-img" 
+    @click="mostrarIntranet = false" 
+    style="cursor: pointer;"
+  />
       </div>
       <nav class="nav-idiomas">
         <a href="#" class="active">CA</a> | <a href="#">ES</a> | <a href="#">EN</a>
