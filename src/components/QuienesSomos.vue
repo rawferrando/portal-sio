@@ -40,6 +40,26 @@
         </div>
       </div>
     </section>
+    <section class="contacto-ubicacion">
+      <h2 class="titulo-sio">Contacto y Ubicación</h2>
+      
+      <div class="bloque-info">
+        <div class="datos">
+          <h3>📍 Dónde estamos</h3>
+          <p>Passeig Marítim de la Barceloneta, 37-49<br>08003 Barcelona, España</p>
+          
+          <h3>📧 Contacto Directo</h3>
+          <p>E-mail: <strong>sio@icm.csic.es</strong></p>
+          <p>Teléfono: +34 93 230 95 00</p>
+        </div>
+
+        <div class="horario">
+          <h3>⏰ Horario de Servicio</h3>
+          <p>Lunes a Viernes: 08:00 - 15:00</p>
+          <p class="nota"><em>* Para operaciones fuera de horario, consultar disponibilidad en la Intranet.</em></p>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -117,5 +137,34 @@
   margin: 0;
   line-height: 1.5;
   color: #666;
+}
+.contacto-ubicacion {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid #eee; /* Una línea muy fina para separar */
+}
+
+.bloque-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3rem;
+  margin-top: 2rem;
+}
+
+.bloque-info h3 {
+  color: #005596;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.bloque-info p {
+  color: #444; /* Gris oscuro: Elegante y legible */
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.nota {
+  font-size: 0.9rem;
+  color: #777 !important;
 }
 </style>
