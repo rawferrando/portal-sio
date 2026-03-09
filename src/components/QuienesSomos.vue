@@ -1,5 +1,5 @@
 <template>
-  <div class="quienes-somos">
+      <div class="quienes-somos">
     <header class="cabecera-seccion">
       <h1>Quiénes Somos</h1>
       <p class="intro">
@@ -45,7 +45,7 @@
         </div>
       </div>
     </section>
-</template>
+</div> </template>
 
 <style scoped>
 .quienes-somos {
