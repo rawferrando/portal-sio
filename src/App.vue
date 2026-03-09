@@ -5,7 +5,6 @@ import Instrumentacion from './components/Instrumentacion.vue'
 import Embarcacion from './components/Embarcacion.vue'
 import IntranetFondeos from './components/IntranetFondeos.vue'
 
-// Control de navegación
 const paginaActual = ref('inicio')
 </script>
 
@@ -54,7 +53,9 @@ const paginaActual = ref('inicio')
 </template>
 
 <style>
-/* Estilos Globales */
+/* Reset básico para que no queden huecos blancos */
+body { margin: 0; padding: 0; }
+
 #layout-sio {
   font-family: Arial, sans-serif;
   display: flex;
@@ -62,7 +63,7 @@ const paginaActual = ref('inicio')
   min-height: 100vh;
 }
 
-/* Header */
+/* Cabecera Azul */
 .header-icm {
   background-color: #005596;
   color: white;
@@ -72,11 +73,12 @@ const paginaActual = ref('inicio')
   padding: 1rem 5%;
 }
 
+/* Domamos el logo gigante */
 .logo-img {
-  height: 80px; /* Tamaño intermedio, ni gigante ni pequeño */
+  height: 80px; /* <--- Esto es lo que lo hace pequeño y elegante */
   width: auto;
   cursor: pointer;
-  background: white; /* Por si el logo tiene fondo transparente */
+  background: white;
   padding: 5px;
   border-radius: 4px;
 }
@@ -85,29 +87,24 @@ const paginaActual = ref('inicio')
   color: white;
   text-decoration: none;
   font-weight: bold;
-  margin: 0 5px;
 }
 
-/* Contenedor central */
+/* Contenido centrado */
 .contenedor-principal {
   flex: 1;
   padding: 2rem 5%;
   max-width: 1200px;
   margin: 0 auto;
-  width: 100%;
 }
 
-/* Footer Azul y Centrado */
+/* Footer Azul Centrado */
 .footer-sio {
   background-color: #005596;
   color: white;
-  text-align: center; /* Aquí es donde se centra el texto */
+  text-align: center; /* Centra el texto */
   padding: 2rem 1rem;
   margin-top: auto;
 }
 
-.footer-sio p {
-  margin: 0.5rem 0;
-  font-size: 0.9rem;
-}
+.footer-sio p { margin: 0.5rem 0; }
 </style>
