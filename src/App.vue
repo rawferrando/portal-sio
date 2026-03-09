@@ -112,7 +112,7 @@ body, html {
 .footer-sio {
   text-align: center;
   padding: 2.5rem;
-  background: #1a1a1a;
+  background: #005596;
   color: white;
   width: 100%;
   box-sizing: border-box;
