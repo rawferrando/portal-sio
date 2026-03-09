@@ -40,7 +40,7 @@ const mostrarIntranet = ref(false)
     </main>
 
     <footer class="footer-sio">
-      <p>Institut de Ciències del Mar (ICM-CSIC)</p>
+<p>Institut de Ciències del Mar (ICM-CSIC)</p>
       <p>📧 sio@icm.csic.es | 📍 Pg. Marítim de la Barceloneta, 37, Ciutat Vella
     </footer>
   </div>
@@ -59,7 +59,7 @@ body, html {
 
 #layout-sio {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
+  color: #005596;
   width: 100%;
 }
 
