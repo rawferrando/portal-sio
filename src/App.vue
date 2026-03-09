@@ -75,12 +75,9 @@ body { margin: 0; padding: 0; }
 
 /* Domamos el logo gigante */
 .logo-img {
-  height: 80px; /* <--- Esto es lo que lo hace pequeño y elegante */
+  height: 100px; /* <--- Esto es lo que lo hace pequeño y elegante */
   width: auto;
   cursor: pointer;
-  background: white;
-  padding: 5px;
-  border-radius: 4px;
 }
 
 .nav-idiomas a {
