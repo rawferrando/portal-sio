@@ -4,7 +4,6 @@ import QuienesSomos from './components/QuienesSomos.vue'
 import RecursosTecnicos from './components/RecursosTecnicos.vue'
 import IntranetFondeos from './components/IntranetFondeos.vue'
 
-// Este es el interruptor. Por defecto está en 'false' (muestra la web pública)
 const mostrarIntranet = ref(false)
 </script>
 
@@ -16,7 +15,6 @@ const mostrarIntranet = ref(false)
       </div>
       <nav class="nav-idiomas">
         <a href="#" class="active">CA</a> | <a href="#">ES</a> | <a href="#">EN</a>
-        
         <span class="separador">|</span>
         <a href="#" @click.prevent="mostrarIntranet = !mostrarIntranet" class="enlace-privado" title="Área de Personal">
           <span v-if="!mostrarIntranet">🔒</span>
@@ -26,22 +24,19 @@ const mostrarIntranet = ref(false)
     </header>
 
     <main class="contenedor-principal">
-      
       <div v-if="!mostrarIntranet">
         <QuienesSomos />
         <hr />
         <RecursosTecnicos />
       </div>
-
       <div v-else>
         <IntranetFondeos />
       </div>
-
     </main>
 
     <footer class="footer-sio">
-<p>Institut de Ciències del Mar (ICM-CSIC)</p>
-      <p>📧 sio@icm.csic.es | 📍 Pg. Marítim de la Barceloneta, 37, Ciutat Vella
+      <p>Institut de Ciències del Mar (ICM-CSIC)</p>
+      <p>📧 sio@icm.csic.es | 📍 Pg. Marítim de la Barceloneta, 37, Ciutat Vella, 08003 Barcelona</p>
     </footer>
   </div>
 </template>
@@ -59,7 +54,7 @@ body, html {
 
 #layout-sio {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #005596;
+  color: #333;
   width: 100%;
 }
 
@@ -90,7 +85,6 @@ body, html {
   margin: 0 5px;
 }
 
-/* Estilos para que el acceso sea muy discreto */
 .separador {
   color: rgba(255, 255, 255, 0.3);
   margin: 0 10px;
@@ -100,6 +94,7 @@ body, html {
   color: rgba(255, 255, 255, 0.5) !important;
   font-size: 0.85rem;
   transition: opacity 0.3s;
+  cursor: pointer;
 }
 
 .enlace-privado:hover {
@@ -112,7 +107,7 @@ body, html {
   margin: 0;
   padding: 3rem 4%; 
   box-sizing: border-box;   
-  min-height: 60vh; /* Asegura que el pie de página no se suba mucho */
+  min-height: 60vh;
 }
 
 .footer-sio {
