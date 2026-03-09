@@ -48,7 +48,7 @@
   margin: 0 auto;
   padding: 2rem 1rem;
   font-family: Arial, sans-serif;
-  color: #333;
+  color: #0056b3;
 }
 
 .seccion-recursos {
