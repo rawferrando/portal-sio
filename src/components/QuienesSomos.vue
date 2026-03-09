@@ -67,7 +67,7 @@
 
 .intro {
   font-size: 1.1rem;
-  color: #0056b3;
+  color: #333;
   margin-bottom: 1.5rem;
   line-height: 1.6;
 }
@@ -75,7 +75,7 @@
 .descripcion {
   font-size: 1.1rem;
   line-height: 1.6;
-  color: #0056b3;
+  color: #333;
 }
 
 .servicios h2 {
