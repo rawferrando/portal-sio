@@ -51,7 +51,7 @@ body, html {
 
 #layout-sio {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
+  color: #005596;
   width: 100%;
 }
 
