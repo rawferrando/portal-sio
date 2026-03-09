@@ -1,46 +1,40 @@
 <script setup>
 import { ref } from 'vue'
 import QuienesSomos from './components/QuienesSomos.vue'
-import RecursosTecnicos from './components/RecursosTecnicos.vue'
 import IntranetFondeos from './components/IntranetFondeos.vue'
 
 const mostrarIntranet = ref(false)
 </script>
 
 <template>
-  <div class="quienes-somos">
-    <header class="cabecera-seccion">
-      <h1>Quiénes Somos</h1>
-      <p class="intro">
-        El <strong>Servicio de Ingeniería Oceanográfica (SIO)</strong> gestiona las infraestructuras técnicas del ICM-CSIC para el apoyo a la investigación marina.
-      </p>
+  <div id="layout-sio">
+    <header class="header-icm">
+      <div class="logo-area">
+        <img src="./assets/logo-sio.jpg" alt="Logo SIO" class="logo-img" /> 
+      </div>
+      <nav class="nav-idiomas">
+        <a href="#" class="active">CA</a> | <a href="#">ES</a> | <a href="#">EN</a>
+        <span class="separador">|</span>
+        <a href="#" @click.prevent="mostrarIntranet = !mostrarIntranet" class="enlace-privado" title="Área de Personal">
+          <span v-if="!mostrarIntranet">🔒</span>
+          <span v-else>Volver al portal</span>
+        </a>
+      </nav>
     </header>
 
-    <section class="servicios-unificados">
-      <h2 class="titulo-sio">Servicios y Recursos Técnicos</h2>
-      
-      <div class="grid-servicios">
-        <div class="tarjeta">
-          <h3>🚢 Operaciones en el Mar</h3>
-          <p>Servicio de embarcación propia en el Port Olímpic para despliegue de fondeos, mantenimiento de instrumentación y adquisición de datos costeros.</p>
+    <main class="contenedor-principal">
+      <div v-if="!mostrarIntranet">
+        <QuienesSomos />
         </div>
-
-        <div class="tarjeta">
-          <h3>🛠️ Ingeniería y Prototipado</h3>
-          <p>Diseño y fabricación de equipos a medida en nuestro laboratorio especializado. Mantenimiento preventivo y calibración de sensores oceanográficos.</p>
-        </div>
-
-        <div class="tarjeta">
-          <h3>🧪 Instrumentación Científica</h3>
-          <p>Disponemos de sondas CTD (SBE 911plus y CastAway) para perfiles de alta precisión y salinómetro Autosal 8400B para análisis de laboratorio.</p>
-        </div>
-
-        <div class="tarjeta">
-          <h3>🏗️ Infraestructuras</h3>
-          <p>Gestión de tanques experimentales y áreas de pruebas controladas para la validación de nueva tecnología marina.</p>
-        </div>
+      <div v-else>
+        <IntranetFondeos />
       </div>
-    </section>
+    </main>
+
+    <footer class="footer-sio">
+      <p>Institut de Ciències del Mar (ICM-CSIC)</p>
+      <p>📧 sio@icm.csic.es | 📍 Pg. Marítim de la Barceloneta, 37, Ciutat Vella, 08003 Barcelona</p>
+    </footer>
   </div>
 </template>
 
@@ -94,15 +88,15 @@ body, html {
 }
 
 .enlace-privado {
-  color: rgba(255, 255, 255, 0.9) !important; /* Ahora es blanco casi sólido */
-  font-size: 1rem; /* Un pelín más grande para que se vea mejor */
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-size: 1rem;
   transition: all 0.3s;
   cursor: pointer;
-  filter: drop-shadow(0 0 2px rgba(0,0,0,0.3)); /* Le da un poco de relieve */
+  filter: drop-shadow(0 0 2px rgba(0,0,0,0.3));
 }
 
 .enlace-privado:hover {
-  color: #ffcc00 !important; /* Al pasar el ratón, se vuelve amarillo */
+  color: #ffcc00 !important;
   opacity: 1;
 }
 
@@ -118,15 +112,9 @@ body, html {
 .footer-sio {
   text-align: center;
   padding: 2.5rem;
-  background: #005596;
+  background: #1a1a1a;
   color: white;
   width: 100%;
   box-sizing: border-box;
-}
-
-hr {
-  margin: 1.5rem 0; /* Antes era 4rem, lo bajamos para que no haya tanto hueco */
-  border: 0;
-  border-top: 1px solid #eee;
 }
 </style>
