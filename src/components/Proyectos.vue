@@ -1,17 +1,13 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
-// 1. Creamos el almacén vacío y el estado de carga
+// 1. Almacén para los datos y estado de carga
 const listaProyectos = ref([])
 const cargando = ref(true)
 
-// 2. Simulamos la conexión a la Base de Datos del ICM
+// 2. Simulación de la Base de Datos
 onMounted(() => {
-  console.log("Conectando con la base de datos SIO...")
-  
-  // Simulamos un retraso de red (1.5 segundos)
   setTimeout(() => {
-    // Aquí es donde en el futuro irá el 'fetch' real
     listaProyectos.value = [
       { 
         id: 1, 
@@ -31,33 +27,33 @@ onMounted(() => {
         id: 3, 
         titulo: "Radares HF Levante", 
         desc: "Calibración anual de antenas y procesado de datos SeaSonde.",
-        estado: "En pausa",
+        estado: "Activo",
         tecnicos: "Ingeniería SIO"
       }
     ]
-    cargando.value = false // ¡Datos recibidos!
-  }, 1500)
+    cargando.value = false
+  }, 1500) // 1.5 segundos de "simulación de servidor"
 })
 </script>
 
 <template>
   <div class="seccion-tecnica">
-    <button class="btn-volver" @click="$emit('volver')">⬅ Volver</button>
+    <button class="btn-volver" @click="$emit('volver')">⬅ Volver al Inicio</button>
     
-    <h1>Consola de Gestión de Proyectos (Base de Datos)</h1>
+    <h1>WikiSIO: Base de Datos de Proyectos</h1>
 
     <div v-if="cargando" class="loader">
       <div class="spinner"></div>
-      <p>Consultando servidor del SIO... por favor, espere.</p>
+      <p>Conectando con el servidor del SIO...</p>
     </div>
 
-    <div v-else class="grid-dinamico">
+    <div v-else class="grid-proyectos">
       <div v-for="proyecto in listaProyectos" :key="proyecto.id" class="card-db">
-        <div class="badge">{{ proyecto.estado }}</div>
+        <span class="badge" :class="proyecto.estado.toLowerCase()">{{ proyecto.estado }}</span>
         <h3>{{ proyecto.titulo }}</h3>
         <p>{{ proyecto.desc }}</p>
         <div class="meta">
-          <span>👷 Responsables: {{ proyecto.tecnicos }}</span>
+          <strong>👷 Técnicos:</strong> {{ proyecto.tecnicos }}
         </div>
       </div>
     </div>
@@ -66,20 +62,19 @@ onMounted(() => {
 
 <style scoped>
 .seccion-tecnica { max-width: 1000px; margin: 0 auto; padding: 2rem; }
-.btn-volver { border: 1px solid #005596; color: #005596; background: white; padding: 8px 16px; cursor: pointer; margin-bottom: 2rem; }
+.btn-volver { border: 1px solid #005596; color: #005596; background: white; padding: 8px 16px; cursor: pointer; margin-bottom: 2rem; font-weight: bold; }
 
-/* Estilo del Cargando */
-.loader { text-align: center; padding: 3rem; color: #005596; font-weight: bold; }
+.loader { text-align: center; padding: 4rem; color: #005596; }
 .spinner { 
   border: 4px solid #f3f3f3; border-top: 4px solid #005596; 
-  border-radius: 50%; width: 40px; height: 40px; 
-  animation: spin 1s linear infinite; margin: 0 auto 1rem;
+  border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 1rem;
 }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-/* Tarjetas generadas automáticamente */
-.grid-dinamico { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-.card-db { background: #fff; border: 1px solid #ddd; padding: 1.5rem; border-radius: 8px; position: relative; }
-.badge { position: absolute; top: 10px; right: 10px; font-size: 0.7rem; background: #e0f0ff; color: #005596; padding: 4px 8px; border-radius: 4px; font-weight: bold; }
+.grid-proyectos { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+.card-db { background: white; border: 1px solid #eee; padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); position: relative; }
+.badge { position: absolute; top: 1rem; right: 1rem; font-size: 0.7rem; padding: 4px 8px; border-radius: 4px; font-weight: bold; }
+.activo { background: #e6f4ea; color: #1e7e34; }
+.finalizado { background: #f1f3f4; color: #5f6368; }
 .meta { margin-top: 1rem; font-size: 0.8rem; color: #666; border-top: 1px solid #eee; padding-top: 0.5rem; }
-</style>            
+</style>
