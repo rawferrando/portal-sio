@@ -4,6 +4,8 @@ import QuienesSomos from './components/QuienesSomos.vue'
 import Instrumentacion from './components/Instrumentacion.vue'
 import Embarcacion from './components/Embarcacion.vue'
 import IntranetFondeos from './components/IntranetFondeos.vue'
+import Proyectos from './components/Proyectos.vue'
+import Diseno from './components/Diseno.vue'
 
 const paginaActual = ref('inicio')
 </script>
@@ -42,6 +44,14 @@ const paginaActual = ref('inicio')
       />
       <IntranetFondeos 
         v-else-if="paginaActual === 'intranet'" 
+      />
+      <Proyectos 
+        v-else-if="paginaActual === 'proyectos'" 
+        @volver="paginaActual = 'inicio'" 
+      />
+      <Diseno 
+        v-else-if="paginaActual === 'diseno'" 
+        @volver="paginaActual = 'inicio'" 
       />
     </main>
 
