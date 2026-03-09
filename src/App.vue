@@ -26,7 +26,6 @@ const mostrarIntranet = ref(false)
     <main class="contenedor-principal">
       <div v-if="!mostrarIntranet">
         <QuienesSomos />
-        <hr />
         <RecursosTecnicos />
       </div>
       <div v-else>
