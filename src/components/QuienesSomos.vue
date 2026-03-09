@@ -59,14 +59,14 @@
 
 .cabecera-seccion h1 {
   color: #0056b3; /* Esto le devuelve el color azul institucional */
-  font-size: 2.2rem;
+  font-size: 2rem;
   margin-bottom: 1.5rem;
   border-bottom: 2px solid #e0e0e0; /* Esto crea la línea gris */
   padding-bottom: 0.5rem; /* Esto separa un poco el texto de la línea */
 }
 
 .intro {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   color: #0056b3;
   margin-bottom: 1.5rem;
   line-height: 1.6;
