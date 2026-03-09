@@ -1,4 +1,5 @@
 <script setup>
+import Instrumentacion from './components/Instrumentacion.vue'
 import { ref } from 'vue'
 import QuienesSomos from './components/QuienesSomos.vue'
 import IntranetFondeos from './components/IntranetFondeos.vue'
@@ -28,14 +29,20 @@ const mostrarIntranet = ref(false)
       </nav>
     </header>
 
-    <main class="contenedor-principal">
-      <div v-if="!mostrarIntranet">
-        <QuienesSomos />
-        </div>
-      <div v-else>
-        <IntranetFondeos />
-      </div>
-    </main>
+<main class="contenedor-principal">
+  <div v-if="paginaActual === 'inicio'">
+    <QuienesSomos @cambiar-pagina="paginaActual = $event" />
+  </div>
+
+  <Instrumentacion 
+    v-else-if="paginaActual === 'instrumentacion'" 
+    @volver="paginaActual = 'inicio'" 
+  />
+
+  <div v-else-if="paginaActual === 'intranet'">
+    <IntranetFondeos />
+  </div>
+</main>
 
     <footer class="footer-sio">
       <p>Institut de Ciències del Mar (ICM-CSIC)</p>
