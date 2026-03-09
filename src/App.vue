@@ -1,60 +1,24 @@
 <script setup>
-import Instrumentacion from './components/Instrumentacion.vue'
 import { ref } from 'vue'
 import QuienesSomos from './components/QuienesSomos.vue'
 import IntranetFondeos from './components/IntranetFondeos.vue'
+import Instrumentacion from './components/Instrumentacion.vue'
 import Embarcacion from './components/Embarcacion.vue'
 
-const mostrarIntranet = ref(false)
+// Esta variable es el "GPS". Ahora controla todas las páginas.
+const paginaActual = ref('inicio')
 </script>
 
-<template>
-  <div id="layout-sio">
-    <header class="header-icm">
-      <div class="logo-area">
-<img 
-    src="./assets/logo-sio.jpg" 
-    alt="Logo SIO" 
-    class="logo-img" 
-    @click="mostrarIntranet = false" 
-    style="cursor: pointer;"
-  />
-      </div>
-      <nav class="nav-idiomas">
-        <a href="#" class="active">CA</a> | <a href="#">ES</a> | <a href="#">EN</a>
-        <span class="separador">|</span>
-        <a href="#" @click.prevent="mostrarIntranet = !mostrarIntranet" class="enlace-privado" title="Área de Personal">
-          <span v-if="!mostrarIntranet">🔒</span>
-          <span v-else>Volver al portal</span>
-        </a>
-      </nav>
-    </header>
+<script setup>
+import { ref } from 'vue'
+import QuienesSomos from './components/QuienesSomos.vue'
+import IntranetFondeos from './components/IntranetFondeos.vue'
+import Instrumentacion from './components/Instrumentacion.vue'
+import Embarcacion from './components/Embarcacion.vue'
 
-<main class="contenedor-principal">
-  <div v-if="paginaActual === 'inicio'">
-    <QuienesSomos @cambiar-pagina="paginaActual = $event" />
-  </div>
-
-  <Embarcacion 
-  v-else-if="paginaActual === 'embarcacion'" 
-  @volver="paginaActual = 'inicio'" 
-/>
-  <Instrumentacion 
-    v-else-if="paginaActual === 'instrumentacion'" 
-    @volver="paginaActual = 'inicio'" 
-  />
-
-  <div v-else-if="paginaActual === 'intranet'">
-    <IntranetFondeos />
-  </div>
-</main>
-
-    <footer class="footer-sio">
-      <p>Institut de Ciències del Mar (ICM-CSIC)</p>
-      <p>📧 sio@icm.csic.es | 📍 Pg. Marítim de la Barceloneta, 37, Ciutat Vella, 08003 Barcelona</p>
-    </footer>
-  </div>
-</template>
+// Esta variable es el "GPS". Ahora controla todas las páginas.
+const paginaActual = ref('inicio')
+</script>
 
 <style>
 :root {
