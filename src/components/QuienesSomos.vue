@@ -57,10 +57,13 @@
   text-align: left; /* Fuerza a que todo se alinee a la izquierda desde la raíz */
 }
 
-.cabecera-seccion h1 {
+..cabecera-seccion h1 {
   color: #0056b3;
   font-size: 2.5rem;
   margin-bottom: 1.5rem;
+  /* Estas dos líneas crean el subrayado */
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 0.5rem;
 }
 
 .intro {
