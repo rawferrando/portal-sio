@@ -41,7 +41,7 @@ const mostrarIntranet = ref(false)
 
     <footer class="footer-sio">
       <p>Institut de Ciències del Mar (ICM-CSIC)</p>
-      <p>📧 sio@icm.csic.es | 📍 Pg. Marítim de la Barceloneta, 37, Ciutat Vella, 08003 Barcelona/p>
+      <p>📧 sio@icm.csic.es | 📍 Pg. Marítim de la Barceloneta, 37, Ciutat Vella
     </footer>
   </div>
 </template>
