@@ -14,33 +14,37 @@
       <h2>¿Qué ofrecemos?</h2>
       
       <div class="grid-servicios">
-        <div class="tarjeta">
+        <div class="tarjeta" @click="$emit('cambiar-pagina', 'proyectos')" style="cursor: pointer;">
           <h3>Proyectos de Investigación</h3>
           <p>Aportamos experiencia técnica especializada, innovación tecnológica y soporte logístico en todas las fases del proyecto.</p>
         </div>
 
-        <div class="tarjeta">
+        <div class="tarjeta" @click="$emit('cambiar-pagina', 'diseno')" style="cursor: pointer;">
           <h3>Diseño e Instalación</h3>
           <p>Diseño e instalación de fondeos oceanográficos y desarrollo de sistemas de observación marinos instrumentados.</p>
         </div>
 
-        <div class="tarjeta">
+        <div class="tarjeta" @click="$emit('cambiar-pagina', 'mantenimiento')" style="cursor: pointer;">
           <h3>Despliegue y Mantenimiento</h3>
           <p>Despliegue, mantenimiento de instrumentación y alquiler de espacio en áreas experimentales.</p>
         </div>
 
-        <div class="tarjeta">
+        <div class="tarjeta" @click="$emit('cambiar-pagina', 'analisis')" style="cursor: pointer;">
           <h3>Análisis y Caracterización</h3>
           <p>Caracterización de agua marina con perfilador vertical y servicio de análisis de salinidad del agua.</p>
         </div>
 
-        <div class="tarjeta">
+        <div class="tarjeta" @click="$emit('cambiar-pagina', 'embarcacion')" style="cursor: pointer;">
           <h3>Servicios de Embarcación</h3>
-          <p>Disponemos de servicio de embarcación en el Puerto Olímpico de Barcelona para estudios oceanográficos y despliegues.</p>
+          <p>Disponemos de servicio de embarcación en el Puerto Olímpic de Barcelona para estudios oceanográficos y despliegues.</p>
+        </div>
+
+        <div class="tarjeta" @click="$emit('cambiar-pagina', 'instrumentacion')" style="cursor: pointer;">
+          <h3>Instrumentación Científica</h3>
+          <p>Consulta el catálogo completo de sondas CTD, salinómetros y sensores disponibles para campañas.</p>
         </div>
       </div>
     </section>
-  </div>
 </template>
 
 <style scoped>
