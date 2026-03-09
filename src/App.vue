@@ -8,35 +8,39 @@ const mostrarIntranet = ref(false)
 </script>
 
 <template>
-  <div id="layout-sio">
-    <header class="header-icm">
-      <div class="logo-area">
-        <img src="./assets/logo-sio.jpg" alt="Logo SIO" class="logo-img" /> 
-      </div>
-      <nav class="nav-idiomas">
-        <a href="#" class="active">CA</a> | <a href="#">ES</a> | <a href="#">EN</a>
-        <span class="separador">|</span>
-        <a href="#" @click.prevent="mostrarIntranet = !mostrarIntranet" class="enlace-privado" title="Área de Personal">
-          <span v-if="!mostrarIntranet">🔒</span>
-          <span v-else>Volver al portal</span>
-        </a>
-      </nav>
+  <div class="quienes-somos">
+    <header class="cabecera-seccion">
+      <h1>Quiénes Somos</h1>
+      <p class="intro">
+        El <strong>Servicio de Ingeniería Oceanográfica (SIO)</strong> gestiona las infraestructuras técnicas del ICM-CSIC para el apoyo a la investigación marina.
+      </p>
     </header>
 
-    <main class="contenedor-principal">
-      <div v-if="!mostrarIntranet">
-        <QuienesSomos />
-        <RecursosTecnicos />
-      </div>
-      <div v-else>
-        <IntranetFondeos />
-      </div>
-    </main>
+    <section class="servicios-unificados">
+      <h2 class="titulo-sio">Servicios y Recursos Técnicos</h2>
+      
+      <div class="grid-servicios">
+        <div class="tarjeta">
+          <h3>🚢 Operaciones en el Mar</h3>
+          <p>Servicio de embarcación propia en el Port Olímpic para despliegue de fondeos, mantenimiento de instrumentación y adquisición de datos costeros.</p>
+        </div>
 
-    <footer class="footer-sio">
-      <p>Institut de Ciències del Mar (ICM-CSIC)</p>
-      <p>📧 sio@icm.csic.es | 📍 Pg. Marítim de la Barceloneta, 37, Ciutat Vella, 08003 Barcelona</p>
-    </footer>
+        <div class="tarjeta">
+          <h3>🛠️ Ingeniería y Prototipado</h3>
+          <p>Diseño y fabricación de equipos a medida en nuestro laboratorio especializado. Mantenimiento preventivo y calibración de sensores oceanográficos.</p>
+        </div>
+
+        <div class="tarjeta">
+          <h3>🧪 Instrumentación Científica</h3>
+          <p>Disponemos de sondas CTD (SBE 911plus y CastAway) para perfiles de alta precisión y salinómetro Autosal 8400B para análisis de laboratorio.</p>
+        </div>
+
+        <div class="tarjeta">
+          <h3>🏗️ Infraestructuras</h3>
+          <p>Gestión de tanques experimentales y áreas de pruebas controladas para la validación de nueva tecnología marina.</p>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
