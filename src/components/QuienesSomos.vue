@@ -47,7 +47,7 @@
 .quienes-somos {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 0.5rem 1rem;
   font-family: Arial, sans-serif;
   color: #333;
 }

@@ -36,11 +36,10 @@
 .recursos-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 0.5rem 1rem; /* Reducimos el padding superior */
 }
-
 .seccion-recursos {
-  margin-bottom: 3rem;
+  margin-bottom: 1rem; /* Reducimos mucho el margen entre bloques internos */
 }
 
 .titulo-sio {

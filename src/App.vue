@@ -120,7 +120,7 @@ body, html {
 }
 
 hr {
-  margin: 4rem 0;
+  margin: 1.5rem 0; /* Antes era 4rem, lo bajamos para que no haya tanto hueco */
   border: 0;
   border-top: 1px solid #eee;
 }
