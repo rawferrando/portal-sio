@@ -10,6 +10,7 @@ import FormularioSensor from './components/FormularioSensor.vue'
 
 const paginaActual = ref('inicio')
 
+// El sistema de clave oculta que prefieres
 const gestionarAcceso = () => {
   if (paginaActual.value === 'intranet') {
     paginaActual.value = 'inicio';
@@ -36,7 +37,7 @@ const gestionarAcceso = () => {
         <img src="./assets/logo-sio.jpg" class="logo-img" @click="paginaActual = 'inicio'" alt="Logo SIO" />
       </div>
       <nav class="nav-idiomas">
-        <a href="#">CA</a> | <a href="#">ES</a> | <a href="#">EN</a>
+        <span>CAT | ES | EN</span>
         <a href="#" @click.prevent="gestionarAcceso" class="enlace-privado">
           {{ paginaActual === 'intranet' ? '🔓 Salir' : '🔒' }}
         </a>
@@ -44,7 +45,7 @@ const gestionarAcceso = () => {
     </header>
 
     <main class="contenedor-principal">
-      <div v-if="paginaActual !== 'intranet'" class="vista-publica">
+      <div v-if="paginaActual !== 'intranet'">
         <QuienesSomos v-if="paginaActual === 'inicio'" @cambiar-pagina="paginaActual = $event" />
         <Instrumentacion v-else-if="paginaActual === 'instrumentacion'" @volver="paginaActual = 'inicio'" />
         <Embarcacion v-else-if="paginaActual === 'embarcacion'" @volver="paginaActual = 'inicio'" />
@@ -52,8 +53,13 @@ const gestionarAcceso = () => {
         <Diseno v-else-if="paginaActual === 'diseno'" @volver="paginaActual = 'inicio'" />
       </div>
 
-      <div v-else class="vista-privada">
+      <div v-else class="seccion-intranet">
+        <h2 style="color: #005596; width: 100%; text-align: center;">⚙️ Panel de Gestión SIO</h2>
+        
         <FormularioSensor />
+        
+        <hr />
+        
         <IntranetFondeos />
       </div>
     </main>
@@ -66,20 +72,4 @@ const gestionarAcceso = () => {
 </template>
 
 <style>
-/* Estilos generales */
-#layout-sio { font-family: 'Segoe UI', Arial, sans-serif; display: flex; flex-direction: column; min-height: 100vh; color: #333; }
-.header-icm { background-color: #005596; color: white; display: flex; justify-content: space-between; align-items: center; padding: 1rem 5%; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-.logo-img { height: 80px; width: auto; cursor: pointer; }
-.nav-idiomas a { color: white; text-decoration: none; font-weight: bold; margin: 0 5px; }
-.enlace-privado { margin-left: 15px; font-size: 1.2rem; cursor: pointer; text-decoration: none; }
-
-/* Contenedor principal */
-.contenedor-principal { flex: 1; padding: 3rem 5%; max-width: 1200px; margin: 0 auto; width: 100%; }
-
-/* Estilo dedicado para ordenar la Intranet */
-.vista-privada { display: flex; flex-direction: column; gap: 40px; align-items: center; width: 100%; }
-
-/* Footer sticky */
-.footer-sio { background-color: #005596; color: white; text-align: center; padding: 2rem 1rem; margin-top: auto; font-size: 0.9rem; }
-.footer-sio p { margin: 5px 0; }
-</style>
+#layout-sio { font-family
