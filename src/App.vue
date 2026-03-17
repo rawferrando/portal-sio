@@ -3,56 +3,63 @@ import { ref } from 'vue'
 import QuienesSomos from './components/QuienesSomos.vue'
 import Instrumentacion from './components/Instrumentacion.vue'
 import Embarcacion from './components/Embarcacion.vue'
-import IntranetFondeos from './components/IntranetFondeos.vue'
 import Proyectos from './components/Proyectos.vue'
 import Diseno from './components/Diseno.vue'
+import IntranetFondeos from './components/IntranetFondeos.vue'
+import FormularioSensor from './components/FormularioSensor.vue'
 
 const paginaActual = ref('inicio')
+
+// NUEVA FUNCIÓN DE ACCESO DOBLE (USUARIO + CLAVE)
+const gestionarAcceso = () => {
+  if (paginaActual.value === 'intranet') {
+    paginaActual.value = 'inicio';
+  } else {
+    // 1. Pedimos el Usuario
+    const usuario = prompt("👤 USUARIO SIO:");
+    
+    if (usuario === "admin") {
+      // 2. Si el usuario es correcto, pedimos la Clave
+      const password = prompt("🔑 CONTRASEÑA TÉCNICA:");
+      
+      if (password === "sio2026") {
+        paginaActual.value = 'intranet';
+      } else {
+        alert("❌ Contraseña incorrecta.");
+      }
+    } else if (usuario !== null) {
+      alert("❌ Usuario no reconocido.");
+    }
+  }
+}
 </script>
 
 <template>
   <div id="layout-sio">
     <header class="header-icm">
       <div class="logo-area">
-        <img 
-          src="./assets/logo-sio.jpg" 
-          class="logo-img" 
-          @click="paginaActual = 'inicio'" 
-          alt="Logo SIO"
-        />
+        <img src="./assets/logo-sio.jpg" class="logo-img" @click="paginaActual = 'inicio'" alt="Logo SIO" />
       </div>
       <nav class="nav-idiomas">
-        <a href="#">CAT</a> | <a href="#">ES</a> | <a href="#">EN</a>
-        <a href="#" @click.prevent="paginaActual = 'intranet'" class="enlace-privado">
-          {{ paginaActual === 'intranet' ? '🔓 Volver' : '🔒' }}
+        <span>CAT | ES | EN</span>
+        <a href="#" @click.prevent="gestionarAcceso" class="enlace-privado">
+          {{ paginaActual === 'intranet' ? '🔓 Salir' : '🔒' }}
         </a>
       </nav>
     </header>
 
     <main class="contenedor-principal">
-      <QuienesSomos 
-        v-if="paginaActual === 'inicio'" 
-        @cambiar-pagina="paginaActual = $event" 
-      />
-      <Instrumentacion 
-        v-else-if="paginaActual === 'instrumentacion'" 
-        @volver="paginaActual = 'inicio'" 
-      />
-      <Embarcacion 
-        v-else-if="paginaActual === 'embarcacion'" 
-        @volver="paginaActual = 'inicio'" 
-      />
-      <IntranetFondeos 
-        v-else-if="paginaActual === 'intranet'" 
-      />
-      <Proyectos 
-        v-else-if="paginaActual === 'proyectos'" 
-        @volver="paginaActual = 'inicio'" 
-      />
-      <Diseno 
-        v-else-if="paginaActual === 'diseno'" 
-        @volver="paginaActual = 'inicio'" 
-      />
+      <QuienesSomos v-if="paginaActual === 'inicio'" @cambiar-pagina="paginaActual = $event" />
+      <Instrumentacion v-else-if="paginaActual === 'instrumentacion'" @volver="paginaActual = 'inicio'" />
+      <Embarcacion v-else-if="paginaActual === 'embarcacion'" @volver="paginaActual = 'inicio'" />
+      <Proyectos v-else-if="paginaActual === 'proyectos'" @volver="paginaActual = 'inicio'" />
+      <Diseno v-else-if="paginaActual === 'diseno'" @volver="paginaActual = 'inicio'" />
+
+      <div v-else-if="paginaActual === 'intranet'" class="seccion-intranet">
+        <FormularioSensor />
+        <hr />
+        <IntranetFondeos />
+      </div>
     </main>
 
     <footer class="footer-sio">
@@ -63,55 +70,13 @@ const paginaActual = ref('inicio')
 </template>
 
 <style>
-/* Reset básico para que no queden huecos blancos */
-body { margin: 0; padding: 0; }
-
-#layout-sio {
-  font-family: Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-/* Cabecera Azul */
-.header-icm {
-  background-color: #005596;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 5%;
-}
-
-/* Domamos el logo gigante */
-.logo-img {
-  height: 140px; /* <--- Esto es lo que lo hace pequeño y elegante */
-  width: auto;
-  cursor: pointer;
-}
-
-.nav-idiomas a {
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-/* Contenido centrado */
-.contenedor-principal {
-  flex: 1;
-  padding: 2rem 5%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* Footer Azul Centrado */
-.footer-sio {
-  background-color: #005596;
-  color: white;
-  text-align: center; /* Centra el texto */
-  padding: 2rem 1rem;
-  margin-top: auto;
-}
-
-.footer-sio p { margin: 0.5rem 0; }
+/* Los mismos estilos que ya tenías */
+#layout-sio { font-family: Arial, sans-serif; display: flex; flex-direction: column; min-height: 100vh; }
+.header-icm { background-color: #005596; color: white; display: flex; justify-content: space-between; align-items: center; padding: 1rem 5%; }
+.logo-img { height: 80px; width: auto; cursor: pointer; }
+.nav-idiomas { display: flex; align-items: center; gap: 15px; }
+.enlace-privado { font-size: 1.2rem; text-decoration: none; cursor: pointer; }
+.contenedor-principal { flex: 1; padding: 2rem 5%; max-width: 1200px; margin: 0 auto; width: 100%; }
+.seccion-intranet { display: flex; flex-direction: column; gap: 40px; align-items: center; }
+.footer-sio { background-color: #005596; color: white; text-align: center; padding: 2rem 1rem; margin-top: auto; }
 </style>
