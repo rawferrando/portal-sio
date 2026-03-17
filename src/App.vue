@@ -10,18 +10,13 @@ import FormularioSensor from './components/FormularioSensor.vue'
 
 const paginaActual = ref('inicio')
 
-// NUEVA FUNCIÓN DE ACCESO DOBLE (USUARIO + CLAVE)
 const gestionarAcceso = () => {
   if (paginaActual.value === 'intranet') {
     paginaActual.value = 'inicio';
   } else {
-    // 1. Pedimos el Usuario
     const usuario = prompt("👤 USUARIO SIO:");
-    
     if (usuario === "admin") {
-      // 2. Si el usuario es correcto, pedimos la Clave
       const password = prompt("🔑 CONTRASEÑA TÉCNICA:");
-      
       if (password === "sio2026") {
         paginaActual.value = 'intranet';
       } else {
@@ -41,7 +36,7 @@ const gestionarAcceso = () => {
         <img src="./assets/logo-sio.jpg" class="logo-img" @click="paginaActual = 'inicio'" alt="Logo SIO" />
       </div>
       <nav class="nav-idiomas">
-        <span>CAT | ES | EN</span>
+        <a href="#">CA</a> | <a href="#">ES</a> | <a href="#">EN</a>
         <a href="#" @click.prevent="gestionarAcceso" class="enlace-privado">
           {{ paginaActual === 'intranet' ? '🔓 Salir' : '🔒' }}
         </a>
@@ -49,15 +44,16 @@ const gestionarAcceso = () => {
     </header>
 
     <main class="contenedor-principal">
-      <QuienesSomos v-if="paginaActual === 'inicio'" @cambiar-pagina="paginaActual = $event" />
-      <Instrumentacion v-else-if="paginaActual === 'instrumentacion'" @volver="paginaActual = 'inicio'" />
-      <Embarcacion v-else-if="paginaActual === 'embarcacion'" @volver="paginaActual = 'inicio'" />
-      <Proyectos v-else-if="paginaActual === 'proyectos'" @volver="paginaActual = 'inicio'" />
-      <Diseno v-else-if="paginaActual === 'diseno'" @volver="paginaActual = 'inicio'" />
+      <div v-if="paginaActual !== 'intranet'" class="vista-publica">
+        <QuienesSomos v-if="paginaActual === 'inicio'" @cambiar-pagina="paginaActual = $event" />
+        <Instrumentacion v-else-if="paginaActual === 'instrumentacion'" @volver="paginaActual = 'inicio'" />
+        <Embarcacion v-else-if="paginaActual === 'embarcacion'" @volver="paginaActual = 'inicio'" />
+        <Proyectos v-else-if="paginaActual === 'proyectos'" @volver="paginaActual = 'inicio'" />
+        <Diseno v-else-if="paginaActual === 'diseno'" @volver="paginaActual = 'inicio'" />
+      </div>
 
-      <div v-else-if="paginaActual === 'intranet'" class="seccion-intranet">
+      <div v-else class="vista-privada">
         <FormularioSensor />
-        <hr />
         <IntranetFondeos />
       </div>
     </main>
@@ -70,13 +66,20 @@ const gestionarAcceso = () => {
 </template>
 
 <style>
-/* Los mismos estilos que ya tenías */
-#layout-sio { font-family: Arial, sans-serif; display: flex; flex-direction: column; min-height: 100vh; }
-.header-icm { background-color: #005596; color: white; display: flex; justify-content: space-between; align-items: center; padding: 1rem 5%; }
+/* Estilos generales */
+#layout-sio { font-family: 'Segoe UI', Arial, sans-serif; display: flex; flex-direction: column; min-height: 100vh; color: #333; }
+.header-icm { background-color: #005596; color: white; display: flex; justify-content: space-between; align-items: center; padding: 1rem 5%; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 .logo-img { height: 80px; width: auto; cursor: pointer; }
-.nav-idiomas { display: flex; align-items: center; gap: 15px; }
-.enlace-privado { font-size: 1.2rem; text-decoration: none; cursor: pointer; }
-.contenedor-principal { flex: 1; padding: 2rem 5%; max-width: 1200px; margin: 0 auto; width: 100%; }
-.seccion-intranet { display: flex; flex-direction: column; gap: 40px; align-items: center; }
-.footer-sio { background-color: #005596; color: white; text-align: center; padding: 2rem 1rem; margin-top: auto; }
+.nav-idiomas a { color: white; text-decoration: none; font-weight: bold; margin: 0 5px; }
+.enlace-privado { margin-left: 15px; font-size: 1.2rem; cursor: pointer; text-decoration: none; }
+
+/* Contenedor principal */
+.contenedor-principal { flex: 1; padding: 3rem 5%; max-width: 1200px; margin: 0 auto; width: 100%; }
+
+/* Estilo dedicado para ordenar la Intranet */
+.vista-privada { display: flex; flex-direction: column; gap: 40px; align-items: center; width: 100%; }
+
+/* Footer sticky */
+.footer-sio { background-color: #005596; color: white; text-align: center; padding: 2rem 1rem; margin-top: auto; font-size: 0.9rem; }
+.footer-sio p { margin: 5px 0; }
 </style>
