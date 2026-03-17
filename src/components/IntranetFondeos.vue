@@ -34,6 +34,16 @@
 </template>
 
 <style scoped>
+.contenedor-fondeos { background: white; padding: 20px; border-radius: 8px; width: 100%; max-width: 900px; margin: 0 auto; }
+.cabecera-tabla { margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+h2 { color: #005596; margin: 0; font-size: 1.4rem; }
+.tabla-sio { width: 100%; border-collapse: collapse; text-align: left; }
+.tabla-sio th, .tabla-sio td { padding: 12px; border-bottom: 1px solid #eee; }
+.status { padding: 4px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; }
+.op { background: #d4edda; color: #155724; }
+.mt { background: #fff3cd; color: #856404; }
+</style>
+<style scoped>
 .contenedor-fondeos { background: white; padding: 20px; border-radius: 8px; width: 100%; max-width: 900px; }
 .cabecera-tabla { margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
 h2 { color: #005596; margin: 0; font-size: 1.4rem; }

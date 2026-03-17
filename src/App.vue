@@ -10,7 +10,6 @@ import FormularioSensor from './components/FormularioSensor.vue'
 
 const paginaActual = ref('inicio')
 
-// El sistema de clave oculta que prefieres
 const gestionarAcceso = () => {
   if (paginaActual.value === 'intranet') {
     paginaActual.value = 'inicio';
@@ -54,12 +53,9 @@ const gestionarAcceso = () => {
       </div>
 
       <div v-else class="seccion-intranet">
-        <h2 style="color: #005596; width: 100%; text-align: center;">⚙️ Panel de Gestión SIO</h2>
-        
+        <h2 style="color: #005596;">⚙️ Panel de Gestión SIO</h2>
         <FormularioSensor />
-        
         <hr />
-        
         <IntranetFondeos />
       </div>
     </main>
@@ -72,4 +68,13 @@ const gestionarAcceso = () => {
 </template>
 
 <style>
-#layout-sio { font-family
+#layout-sio { font-family: Arial, sans-serif; display: flex; flex-direction: column; min-height: 100vh; }
+.header-icm { background-color: #005596; color: white; display: flex; justify-content: space-between; align-items: center; padding: 1rem 5%; }
+.logo-img { height: 80px; cursor: pointer; }
+.nav-idiomas { display: flex; align-items: center; gap: 15px; font-weight: bold; color: white; }
+.enlace-privado { font-size: 1.2rem; text-decoration: none; cursor: pointer; color: white; }
+.contenedor-principal { flex: 1; padding: 2rem 5%; max-width: 1200px; margin: 0 auto; width: 100%; }
+.seccion-intranet { display: flex; flex-direction: column; gap: 40px; align-items: center; width: 100%; }
+hr { width: 100%; border: 0; border-top: 2px solid #ddd; }
+.footer-sio { background-color: #005596; color: white; text-align: center; padding: 2rem 1rem; margin-top: auto; }
+</style>
