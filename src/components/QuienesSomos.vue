@@ -72,4 +72,62 @@
 .quienes-somos { margin-bottom: 40px; }
 h2 { color: #005596; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 30px; }
 p { line-height: 1.6; color: #444; font-size: 1.05rem; }
-.titulo-ofrecemos { margin-
+.titulo-ofrecemos { margin-top: 50px; margin-bottom: 30px; }
+
+/* Grid de las tarjetas (Ajustado a 4 columnas en pantallas grandes, baja a 2 o 1 en móvil) */
+.grid-servicios {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+}
+
+/* Estructura base de la tarjeta */
+.tarjeta-servicio {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  min-height: 240px;
+  display: flex;
+  align-items: flex-end; /* Empuja el texto hacia abajo */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Efecto al pasar el ratón */
+.tarjeta-servicio:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* Capa de degradado oscuro sobre la imagen para que el texto se lea bien */
+.tarjeta-servicio::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(to top, rgba(0, 40, 80, 0.95) 0%, rgba(0, 40, 80, 0.3) 100%);
+}
+
+/* Textos dentro de la tarjeta */
+.contenido-tarjeta {
+  position: relative;
+  z-index: 1;
+  padding: 25px;
+  color: white;
+}
+.contenido-tarjeta h3 { color: white; border: none; padding: 0; margin: 0 0 10px 0; font-size: 1.25rem; }
+.contenido-tarjeta p { color: #e0e0e0; margin: 0; font-size: 0.9rem; line-height: 1.5; }
+
+/* IMÁGENES DE FONDO (Originales) */
+.bg-proyectos { background-image: url('https://images.unsplash.com/photo-1583212292454-1fe6229603b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); }
+.bg-despliegue { background-image: url('https://images.unsplash.com/photo-1518861053457-37c22e4dcb32?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); }
+.bg-analisis { background-image: url('https://images.unsplash.com/photo-1582719471384-894fbb16e074?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); }
+.bg-instrumentacion { background-image: url('https://images.unsplash.com/photo-1622322080352-794dc2d6505c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); }
+
+/* NUEVAS IMÁGENES DE FONDO */
+.bg-tanques { background-image: url('https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); } /* Laboratorio/Tanques */
+.bg-embarcaciones { background-image: url('https://images.unsplash.com/photo-1566324866657-31131103c800?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); } /* Embarcación/Mar */
+.bg-calibracion { background-image: url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); } /* Equipos precisión */
+.bg-desarrollo { background-image: url('https://images.unsplash.com/photo-1581092160607-ee22621dd758?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); } /* Ingeniería/Piezas */
+</style>
