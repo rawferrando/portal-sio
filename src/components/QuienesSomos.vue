@@ -64,34 +64,6 @@
         </div>
       </div>
 
-      <div class="tarjeta-servicio bg-auv">
-        <div class="contenido-tarjeta">
-          <h3>Vehículos Autónomos y Gliders</h3>
-          <p>Operación, mantenimiento y despliegue de plataformas autónomas para misiones de observación de larga duración.</p>
-        </div>
-      </div>
-
-      <div class="tarjeta-servicio bg-datamanagement">
-        <div class="contenido-tarjeta">
-          <h3>Gestión de Datos Oceanográficos</h3>
-          <p>Procesamiento, visualización y aseguramiento de la calidad (*QA*) de grandes volúmenes de datos científicos.</p>
-        </div>
-      </div>
-
-      <div class="tarjeta-servicio bg-comms">
-        <div class="contenido-tarjeta">
-          <h3>Comunicaciones en Tiempo Real</h3>
-          <p>Sistemas de comunicación remota para boyas, landers y plataformas fijos vía satélite (Iridium) o radiofrecuencia.</p>
-        </div>
-      </div>
-
-      <div class="tarjeta-servicio bg-training">
-        <div class="contenido-tarjeta">
-          <h3>Formación Técnica Especializada</h3>
-          <p>Cursos prácticos en el ICM para investigadores en el manejo de instrumentación, mantenimiento y seguridad en el mar.</p>
-        </div>
-      </div>
-
     </div>
   </div>
 </template>
@@ -102,7 +74,7 @@ h2 { color: #005596; border-bottom: 2px solid #eee; padding-bottom: 10px; margin
 p { line-height: 1.6; color: #444; font-size: 1.05rem; }
 .titulo-ofrecemos { margin-top: 50px; margin-bottom: 30px; }
 
-/* Grid de las tarjetas (Se ajusta dinámicamente: 4 columnas en grande, 3 en mediano, 2 o 1 en móvil) */
+/* Grid de las tarjetas */
 .grid-servicios {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -147,7 +119,7 @@ p { line-height: 1.6; color: #444; font-size: 1.05rem; }
 .contenido-tarjeta h3 { color: white; border: none; padding: 0; margin: 0 0 10px 0; font-size: 1.25rem; }
 .contenido-tarjeta p { color: #e0e0e0; margin: 0; font-size: 0.9rem; line-height: 1.5; }
 
-/* IMÁGENES DE FONDO (Originales) */
+/* IMÁGENES DE FONDO */
 .bg-proyectos { background-image: url('https://images.unsplash.com/photo-1583212292454-1fe6229603b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); }
 .bg-despliegue { background-image: url('https://images.unsplash.com/photo-1518861053457-37c22e4dcb32?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); }
 .bg-analisis { background-image: url('https://images.unsplash.com/photo-1582719471384-894fbb16e074?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); }
@@ -156,10 +128,4 @@ p { line-height: 1.6; color: #444; font-size: 1.05rem; }
 .bg-embarcaciones { background-image: url('https://images.unsplash.com/photo-1566324866657-31131103c800?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); }
 .bg-calibracion { background-image: url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); }
 .bg-desarrollo { background-image: url('https://images.unsplash.com/photo-1581092160607-ee22621dd758?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); }
-
-/* 👇 NUEVAS IMÁGENES DE FONDO PARA LAS 4 TARJETAS 👇 */
-.bg-auv { background-image: url('https://images.unsplash.com/photo-1626002760611-667950c051a3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); } /* Un Glider naranja bajo el agua */
-.bg-datamanagement { background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); } /* Un circuito y datos abstractos */
-.bg-comms { background-image: url('https://images.unsplash.com/photo-1516110833967-0b5716ca1387?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); } /* Una antena satelital/torre costera */
-.bg-training { background-image: url('https://images.unsplash.com/photo-1581094396009-8488e085c8e3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); } /* Dos personas trabajando sobre instrumentación en un taller */
 </style>
