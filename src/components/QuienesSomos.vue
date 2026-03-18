@@ -29,10 +29,11 @@
         </div>
       </div>
 
-      <div class="tarjeta-servicio bg-instrumentacion">
+      <div class="tarjeta-servicio bg-instrumentacion clicable" @click="$emit('cambiar-pagina', 'instrumentacion')">
         <div class="contenido-tarjeta">
           <h3>Instrumentación Científica</h3>
           <p>Gestión del catálogo completo de sondas CTD, salinómetros y sensores disponibles para campañas.</p>
+          <span class="enlace-falso">🔍 Buscar Equipos ➔</span>
         </div>
       </div>
 
@@ -73,6 +74,10 @@
 h2 { color: #005596; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 30px; }
 p { line-height: 1.6; color: #444; font-size: 1.05rem; }
 .titulo-ofrecemos { margin-top: 50px; margin-bottom: 30px; }
+/* Estilos para tarjetas clicables */
+.clicable { cursor: pointer; border: 2px solid transparent; }
+.clicable:hover { border: 2px solid #66b2ff; }
+.enlace-falso { display: inline-block; margin-top: 15px; color: #66b2ff; font-weight: bold; font-size: 0.95rem; }
 
 /* Grid de las tarjetas */
 .grid-servicios {
