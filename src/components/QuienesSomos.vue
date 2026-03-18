@@ -1,154 +1,99 @@
 <template>
-      <div class="quienes-somos">
-    <header class="cabecera-seccion">
-      <h1>Quiénes Somos</h1>
-      <p class="intro">
-        El <strong>Servicio de Ingeniería Oceanográfica</strong> del Instituto de Ciencias del Mar ofrece apoyo técnico especializado a grupos de investigación y proyectos en el ámbito de las ciencias del mar.
-      </p>
-      <p class="descripcion">
-        Nuestro objetivo es proporcionar soluciones técnicas adaptadas a las necesidades específicas de cada cliente, así como ofrecer asesoramiento experto basado en años de experiencia en el sector. Disponemos de un equipo altamente cualificado y de una amplia gama de instrumentación y recursos, lo que nos permite innovar, desarrollar y personalizar equipos, así como diseñar, desplegar e implementar sistemas avanzados de adquisición de datos, tanto fijos como móviles.
-      </p>
-    </header>
+  <div class="quienes-somos">
+    <h2>Quiénes Somos</h2>
+    <p>El <strong>Servicio de Ingeniería Oceanográfica</strong> del Instituto de Ciencias del Mar ofrece apoyo técnico especializado a grupos de investigación y proyectos en el ámbito de las ciencias del mar.</p>
+    <p>Nuestro objetivo es proporcionar soluciones técnicas adaptadas a las necesidades específicas de cada cliente, así como ofrecer asesoramiento experto basado en años de experiencia en el sector. Disponemos de un equipo altamente cualificado y de una amplia gama de instrumentación y recursos, lo que nos permite innovar, desarrollar y personalizar equipos, así como diseñar, desplegar e implementar sistemas avanzados de adquisición de datos, tanto fijos como móviles. También ofrecemos herramientas y técnicas de verificación específicas para garantizar la calidad de los datos obtenidos en los estudios oceanográficos.</p>
 
-    <section class="servicios">
-      <h2>¿Qué ofrecemos?</h2>
+    <h2 class="titulo-ofrecemos">¿Qué ofrecemos?</h2>
+    
+    <div class="grid-servicios">
       
-      <div class="grid-servicios">
-        <div class="tarjeta" @click="$emit('cambiar-pagina', 'proyectos')" style="cursor: pointer;">
+      <div class="tarjeta-servicio bg-proyectos">
+        <div class="contenido-tarjeta">
           <h3>Proyectos de Investigación</h3>
           <p>Aportamos experiencia técnica especializada, innovación tecnológica y soporte logístico en todas las fases del proyecto.</p>
         </div>
+      </div>
 
-        <div class="tarjeta" @click="$emit('cambiar-pagina', 'diseno')" style="cursor: pointer;">
-          <h3>Diseño e Instalación</h3>
-          <p>Diseño e instalación de fondeos oceanográficos y desarrollo de sistemas de observación marinos instrumentados.</p>
-        </div>
-
-        <div class="tarjeta" @click="$emit('cambiar-pagina', 'mantenimiento')" style="cursor: pointer;">
+      <div class="tarjeta-servicio bg-despliegue">
+        <div class="contenido-tarjeta">
           <h3>Despliegue y Mantenimiento</h3>
-          <p>Despliegue, mantenimiento de instrumentación y alquiler de espacio en áreas experimentales.</p>
+          <p>Diseño, despliegue, mantenimiento de líneas de instrumentación y alquiler de espacio en instalaciones experimentales.</p>
         </div>
+      </div>
 
-        <div class="tarjeta" @click="$emit('cambiar-pagina', 'analisis')" style="cursor: pointer;">
+      <div class="tarjeta-servicio bg-analisis">
+        <div class="contenido-tarjeta">
           <h3>Análisis y Caracterización</h3>
           <p>Caracterización de agua marina con perfilador vertical y servicio de análisis de salinidad del agua.</p>
         </div>
+      </div>
 
-        <div class="tarjeta" @click="$emit('cambiar-pagina', 'embarcacion')" style="cursor: pointer;">
-          <h3>Servicios de Embarcación</h3>
-          <p>Disponemos de servicio de embarcación en el Puerto Olímpic de Barcelona para estudios oceanográficos y despliegues.</p>
-        </div>
-
-        <div class="tarjeta" @click="$emit('cambiar-pagina', 'instrumentacion')" style="cursor: pointer;">
+      <div class="tarjeta-servicio bg-instrumentacion">
+        <div class="contenido-tarjeta">
           <h3>Instrumentación Científica</h3>
-          <p>Consulta el catálogo completo de sondas CTD, salinómetros y sensores disponibles para campañas.</p>
+          <p>Gestión del catálogo completo de sondas CTD, salinómetros y sensores disponibles para campañas.</p>
         </div>
       </div>
-    </section>
-</div> </template>
+
+    </div>
+  </div>
+</template>
 
 <style scoped>
-.quienes-somos {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0.5rem 1rem;
-  font-family: Arial, sans-serif;
-  color: #333;
-}
+.quienes-somos { margin-bottom: 40px; }
+h2 { color: #005596; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 30px; }
+p { line-height: 1.6; color: #444; font-size: 1.05rem; }
+.titulo-ofrecemos { margin-top: 50px; margin-bottom: 30px; }
 
-.cabecera-seccion {
-  margin-bottom: 3rem;
-  text-align: left; /* Fuerza a que todo se alinee a la izquierda desde la raíz */
-}
-
-.cabecera-seccion h1 {
-  color: #0056b3; /* Esto le devuelve el color azul institucional */
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  border-bottom: 2px solid #e0e0e0; /* Esto crea la línea gris */
-  padding-bottom: 0.5rem; /* Esto separa un poco el texto de la línea */
-}
-
-.intro {
-  font-size: 1.1rem;
-  color: #333;
-  margin-bottom: 1.5rem;
-  line-height: 1.6;
-}
-
-.descripcion {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: #333;
-}
-
-.servicios h2 {
-  color: #0056b3;
-  font-size: 2rem;
-  border-bottom: 2px solid #e0e0e0;
-  padding-bottom: 0.5rem;
-  margin-bottom: 2rem;
-}
-
+/* Grid de las tarjetas */
 .grid-servicios {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
 }
 
-.tarjeta {
-  background-color: #f8f9fa;
-  border-left: 5px solid #0056b3;
-  padding: 1.5rem;
-  border-radius: 6px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-  transition: transform 0.2s ease;
-}
-
-.tarjeta:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-.tarjeta h3 {
-  color: #0056b3;
-  margin-top: 0;
-  margin-bottom: 0.8rem;
-  font-size: 1.2rem;
-}
-
-.tarjeta p {
-  margin: 0;
-  line-height: 1.5;
-  color: #666;
-}
-.contacto-ubicacion {
-  margin-top: 4rem;
-  padding-top: 2rem;
-  border-top: 1px solid #eee; /* Una línea muy fina para separar */
-}
-
-.bloque-info {
+/* Estructura base de la tarjeta */
+.tarjeta-servicio {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  min-height: 240px;
   display: flex;
-  flex-wrap: wrap;
-  gap: 3rem;
-  margin-top: 2rem;
+  align-items: flex-end; /* Empuja el texto hacia abajo */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-size: cover;
+  background-position: center;
 }
 
-.bloque-info h3 {
-  color: #005596;
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
+/* Efecto al pasar el ratón */
+.tarjeta-servicio:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
 }
 
-.bloque-info p {
-  color: #444; /* Gris oscuro: Elegante y legible */
-  line-height: 1.6;
-  margin-bottom: 1rem;
+/* Capa de degradado oscuro sobre la imagen para que el texto se lea bien */
+.tarjeta-servicio::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(to top, rgba(0, 40, 80, 0.95) 0%, rgba(0, 40, 80, 0.3) 100%);
 }
 
-.nota {
-  font-size: 0.9rem;
-  color: #777 !important;
+/* Textos dentro de la tarjeta */
+.contenido-tarjeta {
+  position: relative;
+  z-index: 1;
+  padding: 25px;
+  color: white;
 }
+.contenido-tarjeta h3 { color: white; border: none; padding: 0; margin: 0 0 10px 0; font-size: 1.4rem; }
+.contenido-tarjeta p { color: #e0e0e0; margin: 0; font-size: 0.95rem; line-height: 1.5; }
+
+/* IMÁGENES DE FONDO DE EJEMPLO (Se pueden cambiar luego) */
+.bg-proyectos { background-image: url('https://images.unsplash.com/photo-1583212292454-1fe6229603b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); }
+.bg-despliegue { background-image: url('https://images.unsplash.com/photo-1518861053457-37c22e4dcb32?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); }
+.bg-analisis { background-image: url('https://images.unsplash.com/photo-1582719471384-894fbb16e074?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); }
+.bg-instrumentacion { background-image: url('https://images.unsplash.com/photo-1622322080352-794dc2d6505c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); }
 </style>
