@@ -7,6 +7,7 @@ import Proyectos from './components/Proyectos.vue'
 import Diseno from './components/Diseno.vue'
 import IntranetFondeos from './components/IntranetFondeos.vue'
 import FormularioSensor from './components/FormularioSensor.vue'
+import FormularioFondeo from './components/FormularioFondeo.vue' // 👈 ¡Aquí importamos el nuevo formulario!
 
 // Control de navegación y seguridad
 const paginaActual = ref('inicio')
@@ -86,7 +87,9 @@ const salir = () => {
           </div>
           
           <FormularioSensor />
-          <hr style="width: 100%; border: 0; border-top: 2px solid #eee; margin: 40px 0;" />
+          
+          <div style="height: 20px;"></div> <FormularioFondeo /> <hr style="width: 100%; border: 0; border-top: 2px solid #eee; margin: 40px 0;" />
+          
           <IntranetFondeos />
         </div>
 
@@ -101,14 +104,19 @@ const salir = () => {
 </template>
 
 <style>
+/* Estilos Base (Los mismos que ya tenías) */
 #layout-sio { font-family: Arial, sans-serif; display: flex; flex-direction: column; min-height: 100vh; }
 .header-icm { background-color: #005596; color: white; display: flex; justify-content: space-between; align-items: center; padding: 1rem 5%; }
 .logo-img { height: 80px; cursor: pointer; }
 .nav-idiomas { display: flex; align-items: center; gap: 15px; font-weight: bold; color: white; }
 .enlace-privado { font-size: 1.2rem; text-decoration: none; cursor: pointer; color: white; }
 .contenedor-principal { flex: 1; padding: 2rem 5%; max-width: 1200px; margin: 0 auto; width: 100%; }
+
+/* Estructura Intranet */
 .seccion-intranet { display: flex; flex-direction: column; align-items: center; width: 100%; }
 .panel-control { width: 100%; display: flex; flex-direction: column; align-items: center; }
+
+/* Estilos exactos del Login */
 .login-card { background: white; padding: 35px 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border-top: 4px solid #005596; text-align: center; max-width: 320px; width: 100%; margin: 50px auto; }
 .form-login { display: flex; flex-direction: column; gap: 20px; }
 .campo-input { text-align: left; }
@@ -117,5 +125,6 @@ const salir = () => {
 .btn-entrar { background: #005596; color: white; border: none; padding: 12px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 1rem; width: 100%; margin-top: 10px; }
 .btn-entrar:hover { background: #00447a; }
 .btn-salir { background: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+
 .footer-sio { background-color: #005596; color: white; text-align: center; padding: 2rem 1rem; margin-top: auto; }
 </style>
