@@ -16,7 +16,7 @@ const toggleDetalles = (id) => {
   }
 }
 
-// 🗄️ Base de datos: Ahora incluye los campos de la firma legal
+// 🗄️ Base de datos: Ahora con "Estado" de los documentos
 const inventario = ref([
   { 
     id: 'SNS-001', 
@@ -33,10 +33,10 @@ const inventario = ref([
     periodicidad: '12 a 24 meses',
 
     reservas: [
-      { desde: '2026-04-10', hasta: '2026-04-25', proyecto: 'Campaña Costa Brava (ICATMAR)' }
+      // Una reserva antigua que ya tiene el documento firmado
+      { desde: '2026-04-10', hasta: '2026-04-25', proyecto: 'Campaña Costa Brava (ICATMAR)', estado: 'Aprobada' }
     ],
-    // NUEVO: Campos para la firma electrónica
-    nuevaReserva: { desde: '', hasta: '', proyecto: '', aceptaResponsabilidad: false, firmaDni: '' },
+    nuevaReserva: { desde: '', hasta: '', proyecto: '', aceptaResponsabilidad: false },
     
     wiki: {
       descripcionGeneral: "El SBE 5 Pressure Sensor es un sensor de presión de alta precisión fabricado por Sea-Bird Scientific...",
@@ -63,7 +63,7 @@ const inventario = ref([
     ultimaCalibracion: '12 de enero de 2024',
     periodicidad: '12 meses',
     reservas: [],
-    nuevaReserva: { desde: '', hasta: '', proyecto: '', aceptaResponsabilidad: false, firmaDni: '' },
+    nuevaReserva: { desde: '', hasta: '', proyecto: '', aceptaResponsabilidad: false },
     wiki: null
   }
 ])
@@ -85,32 +85,31 @@ const confirmarReserva = (equipo) => {
     return
   }
   
-  if (!equipo.nuevaReserva.aceptaResponsabilidad || equipo.nuevaReserva.firmaDni.trim() === '') {
-    alert("⚖️ Debes aceptar las condiciones y firmar con tu DNI para procesar la reserva.")
+  if (!equipo.nuevaReserva.aceptaResponsabilidad) {
+    alert("⚖️ Debes aceptar las condiciones previas para procesar la reserva.")
     return
   }
   
   const fechaInicio = equipo.nuevaReserva.desde
   const fechaFin = equipo.nuevaReserva.hasta
   const nombreProyecto = equipo.nuevaReserva.proyecto
-  const dniFirma = equipo.nuevaReserva.firmaDni
 
+  // SE CREA LA RESERVA CON ESTADO PENDIENTE
   equipo.reservas.push({
     desde: fechaInicio,
     hasta: fechaFin,
-    proyecto: nombreProyecto
+    proyecto: nombreProyecto,
+    estado: 'Pendiente' // 👈 El estado clave para el documento
   })
   
-  // CORREO AUTOMÁTICO CON LA FIRMA LEGAL INYECTADA
   const email = "sio@icm.csic.es"
-  const asunto = encodeURIComponent(`NUEVA RESERVA OFICIAL: ${equipo.nombre} (ID: ${equipo.id})`)
-  const cuerpo = encodeURIComponent(`Hola equipo del SIO,\n\nSe ha registrado una nueva solicitud de cesión de equipamiento a través de la Intranet:\n\n- Instrumento: ${equipo.nombre}\n- S/N: ${equipo.numeroSerie}\n- Proyecto asociado: ${nombreProyecto}\n- FECHAS: Del ${fechaInicio} al ${fechaFin}\n\n=========================================\n⚖️ DECLARACIÓN DE RESPONSABILIDAD FIRMADA\n=========================================\nEl investigador/a con DNI/Pasaporte: ${dniFirma} acepta expresamente las condiciones de uso y asume la responsabilidad civil y económica en caso de pérdida, negligencia o daño irreparable del equipo durante el periodo de cesión estipulado.\n\nPor favor, tomad nota para la preparación logística.`)
+  const asunto = encodeURIComponent(`PRE-RESERVA (Pendiente de Firma): ${equipo.nombre} (ID: ${equipo.id})`)
+  const cuerpo = encodeURIComponent(`Hola equipo del SIO,\n\nHe registrado una pre-reserva en el portal. Necesito que me generéis el documento de responsabilidad para las siguientes fechas:\n\n- Instrumento: ${equipo.nombre}\n- S/N: ${equipo.numeroSerie}\n- Proyecto: ${nombreProyecto}\n- FECHAS: Del ${fechaInicio} al ${fechaFin}\n\nQuedo a la espera del PDF para devolverlo debidamente firmado.\n\nUn saludo,`)
   
   window.location.href = `mailto:${email}?subject=${asunto}&body=${cuerpo}`
 
-  // Reseteo del formulario
-  equipo.nuevaReserva = { desde: '', hasta: '', proyecto: '', aceptaResponsabilidad: false, firmaDni: '' }
-  alert(`✅ ¡Equipo bloqueado con éxito!\n\nSe ha generado el correo oficial con tu declaración de responsabilidad adjunta. Por favor, envíalo para formalizar el proceso.`)
+  equipo.nuevaReserva = { desde: '', hasta: '', proyecto: '', aceptaResponsabilidad: false }
+  alert(`✅ ¡Pre-reserva registrada en el calendario!\n\nAparecerá como 'Pendiente de Firma' hasta que el SIO reciba y valide tu documento oficial.`)
 }
 </script>
 
@@ -120,7 +119,7 @@ const confirmarReserva = (equipo) => {
     <div class="cabecera-catalogo">
       <button @click="$emit('volver')" class="btn-volver">⬅ Volver al Inicio</button>
       <h2>Buscador de Instrumentación Científica</h2>
-      <p>Explora nuestro catálogo, revisa las fichas técnicas y bloquea fechas para tus campañas.</p>
+      <p>Explora nuestro catálogo, revisa las fichas técnicas y gestiona tus campañas.</p>
     </div>
 
     <div class="caja-filtros">
@@ -140,12 +139,12 @@ const confirmarReserva = (equipo) => {
 
     <div class="resultados">
       <div class="grid-equipos">
-        
         <div v-for="equipo in equiposFiltrados" :key="equipo.id" class="tarjeta-equipo">
           
           <div class="cabecera-tarjeta">
             <div class="etiqueta-tipo">{{ equipo.tipo }}</div>
-            <span v-if="equipo.reservas.length > 0" class="badge-ocupado">🗓️ Con Reservas Activas</span>
+            <span v-if="equipo.reservas.some(r => r.estado === 'Pendiente')" class="badge-pendiente-top">⏳ Pendiente Firma</span>
+            <span v-else-if="equipo.reservas.length > 0" class="badge-ocupado">🗓️ Ocupado</span>
             <span v-else class="badge-libre">✅ Disponible</span>
           </div>
           
@@ -159,13 +158,17 @@ const confirmarReserva = (equipo) => {
           <div v-if="equiposExpandidos.includes(equipo.id)" class="ficha-tecnica-desplegada">
             
             <div class="bloque-reservas">
-              <h5>📅 Calendario y Solicitud de Cesión</h5>
+              <h5>📅 Calendario y Estado de Firmas</h5>
               
               <div v-if="equipo.reservas.length > 0" class="lista-reservas">
-                <p class="texto-aviso">Fechas bloqueadas actualmente:</p>
+                <p class="texto-aviso">Próximas salidas del equipo:</p>
                 <ul>
-                  <li v-for="(res, index) in equipo.reservas" :key="index">
-                    <strong>Del {{ res.desde }} al {{ res.hasta }}</strong> - {{ res.proyecto }}
+                  <li v-for="(res, index) in equipo.reservas" :key="index" class="item-reserva">
+                    <div class="datos-reserva">
+                      <strong>Del {{ res.desde }} al {{ res.hasta }}</strong> - {{ res.proyecto }}
+                    </div>
+                    <span v-if="res.estado === 'Aprobada'" class="estado-ok">✅ Doc. Firmado</span>
+                    <span v-if="res.estado === 'Pendiente'" class="estado-espera">⏳ Pendiente Firma</span>
                   </li>
                 </ul>
               </div>
@@ -174,7 +177,7 @@ const confirmarReserva = (equipo) => {
               </div>
 
               <div class="formulario-reserva">
-                <h6>1. Datos de la Campaña:</h6>
+                <h6>1. Iniciar trámite de cesión:</h6>
                 <div class="inputs-reserva">
                   <input type="date" v-model="equipo.nuevaReserva.desde" title="Fecha de inicio">
                   <input type="date" v-model="equipo.nuevaReserva.hasta" title="Fecha de fin">
@@ -182,26 +185,25 @@ const confirmarReserva = (equipo) => {
                 </div>
 
                 <div class="caja-legal">
-                  <h6>2. Acuerdo de Responsabilidad de Equipamiento (ICM-CSIC)</h6>
+                  <h6>2. Pre-acuerdo de Responsabilidad (ICM-CSIC)</h6>
                   <p class="texto-legal">
-                    Al proceder con esta reserva, el investigador principal o responsable de la campaña asume la responsabilidad civil y económica íntegra sobre el instrumento <strong>{{ equipo.nombre }} (S/N: {{ equipo.numeroSerie }})</strong>. En caso de pérdida en el mar, robo, negligencia operativa o daño irreparable por mal uso, el proyecto asociado deberá cubrir los costes de reposición o reparación.
+                    El equipo quedará bloqueado en estado <strong>"Pendiente de Firma"</strong>. El investigador responsable deberá devolver el PDF oficial firmado para que el SIO apruebe la salida del instrumento.
                   </p>
                   
                   <div class="firma-electronica">
                     <label class="checkbox-legal">
                       <input type="checkbox" v-model="equipo.nuevaReserva.aceptaResponsabilidad">
-                      He leído y acepto las condiciones de cesión del SIO.
+                      Solicitar documento oficial y añadir pre-reserva al calendario.
                     </label>
-                    <input type="text" v-model="equipo.nuevaReserva.firmaDni" placeholder="Firma digital (Introduce tu DNI/NIE)" class="input-firma" :disabled="!equipo.nuevaReserva.aceptaResponsabilidad">
                   </div>
                 </div>
 
                 <button 
                   @click="confirmarReserva(equipo)" 
                   class="btn-reservar" 
-                  :class="{ 'btn-bloqueado': !equipo.nuevaReserva.aceptaResponsabilidad || equipo.nuevaReserva.firmaDni.length < 5 }"
+                  :class="{ 'btn-bloqueado': !equipo.nuevaReserva.aceptaResponsabilidad }"
                 >
-                  Firmar y Bloquear Fechas
+                  Generar Pre-Reserva
                 </button>
               </div>
             </div>
@@ -243,7 +245,7 @@ const confirmarReserva = (equipo) => {
 </template>
 
 <style scoped>
-/* (Estilos Base) */
+/* (Estilos Base Mantenidos) */
 .pagina-catalogo { animation: fadeIn 0.4s ease-in-out; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 .cabecera-catalogo { margin-bottom: 30px; }
@@ -259,7 +261,9 @@ const confirmarReserva = (equipo) => {
 .etiqueta-tipo { background: #e2eef7; color: #005596; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
 .id-equipo { font-size: 1.1rem; color: #888; font-family: monospace; }
 .badge-libre { background: #d4edda; color: #155724; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 0.85rem; }
-.badge-ocupado { background: #fff3cd; color: #856404; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 0.85rem; border: 1px solid #ffeeba; }
+.badge-ocupado { background: #cce5ff; color: #004085; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 0.85rem; border: 1px solid #b8daff; }
+.badge-pendiente-top { background: #fff3cd; color: #856404; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 0.85rem; border: 1px solid #ffeeba; }
+
 .tarjeta-equipo h4 { margin: 0 0 10px 0; color: #333; font-size: 1.4rem; }
 .descripcion { font-size: 1rem; color: #555; line-height: 1.5; margin-top: 0; margin-bottom: 20px; }
 .btn-desplegar { background: #005596; color: white; border: none; padding: 10px 15px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 0.95rem; text-align: center; }
@@ -267,26 +271,28 @@ const confirmarReserva = (equipo) => {
 .ficha-tecnica-desplegada { background: #fdfdfd; border: 1px solid #eee; border-radius: 8px; padding: 0; margin-top: 15px; animation: slideDown 0.3s ease-out; overflow: hidden; }
 @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* BLOQUE DE RESERVAS Y CAJA LEGAL */
+/* BLOQUE DE RESERVAS Y ESTADOS */
 .bloque-reservas { background-color: #f0f7ff; padding: 20px; border-bottom: 1px solid #cce0f0; }
 .bloque-reservas h5 { margin: 0 0 15px 0; color: #005596; font-size: 1.1rem; }
 .lista-reservas { background: white; padding: 15px; border-radius: 6px; border: 1px solid #cce0f0; margin-bottom: 15px; }
 .lista-reservas.libre { background: #d4edda; border-color: #c3e6cb; color: #155724; font-weight: bold; }
-.texto-aviso { margin: 0 0 10px 0; color: #d9534f; font-weight: bold; font-size: 0.9rem; }
-.lista-reservas ul { margin: 0; padding-left: 20px; }
-.lista-reservas li { font-size: 0.95rem; margin-bottom: 5px; color: #444; }
+.texto-aviso { margin: 0 0 10px 0; color: #005596; font-weight: bold; font-size: 0.9rem; }
+.lista-reservas ul { margin: 0; padding-left: 0; list-style: none; }
+
+/* Nuevo diseño para la lista de reservas con el estado a la derecha */
+.item-reserva { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 8px 0; font-size: 0.95rem; color: #444; }
+.item-reserva:last-child { border-bottom: none; }
+.estado-ok { background: #d4edda; color: #155724; font-size: 0.8rem; padding: 3px 8px; border-radius: 12px; font-weight: bold; }
+.estado-espera { background: #fff3cd; color: #856404; font-size: 0.8rem; padding: 3px 8px; border-radius: 12px; font-weight: bold; }
 
 .formulario-reserva h6 { margin: 0 0 8px 0; color: #333; font-size: 0.95rem; font-weight: bold; }
-.inputs-reserva { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+.inputs-reserva { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; }
 .inputs-reserva input { padding: 10px; border: 1px solid #ccc; border-radius: 4px; flex: 1; min-width: 130px; }
 
-/* Nuevo Estilo Legal */
 .caja-legal { background-color: #fffaf0; border: 1px solid #ffeeba; border-left: 4px solid #ffc107; padding: 15px; border-radius: 4px; margin-bottom: 20px; }
 .texto-legal { font-size: 0.85rem; color: #665c3e; line-height: 1.5; margin: 0 0 15px 0; }
 .firma-electronica { display: flex; flex-direction: column; gap: 10px; }
 .checkbox-legal { font-size: 0.9rem; font-weight: bold; color: #333; cursor: pointer; display: flex; align-items: center; gap: 8px; }
-.input-firma { padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; max-width: 300px; font-family: monospace; background-color: #fff; }
-.input-firma:disabled { background-color: #e9ecef; cursor: not-allowed; }
 
 .btn-reservar { background: #28a745; color: white; border: none; padding: 12px 20px; border-radius: 4px; font-weight: bold; font-size: 1rem; cursor: pointer; transition: all 0.2s; width: 100%; }
 .btn-reservar:hover { background: #218838; }
