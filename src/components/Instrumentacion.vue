@@ -5,8 +5,6 @@ const emit = defineEmits(['volver'])
 
 const textoBusqueda = ref('')
 const tipoSeleccionado = ref('Todos')
-
-// Controla qué equipos están "desplegados"
 const equiposExpandidos = ref([])
 
 const toggleDetalles = (id) => {
@@ -18,7 +16,7 @@ const toggleDetalles = (id) => {
   }
 }
 
-// 🗄️ Base de datos con el nivel de detalle de la Wiki SIO
+// 🗄️ Base de datos con Fichas de la Wiki y SISTEMA DE RESERVAS
 const inventario = ref([
   { 
     id: 'SNS-001', 
@@ -27,41 +25,28 @@ const inventario = ref([
     desc: 'Sensor de presión de alta precisión diseñado específicamente para aplicaciones oceanográficas y de investigación marina.',
     fabricante: 'Sea-Bird Scientific',
     numeroSerie: '11599',
+    // Datos para el simulador de reservas
+    reservas: [
+      { desde: '2026-04-10', hasta: '2026-04-25', proyecto: 'Campaña Costa Brava (ICATMAR)' }
+    ],
+    nuevaReserva: { desde: '', hasta: '', proyecto: '' }, // Formulario temporal
     
-    // 👇 AQUÍ VOLCAMOS TODA LA WIKI SIO DEL SBE 5 👇
+    // Datos de la Wiki
     wiki: {
-      descripcionGeneral: "El SBE 5 Pressure Sensor es un sensor de presión de alta precisión fabricado por Sea-Bird Scientific, diseñado específicamente para aplicaciones oceanográficas y de investigación marina. Este sensor se utiliza para determinar la profundidad mediante la medición de la presión absoluta en el agua. La profundidad es un parámetro fundamental en oceanografía, ya que permite localizar espacialmente las medidas de otros parámetros (como temperatura y salinidad) del agua, siendo esencial para el análisis de la estructura vertical de la columna de agua.",
+      descripcionGeneral: "El SBE 5 Pressure Sensor es un sensor de presión de alta precisión fabricado por Sea-Bird Scientific...",
       caracteristicasMedicion: [
-        "Rango de Presión: 0 a 10.000 psia (aproximadamente 0 a 6.800 metros de profundidad)",
+        "Rango de Presión: 0 a 10.000 psia",
         "Precisión: ±0.015% del rango completo",
-        "Resolución: 0.001% del rango completo",
-        "Estabilidad: ±0.005% del rango completo por año",
-        "Tiempo de Respuesta: <100 ms"
-      ],
-      caracteristicasFisicas: [
-        "Diámetro: Aproximadamente 19 mm",
-        "Longitud: Aproximadamente 76 mm"
+        "Resolución: 0.001% del rango completo"
       ],
       especificacionesElectricas: [
         "Voltaje de Alimentación: 8-18 V DC",
-        "Consumo de Corriente: <5 mA",
-        "Señal de Salida: 0-5 V DC (proporcional a la presión)",
-        "Impedancia de Salida: <1000 ohms",
-        "Aislamiento: >100 MΩ a 50 V DC"
+        "Señal de Salida: 0-5 V DC"
       ],
-      principioFuncionamiento: "El sensor SBE 5 utiliza un transductor de presión de alta precisión basado en tecnología de galgas extensiométricas (strain gauge). La presión del agua actúa sobre un diafragma de titanio, que se deforma proporcionalmente. Las galgas convierten esta deformación en una señal eléctrica que se amplifica y lineariza electrónicamente.",
       mantenimientoPreventivo: [
-        "Inspección visual: Verificar ausencia de daños en diafragma y conectores",
         "Limpieza: Enjuague con agua destilada después de cada uso",
-        "Almacenamiento: En ambiente seco, protegido de golpes",
         "Verificación funcional: Chequeo de respuesta antes de cada campaña"
-      ],
-      aplicaciones: [
-        "Perfiles CTD: Medición continua de profundidad durante perfiles verticales",
-        "Fondeos fijos: Monitoreo de presión en estaciones fijas",
-        "Estudios de mareas: Registro de variaciones de presión por efecto de mareas"
-      ],
-      documentacion: "https://www.seabird.com/support"
+      ]
     }
   },
   { 
@@ -71,7 +56,9 @@ const inventario = ref([
     desc: 'Análisis de salinidad en muestras de agua con altísima precisión paramétrica.',
     fabricante: 'Guildline Instruments',
     numeroSerie: '67890',
-    wiki: null // (Los demás los dejamos sencillos por ahora para no hacer el código infinito)
+    reservas: [], // Este equipo está libre
+    nuevaReserva: { desde: '', hasta: '', proyecto: '' },
+    wiki: null
   }
 ])
 
@@ -81,17 +68,28 @@ const equiposFiltrados = computed(() => {
     const coincideTexto = equipo.nombre.toLowerCase().includes(texto) || 
                           equipo.desc.toLowerCase().includes(texto) ||
                           equipo.id.toLowerCase().includes(texto)
-    
     const coincideTipo = tipoSeleccionado.value === 'Todos' || equipo.tipo === tipoSeleccionado.value
-    
     return coincideTexto && coincideTipo
   })
 })
 
-const generarEnlaceCorreo = (equipo) => {
-  const email = "sio@icm.csic.es"
-  const asunto = encodeURIComponent(`Consulta: ${equipo.nombre} (ID: ${equipo.id})`)
-  return `mailto:${email}?subject=${asunto}`
+// Función mágica que bloquea el calendario en tiempo real
+const confirmarReserva = (equipo) => {
+  if (!equipo.nuevaReserva.desde || !equipo.nuevaReserva.hasta) {
+    alert("⚠️ Por favor, selecciona la fecha de inicio y fin de la campaña.")
+    return
+  }
+  
+  // Añadimos la reserva a la base de datos visual
+  equipo.reservas.push({
+    desde: equipo.nuevaReserva.desde,
+    hasta: equipo.nuevaReserva.hasta,
+    proyecto: equipo.nuevaReserva.proyecto || 'Reserva Interna SIO'
+  })
+  
+  // Limpiamos el formulario y lanzamos aviso
+  equipo.nuevaReserva = { desde: '', hasta: '', proyecto: '' }
+  alert(`✅ ¡Fechas bloqueadas con éxito para el equipo ${equipo.id}!`)
 }
 </script>
 
@@ -101,7 +99,7 @@ const generarEnlaceCorreo = (equipo) => {
     <div class="cabecera-catalogo">
       <button @click="$emit('volver')" class="btn-volver">⬅ Volver al Inicio</button>
       <h2>Buscador de Instrumentación Científica</h2>
-      <p>Explora nuestro catálogo de equipos, sondas y sensores disponibles para campañas.</p>
+      <p>Explora nuestro catálogo, revisa las fichas técnicas y bloquea fechas para tus campañas.</p>
     </div>
 
     <div class="caja-filtros">
@@ -120,83 +118,67 @@ const generarEnlaceCorreo = (equipo) => {
     </div>
 
     <div class="resultados">
-      <p class="contador-resultados">Mostrando {{ equiposFiltrados.length }} equipos</p>
-      
       <div class="grid-equipos">
+        
         <div v-for="equipo in equiposFiltrados" :key="equipo.id" class="tarjeta-equipo">
           
           <div class="cabecera-tarjeta">
             <div class="etiqueta-tipo">{{ equipo.tipo }}</div>
-            <span class="id-equipo">{{ equipo.id }}</span>
+            <span v-if="equipo.reservas.length > 0" class="badge-ocupado">🗓️ Con Reservas Activas</span>
+            <span v-else class="badge-libre">✅ Disponible</span>
           </div>
           
-          <h4>{{ equipo.nombre }}</h4>
+          <h4>{{ equipo.nombre }} <span class="id-equipo">({{ equipo.id }})</span></h4>
           <p class="descripcion">{{ equipo.desc }}</p>
           
           <button @click="toggleDetalles(equipo.id)" class="btn-desplegar">
-            {{ equiposExpandidos.includes(equipo.id) ? '▲ Ocultar Ficha Técnica de la Wiki' : '▼ Ver Ficha Técnica Completa' }}
+            {{ equiposExpandidos.includes(equipo.id) ? '▲ Ocultar Detalles y Reservas' : '▼ Ver Ficha Técnica y Calendario' }}
           </button>
 
           <div v-if="equiposExpandidos.includes(equipo.id)" class="ficha-tecnica-desplegada">
             
-            <div v-if="equipo.wiki">
+            <div class="bloque-reservas">
+              <h5>📅 Calendario de Disponibilidad</h5>
               
-              <div class="seccion-wiki">
-                <h5>📖 Descripción General</h5>
-                <p>{{ equipo.wiki.descripcionGeneral }}</p>
+              <div v-if="equipo.reservas.length > 0" class="lista-reservas">
+                <p class="texto-aviso">Este equipo tiene las siguientes fechas bloqueadas:</p>
+                <ul>
+                  <li v-for="(res, index) in equipo.reservas" :key="index">
+                    <strong>Del {{ res.desde }} al {{ res.hasta }}</strong> - {{ res.proyecto }}
+                  </li>
+                </ul>
+              </div>
+              <div v-else class="lista-reservas libre">
+                <p>No hay campañas programadas. El equipo está totalmente libre.</p>
               </div>
 
-              <div class="wiki-grid-2">
-                <div class="seccion-wiki">
-                  <h5>📏 Características de Medición</h5>
-                  <ul>
-                    <li v-for="(item, index) in equipo.wiki.caracteristicasMedicion" :key="index">{{ item }}</li>
-                  </ul>
-                </div>
-                
-                <div class="seccion-wiki">
-                  <h5>⚡ Especificaciones Eléctricas</h5>
-                  <ul>
-                    <li v-for="(item, index) in equipo.wiki.especificacionesElectricas" :key="index">{{ item }}</li>
-                  </ul>
-                </div>
-              </div>
-
-              <div class="seccion-wiki">
-                <h5>⚙️ Principio de Funcionamiento</h5>
-                <p>{{ equipo.wiki.principioFuncionamiento }}</p>
-              </div>
-
-              <div class="wiki-grid-2">
-                <div class="seccion-wiki">
-                  <h5>🛠️ Mantenimiento Preventivo</h5>
-                  <ul>
-                    <li v-for="(item, index) in equipo.wiki.mantenimientoPreventivo" :key="index">{{ item }}</li>
-                  </ul>
-                </div>
-
-                <div class="seccion-wiki">
-                  <h5>🌊 Aplicaciones Oceanográficas</h5>
-                  <ul>
-                    <li v-for="(item, index) in equipo.wiki.aplicaciones" :key="index">{{ item }}</li>
-                  </ul>
+              <div class="formulario-reserva">
+                <h6>Solicitar Bloqueo de Fechas:</h6>
+                <div class="inputs-reserva">
+                  <input type="date" v-model="equipo.nuevaReserva.desde" title="Fecha de inicio">
+                  <input type="date" v-model="equipo.nuevaReserva.hasta" title="Fecha de fin">
+                  <input type="text" v-model="equipo.nuevaReserva.proyecto" placeholder="Nombre del proyecto...">
+                  <button @click="confirmarReserva(equipo)" class="btn-reservar">Bloquear Fechas</button>
                 </div>
               </div>
-              
-              <div class="seccion-wiki doc-link">
-                <h5>📚 Documentación Técnica</h5>
-                <a :href="equipo.wiki.documentacion" target="_blank">Abrir manuales y soporte del fabricante ➔</a>
-              </div>
-
             </div>
-            
-            <div v-else class="aviso-vacio">
-              <p>Ficha técnica en proceso de migración desde la Wiki SIO.</p>
+
+            <div v-if="equipo.wiki" class="bloque-wiki">
+              <h5>📖 Especificaciones Técnicas (Wiki SIO)</h5>
+              <div class="wiki-grid-2">
+                <div class="seccion-wiki">
+                  <h6>📏 Características de Medición</h6>
+                  <ul><li v-for="(item, index) in equipo.wiki.caracteristicasMedicion" :key="index">{{ item }}</li></ul>
+                </div>
+                <div class="seccion-wiki">
+                  <h6>⚡ Especificaciones Eléctricas</h6>
+                  <ul><li v-for="(item, index) in equipo.wiki.especificacionesElectricas" :key="index">{{ item }}</li></ul>
+                </div>
+              </div>
             </div>
 
           </div>
 
-          <a :href="generarEnlaceCorreo(equipo)" class="btn-solicitar">✉️ Solicitar Disponibilidad</a>
         </div>
       </div>
     </div>
@@ -217,37 +199,46 @@ const generarEnlaceCorreo = (equipo) => {
 .grupo-filtro label { font-weight: bold; color: #333; font-size: 0.95rem; }
 .grupo-filtro input, .grupo-filtro select { padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; width: 100%; box-sizing: border-box; }
 
-.contador-resultados { font-weight: bold; color: #666; margin-bottom: 15px; }
-.grid-equipos { display: flex; flex-direction: column; gap: 25px; } /* Cambiado a columna para que la ficha grande se vea bien */
+.grid-equipos { display: flex; flex-direction: column; gap: 25px; }
 
 .tarjeta-equipo { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
 .cabecera-tarjeta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
 .etiqueta-tipo { background: #e2eef7; color: #005596; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
-.id-equipo { font-size: 0.85rem; color: #888; font-family: monospace; font-weight: bold; background: #f0f0f0; padding: 3px 6px; border-radius: 4px; }
+.id-equipo { font-size: 1.1rem; color: #888; font-family: monospace; }
+
+/* Badges de Estado Visual */
+.badge-libre { background: #d4edda; color: #155724; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 0.85rem; }
+.badge-ocupado { background: #fff3cd; color: #856404; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 0.85rem; border: 1px solid #ffeeba; }
 
 .tarjeta-equipo h4 { margin: 0 0 10px 0; color: #333; font-size: 1.4rem; }
 .descripcion { font-size: 1rem; color: #555; line-height: 1.5; margin-top: 0; margin-bottom: 20px; }
 
-.btn-desplegar { background: #005596; color: white; border: none; padding: 10px 15px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 0.95rem; transition: background 0.2s; margin-bottom: 15px; text-align: center; }
+.btn-desplegar { background: #005596; color: white; border: none; padding: 10px 15px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 0.95rem; text-align: center; }
 .btn-desplegar:hover { background: #00447a; }
 
-/* ESTILOS DE LA WIKI DESPLEGADA */
-.ficha-tecnica-desplegada { background: #f8fbff; border: 1px solid #cce0f0; border-radius: 8px; padding: 25px; margin-bottom: 20px; animation: slideDown 0.3s ease-out; }
+.ficha-tecnica-desplegada { background: #fdfdfd; border: 1px solid #eee; border-radius: 8px; padding: 0; margin-top: 15px; animation: slideDown 0.3s ease-out; overflow: hidden; }
 @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-.seccion-wiki { margin-bottom: 20px; }
-.seccion-wiki h5 { margin: 0 0 10px 0; color: #003d6b; font-size: 1.1rem; border-bottom: 2px solid #cce0f0; padding-bottom: 5px; }
-.seccion-wiki p { font-size: 0.95rem; color: #444; line-height: 1.6; margin: 0; }
-.seccion-wiki ul { padding-left: 20px; margin: 0; }
-.seccion-wiki li { font-size: 0.9rem; color: #444; margin-bottom: 6px; line-height: 1.4; }
+/* BLOQUE DE RESERVAS (DISEÑO NUEVO) */
+.bloque-reservas { background-color: #f0f7ff; padding: 20px; border-bottom: 1px solid #cce0f0; }
+.bloque-reservas h5 { margin: 0 0 15px 0; color: #005596; font-size: 1.1rem; }
+.lista-reservas { background: white; padding: 15px; border-radius: 6px; border: 1px solid #cce0f0; margin-bottom: 15px; }
+.lista-reservas.libre { background: #d4edda; border-color: #c3e6cb; color: #155724; font-weight: bold; }
+.texto-aviso { margin: 0 0 10px 0; color: #d9534f; font-weight: bold; font-size: 0.9rem; }
+.lista-reservas ul { margin: 0; padding-left: 20px; }
+.lista-reservas li { font-size: 0.95rem; margin-bottom: 5px; color: #444; }
 
-.wiki-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-@media (max-width: 768px) { .wiki-grid-2 { grid-template-columns: 1fr; gap: 10px; } }
+.formulario-reserva h6 { margin: 0 0 8px 0; color: #333; font-size: 0.95rem; }
+.inputs-reserva { display: flex; gap: 10px; flex-wrap: wrap; }
+.inputs-reserva input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; flex: 1; min-width: 130px; }
+.btn-reservar { background: #28a745; color: white; border: none; padding: 8px 15px; border-radius: 4px; font-weight: bold; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
+.btn-reservar:hover { background: #218838; }
 
-.doc-link a { color: #005596; font-weight: bold; text-decoration: none; }
-.doc-link a:hover { text-decoration: underline; }
-.aviso-vacio { text-align: center; color: #888; font-style: italic; padding: 20px; }
-
-.btn-solicitar { display: block; text-align: center; text-decoration: none; background: transparent; border: 2px solid #005596; color: #005596; padding: 12px; border-radius: 4px; font-weight: bold; cursor: pointer; transition: all 0.2s; margin-top: auto; }
-.btn-solicitar:hover { background: #005596; color: white; }
+/* BLOQUE DE LA WIKI */
+.bloque-wiki { padding: 20px; }
+.bloque-wiki h5 { margin: 0 0 15px 0; color: #333; font-size: 1.1rem; border-bottom: 2px solid #eee; padding-bottom: 5px; }
+.wiki-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.seccion-wiki h6 { margin: 0 0 8px 0; color: #005596; font-size: 0.95rem; }
+.seccion-wiki ul { padding-left: 15px; margin: 0; }
+.seccion-wiki li { font-size: 0.85rem; color: #555; margin-bottom: 4px; }
 </style>
