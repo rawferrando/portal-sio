@@ -1,9 +1,10 @@
 <template>
   <div class="quienes-somos">
     <h2>Quiénes Somos</h2>
-    <p>El Servicio de Ingeniería Oceanográfica del Instituto de Ciencias del Mar ofrece soporte técnico especializado a grupos de investigación y proyectos en el ámbito de las ciencias del mar. Nuestro objetivo es proporcionar soluciones técnicas adaptadas a las necesidades específicas de cada cliente, además de ofrecer asesoramiento experto basado en años de experiencia en el sector.
-Contamos con un equipo altamente cualificado y una amplia gama de instrumentación y recursos, lo que nos permite innovar, desarrollar y personalizar equipos, así como diseñar, desplegar e implementar sistemas avanzados de adquisición de datos, tanto fijos como móviles. También ofrecemos herramientas y técnicas de verificación específicas para garantizar la calidad de los datos obtenidos en los estudios oceanográficos.</p>
+    <p>El <strong>Servicio de Ingeniería Oceanográfica</strong> del Instituto de Ciencias del Mar ofrece soporte técnico especializado a grupos de investigación y proyectos en el ámbito de las ciencias del mar.</p>
+    <p>Nuestro objetivo es proporcionar soluciones técnicas adaptadas a las necesidades específicas de cada cliente, además de ofrecer asesoramiento experto basado en años de experiencia en el sector. Contamos con un equipo altamente cualificado y una amplia gama de instrumentación y recursos, lo que nos permite innovar, desarrollar y personalizar equipos, así como diseñar, desplegar e implementar sistemas avanzados de adquisición de datos, tanto fijos como móviles. También ofrecemos herramientas y técnicas de verificación específicas para garantizar la calidad de los datos obtenidos en los estudios oceanográficos.</p>
 
+    <h2 class="titulo-ofrecemos">¿Qué ofrecemos?</h2>
     <h2 class="titulo-ofrecemos">¿Qué ofrecemos?</h2>
     
     <div class="grid-servicios">
