@@ -112,13 +112,30 @@ const confirmarReserva = (equipo) => {
     alert("⚠️ Por favor, selecciona la fecha de inicio y fin de la campaña.")
     return
   }
+  
+  // 1. Guardamos los datos introducidos
+  const fechaInicio = equipo.nuevaReserva.desde;
+  const fechaFin = equipo.nuevaReserva.hasta;
+  const nombreProyecto = equipo.nuevaReserva.proyecto || 'Reserva Interna SIO';
+
+  // 2. Añadimos la reserva visualmente a la web
   equipo.reservas.push({
-    desde: equipo.nuevaReserva.desde,
-    hasta: equipo.nuevaReserva.hasta,
-    proyecto: equipo.nuevaReserva.proyecto || 'Reserva Interna SIO'
+    desde: fechaInicio,
+    hasta: fechaFin,
+    proyecto: nombreProyecto
   })
+  
+  // 3. ¡LA MAGIA DEL CORREO! Preparamos el email para el SIO
+  const email = "sio@icm.csic.es"
+  const asunto = encodeURIComponent(`NUEVA RESERVA: ${equipo.nombre} (ID: ${equipo.id})`)
+  const cuerpo = encodeURIComponent(`Hola equipo del SIO,\n\nAcabo de realizar una reserva a través de la nueva Intranet para el siguiente equipo:\n\n- Instrumento: ${equipo.nombre}\n- S/N: ${equipo.numeroSerie}\n- Proyecto asociado: ${nombreProyecto}\n- FECHAS: Del ${fechaInicio} al ${fechaFin}\n\nPor favor, tomad nota para la preparación logística.\n\nUn saludo,`)
+  
+  // Abre el gestor de correo del investigador automáticamente
+  window.location.href = `mailto:${email}?subject=${asunto}&body=${cuerpo}`
+
+  // 4. Limpiamos el formulario y lanzamos el aviso final
   equipo.nuevaReserva = { desde: '', hasta: '', proyecto: '' }
-  alert(`✅ ¡Fechas bloqueadas con éxito para el equipo ${equipo.id}!`)
+  alert(`✅ ¡Fechas bloqueadas en el portal!\n\nSe ha abierto tu gestor de correo para enviar la notificación oficial al SIO.`)
 }
 </script>
 
