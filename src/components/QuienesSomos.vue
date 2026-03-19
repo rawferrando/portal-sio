@@ -2,7 +2,6 @@
   <div class="quienes-somos">
     <h2>Quiénes Somos</h2>
     <p>El <strong>Servicio de Ingeniería Oceanográfica</strong> del Instituto de Ciencias del Mar ofrece apoyo técnico especializado a grupos de investigación y proyectos en el ámbito de las ciencias del mar.</p>
-    <p>Nuestro objetivo es proporcionar soluciones técnicas adaptadas a las necesidades específicas de cada cliente, así como ofrecer asesoramiento experto basado en años de experiencia en el sector. Disponemos de un equipo altamente cualificado y de una amplia gama de instrumentación y recursos, lo que nos permite innovar, desarrollar y personalizar equipos, así como diseñar, desplegar e implementar sistemas avanzados de adquisición de datos, tanto fijos como móviles. También ofrecemos herramientas y técnicas de verificación específicas para garantizar la calidad de los datos obtenidos en los estudios oceanográficos.</p>
 
     <h2 class="titulo-ofrecemos">¿Qué ofrecemos?</h2>
     
@@ -18,50 +17,50 @@
       <div class="tarjeta-servicio bg-despliegue">
         <div class="contenido-tarjeta">
           <h3>Despliegue y Mantenimiento</h3>
-          <p>Diseño, despliegue, mantenimiento de líneas de instrumentación y alquiler de espacio en instalaciones experimentales.</p>
+          <p>Diseño, despliegue y mantenimiento de líneas de instrumentación fondeadas.</p>
         </div>
       </div>
 
       <div class="tarjeta-servicio bg-analisis">
         <div class="contenido-tarjeta">
           <h3>Análisis y Caracterización</h3>
-          <p>Caracterización de agua marina con perfilador vertical y servicio de análisis de salinidad del agua.</p>
+          <p>Caracterización de agua marina con perfilador vertical y análisis de salinidad.</p>
         </div>
       </div>
 
       <div class="tarjeta-servicio bg-instrumentacion clicable" @click="$emit('cambiar-pagina', 'instrumentacion')">
         <div class="contenido-tarjeta">
           <h3>Instrumentación Científica</h3>
-          <p>Gestión del catálogo completo de sondas CTD, salinómetros y sensores disponibles para campañas.</p>
-          <span class="enlace-falso">🔍 Buscar Equipos ➔</span>
+          <p>Gestión del catálogo completo de sondas CTD, salinómetros y sensores disponibles.</p>
+          <span class="enlace-falso">🔍 Buscar Equipos y Reservar ➔</span>
         </div>
       </div>
 
       <div class="tarjeta-servicio bg-tanques">
         <div class="contenido-tarjeta">
           <h3>Tanques y Laboratorio</h3>
-          <p>Infraestructuras y espacios experimentales equipados para la simulación y prueba de equipos en condiciones controladas.</p>
+          <p>Infraestructuras experimentales equipadas para simulación en condiciones controladas.</p>
         </div>
       </div>
 
       <div class="tarjeta-servicio bg-embarcaciones">
         <div class="contenido-tarjeta">
           <h3>Embarcaciones y Logística</h3>
-          <p>Apoyo operativo con embarcaciones propias para trabajos costeros, fondeos y recuperación de plataformas de observación.</p>
+          <p>Apoyo operativo con embarcaciones propias y drones para trabajos costeros.</p>
         </div>
       </div>
 
       <div class="tarjeta-servicio bg-calibracion">
         <div class="contenido-tarjeta">
           <h3>Calibración y Verificación</h3>
-          <p>Técnicas de verificación y control riguroso para garantizar la máxima calidad y precisión de los datos oceanográficos.</p>
+          <p>Técnicas de control riguroso para garantizar la precisión de los datos oceanográficos.</p>
         </div>
       </div>
 
       <div class="tarjeta-servicio bg-desarrollo">
         <div class="contenido-tarjeta">
           <h3>Desarrollo a Medida</h3>
-          <p>Diseño de soluciones de ingeniería personalizadas, desde el mecanizado de piezas hasta la adaptación de hardware de muestreo.</p>
+          <p>Diseño de soluciones de ingeniería personalizadas y mecanizado de piezas.</p>
         </div>
       </div>
 
@@ -70,14 +69,12 @@
 </template>
 
 <style scoped>
-.quienes-somos { margin-bottom: 40px; }
+.quienes-somos { margin-bottom: 40px; animation: fadeIn 0.5s ease-in-out; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
 h2 { color: #005596; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 30px; }
 p { line-height: 1.6; color: #444; font-size: 1.05rem; }
 .titulo-ofrecemos { margin-top: 50px; margin-bottom: 30px; }
-/* Estilos para tarjetas clicables */
-.clicable { cursor: pointer; border: 2px solid transparent; }
-.clicable:hover { border: 2px solid #66b2ff; }
-.enlace-falso { display: inline-block; margin-top: 15px; color: #66b2ff; font-weight: bold; font-size: 0.95rem; }
 
 /* Grid de las tarjetas */
 .grid-servicios {
@@ -91,27 +88,31 @@ p { line-height: 1.6; color: #444; font-size: 1.05rem; }
   position: relative;
   border-radius: 10px;
   overflow: hidden;
-  min-height: 240px;
+  min-height: 250px;
   display: flex;
-  align-items: flex-end; /* Empuja el texto hacia abajo */
+  align-items: flex-end;
   box-shadow: 0 4px 15px rgba(0,0,0,0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #005596; /* Color de respaldo por si tarda en cargar la foto */
   background-size: cover;
   background-position: center;
 }
 
-/* Efecto al pasar el ratón */
 .tarjeta-servicio:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
 }
 
-/* Capa de degradado oscuro sobre la imagen para que el texto se lea bien */
+/* Capa de degradado oscuro */
 .tarjeta-servicio::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(to top, rgba(0, 40, 80, 0.95) 0%, rgba(0, 40, 80, 0.3) 100%);
+  background: linear-gradient(to top, rgba(0, 30, 60, 0.95) 0%, rgba(0, 30, 60, 0.2) 100%);
+  transition: background 0.3s ease;
+}
+.tarjeta-servicio:hover::before {
+  background: linear-gradient(to top, rgba(0, 30, 60, 0.98) 0%, rgba(0, 30, 60, 0.4) 100%);
 }
 
 /* Textos dentro de la tarjeta */
@@ -120,17 +121,23 @@ p { line-height: 1.6; color: #444; font-size: 1.05rem; }
   z-index: 1;
   padding: 25px;
   color: white;
+  width: 100%;
 }
-.contenido-tarjeta h3 { color: white; border: none; padding: 0; margin: 0 0 10px 0; font-size: 1.25rem; }
-.contenido-tarjeta p { color: #e0e0e0; margin: 0; font-size: 0.9rem; line-height: 1.5; }
+.contenido-tarjeta h3 { color: white; border: none; padding: 0; margin: 0 0 10px 0; font-size: 1.25rem; text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
+.contenido-tarjeta p { color: #e2eef7; margin: 0; font-size: 0.9rem; line-height: 1.5; }
 
-/* IMÁGENES DE FONDO */
-.bg-proyectos { background-image: url('https://images.unsplash.com/photo-1583212292454-1fe6229603b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); }
-.bg-despliegue { background-image: url('https://images.unsplash.com/photo-1518861053457-37c22e4dcb32?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); }
-.bg-analisis { background-image: url('https://images.unsplash.com/photo-1582719471384-894fbb16e074?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); }
-.bg-instrumentacion { background-image: url('https://images.unsplash.com/photo-1622322080352-794dc2d6505c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); }
-.bg-tanques { background-image: url('https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); }
-.bg-embarcaciones { background-image: url('https://images.unsplash.com/photo-1566324866657-31131103c800?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); }
-.bg-calibracion { background-image: url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); }
-.bg-desarrollo { background-image: url('https://images.unsplash.com/photo-1581092160607-ee22621dd758?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'); }
+/* Efecto clicable para la tarjeta 4 */
+.clicable { cursor: pointer; border: 2px solid transparent; }
+.clicable:hover { border: 2px solid #66b2ff; }
+.enlace-falso { display: inline-block; margin-top: 15px; color: #66b2ff; font-weight: bold; font-size: 0.95rem; background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 4px; }
+
+/* 👇 AQUÍ ESTÁ EL TRUCO: Cargar imágenes desde la carpeta local assets 👇 */
+.bg-proyectos { background-image: url('../assets/proyectos.jpg'); }
+.bg-despliegue { background-image: url('../assets/despliegue.jpg'); }
+.bg-analisis { background-image: url('../assets/analisis.jpg'); }
+.bg-instrumentacion { background-image: url('../assets/instrumentacion.jpg'); }
+.bg-tanques { background-image: url('../assets/tanques.jpg'); }
+.bg-embarcaciones { background-image: url('../assets/embarcacion.jpg'); }
+.bg-calibracion { background-image: url('../assets/calibracion.jpg'); }
+.bg-desarrollo { background-image: url('../assets/desarrollo.jpg'); }
 </style>
