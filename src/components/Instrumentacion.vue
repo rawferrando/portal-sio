@@ -193,19 +193,31 @@ const cerrarModal = () => {
                 <p>El equipo está libre. No hay campañas programadas.</p>
               </div>
 
-              <div class="formulario-reserva">
+<div class="formulario-reserva">
                 <h6>1. Nueva solicitud de cesión:</h6>
                 <div class="inputs-reserva">
-                  <input type="date" v-model="equipo.nuevaReserva.desde" title="Fecha de inicio">
-                  <input type="date" v-model="equipo.nuevaReserva.hasta" title="Fecha de fin">
-                  <input type="text" v-model="equipo.nuevaReserva.proyecto" placeholder="Nombre del proyecto (Ej. Mareas 2026)">
+                  
+                  <div class="campo-etiquetado">
+                    <label>📅 Fecha de Inicio:</label>
+                    <input type="date" v-model="equipo.nuevaReserva.desde">
+                  </div>
+                  
+                  <div class="campo-etiquetado">
+                    <label>📅 Fecha de Fin:</label>
+                    <input type="date" v-model="equipo.nuevaReserva.hasta">
+                  </div>
+                  
+                  <div class="campo-etiquetado">
+                    <label>🔬 Campaña o Proyecto:</label>
+                    <input type="text" v-model="equipo.nuevaReserva.proyecto" placeholder="Ej. Mareas 2026">
+                  </div>
+
                 </div>
 
                 <button @click="solicitarReserva(equipo)" class="btn-generar-doc">
                   Crear Solicitud y Descargar Documento
                 </button>
               </div>
-            </div>
 
             <div class="bloque-resumen">
               <div class="wiki-grid-2">
