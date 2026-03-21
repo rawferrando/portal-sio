@@ -1,67 +1,80 @@
-<template>
-  <div class="quienes-somos">
-    <h2>Quiénes Somos</h2>
-    <p>El <strong>Servicio de Ingeniería Oceanográfica</strong> del Instituto de Ciencias del Mar ofrece soporte técnico especializado a grupos de investigación y proyectos en el ámbito de las ciencias del mar.</p>
-    <p>Nuestro objetivo es proporcionar soluciones técnicas adaptadas a las necesidades específicas de cada cliente, además de ofrecer asesoramiento experto basado en años de experiencia en el sector. Contamos con un equipo altamente cualificado y una amplia gama de instrumentación y recursos, lo que nos permite innovar, desarrollar y personalizar equipos, así como diseñar, desplegar e implementar sistemas avanzados de adquisición de datos, tanto fijos como móviles. También ofrecemos herramientas y técnicas de verificación específicas para garantizar la calidad de los datos obtenidos en los estudios oceanográficos.</p>
+<script setup>
+const emit = defineEmits(['ir-a-instrumentacion'])
+</script>
 
-    <h2 class="titulo-ofrecemos">¿Qué ofrecemos?</h2>
-    
+<template>
+  <div class="portada-sio">
+    <div class="hero-section">
+      <div class="hero-texto">
+        <h1>Servicio de Ingeniería Oceanográfica</h1>
+        <p>Instituto de Ciencias del Mar (ICM-CSIC)</p>
+      </div>
+    </div>
+
+    <h2 class="titulo-seccion">Nuestras Áreas de Servicio</h2>
     <div class="grid-servicios">
       
-      <div class="tarjeta-servicio bg-proyectos">
+      <div class="tarjeta-servicio destacada" @click="$emit('ir-a-instrumentacion')">
+        <div class="imagen-tarjeta bg-instrumentacion"></div>
         <div class="contenido-tarjeta">
-          <h3>Proyectos de Investigación</h3>
-          <p>Aportamos experiencia técnica especializada, innovación tecnológica y soporte logístico en todas las fases del proyecto.</p>
+          <h3>📊 Instrumentación Oceanográfica</h3>
+          <p>Catálogo de sensores, CTDs, rosetas y perfiladores. Accede a las fichas técnicas, WIKISIO y gestiona tus reservas.</p>
         </div>
       </div>
 
-      <div class="tarjeta-servicio bg-despliegue">
+      <div class="tarjeta-servicio">
+        <div class="imagen-tarjeta bg-vehiculos"></div>
         <div class="contenido-tarjeta">
-          <h3>Despliegue y Mantenimiento</h3>
-          <p>Diseño, despliegue y mantenimiento de líneas de instrumentación fondeadas.</p>
+          <h3>🚁 Vehículos Autónomos</h3>
+          <p>Operación de plataformas no tripuladas (UAS, USV, ROVs).</p>
         </div>
       </div>
 
-      <div class="tarjeta-servicio bg-analisis">
+      <div class="tarjeta-servicio">
+        <div class="imagen-tarjeta bg-laboratorio"></div>
         <div class="contenido-tarjeta">
-          <h3>Análisis y Caracterización</h3>
-          <p>Caracterización de agua marina con perfilador vertical y análisis de salinidad.</p>
+          <h3>🔬 Laboratorios y Calibración</h3>
+          <p>Instalaciones para el análisis de muestras y salinometría.</p>
         </div>
       </div>
 
-      <div class="tarjeta-servicio bg-instrumentacion clicable" @click="$emit('cambiar-pagina', 'instrumentacion')">
+      <div class="tarjeta-servicio">
+        <div class="imagen-tarjeta bg-tanques"></div>
         <div class="contenido-tarjeta">
-          <h3>Instrumentación Científica</h3>
-          <p>Gestión del catálogo completo de sondas CTD, salinómetros y sensores disponibles.</p>
-          <span class="enlace-falso">🔍 Buscar Equipos y Reservar ➔</span>
+          <h3>🌊 Zona de Acuarios y Tanques</h3>
+          <p>Mantenimiento de sistemas de experimentación in vivo.</p>
         </div>
       </div>
 
-      <div class="tarjeta-servicio bg-tanques">
+      <div class="tarjeta-servicio">
+        <div class="imagen-tarjeta bg-mecatronica"></div>
         <div class="contenido-tarjeta">
-          <h3>Tanques y Laboratorio</h3>
-          <p>Infraestructuras experimentales equipadas para simulación en condiciones controladas.</p>
+          <h3>⚙️ Taller de Mecatrónica</h3>
+          <p>Diseño CAD, impresión 3D y reparación electromecánica.</p>
         </div>
       </div>
 
-      <div class="tarjeta-servicio bg-embarcaciones">
+      <div class="tarjeta-servicio">
+        <div class="imagen-tarjeta bg-logistica"></div>
         <div class="contenido-tarjeta">
-          <h3>Embarcaciones y Logística</h3>
-          <p>Apoyo operativo con embarcaciones propias y drones para trabajos costeros.</p>
+          <h3>📦 Logística de Campañas</h3>
+          <p>Preparación, embalaje y envío de material científico.</p>
         </div>
       </div>
 
-      <div class="tarjeta-servicio bg-calibracion">
+      <div class="tarjeta-servicio">
+        <div class="imagen-tarjeta bg-fondeos"></div>
         <div class="contenido-tarjeta">
-          <h3>Calibración y Verificación</h3>
-          <p>Técnicas de control riguroso para garantizar la precisión de los datos oceanográficos.</p>
+          <h3>⚓ Fondeos y Boyas</h3>
+          <p>Diseño y despliegue de líneas de fondeo oceanográfico.</p>
         </div>
       </div>
 
-      <div class="tarjeta-servicio bg-desarrollo">
+      <div class="tarjeta-servicio">
+        <div class="imagen-tarjeta bg-datos"></div>
         <div class="contenido-tarjeta">
-          <h3>Desarrollo a Medida</h3>
-          <p>Diseño de soluciones de ingeniería personalizadas y mecanizado de piezas.</p>
+          <h3>💻 Telemetría y Datos</h3>
+          <p>Sistemas de adquisición de datos en tiempo real.</p>
         </div>
       </div>
 
@@ -70,103 +83,26 @@
 </template>
 
 <style scoped>
-.quienes-somos { 
-  margin-bottom: 40px; 
-  animation: fadeIn 0.5s ease-in-out; 
-  width: 100%; 
-  box-sizing: border-box; /* 👈 Esto evita que la caja sea más grande que la pantalla */
-}
+.portada-sio { animation: fadeIn 0.4s ease; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-h2 { color: #005596; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 30px; }
-
-p { 
-  line-height: 1.6; 
-  color: #444; 
-  font-size: 1.05rem; 
-  text-align: justify; 
-  word-wrap: break-word; /* 👈 Evita que palabras muy largas rompan la pantalla */
-}
-
-.titulo-ofrecemos { margin-top: 50px; margin-bottom: 30px; }
-
-/* Grid de las tarjetas */
-.grid-servicios {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 25px;
-}
-
-/* Estructura base de la tarjeta */
-.tarjeta-servicio {
-  position: relative;
-  border-radius: 10px;
-  overflow: hidden;
-  min-height: 250px;
-  display: flex;
-  align-items: flex-end;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  background-color: #005596; 
-  background-size: cover;
-  background-position: center;
-}
-
-.tarjeta-servicio:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-}
-
-/* Capa de degradado oscuro */
-.tarjeta-servicio::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(to top, rgba(0, 30, 60, 0.95) 0%, rgba(0, 30, 60, 0.2) 100%);
-  transition: background 0.3s ease;
-}
-.tarjeta-servicio:hover::before {
-  background: linear-gradient(to top, rgba(0, 30, 60, 0.98) 0%, rgba(0, 30, 60, 0.4) 100%);
-}
-
-/* Textos dentro de la tarjeta */
-.contenido-tarjeta {
-  position: relative;
-  z-index: 1;
-  padding: 25px;
-  color: white;
-  width: 100%;
-  box-sizing: border-box; /* 👈 Mantiene el texto dentro de los límites de la tarjeta */
-}
-.contenido-tarjeta h3 { color: white; border: none; padding: 0; margin: 0 0 10px 0; font-size: 1.25rem; text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
-.contenido-tarjeta p { color: #e2eef7; margin: 0; font-size: 0.9rem; line-height: 1.5; text-align: left; }
-
-/* Efecto clicable para la tarjeta 4 */
-.clicable { cursor: pointer; border: 2px solid transparent; }
-.clicable:hover { border: 2px solid #66b2ff; }
-.enlace-falso { display: inline-block; margin-top: 15px; color: #66b2ff; font-weight: bold; font-size: 0.95rem; background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 4px; }
-
-/* IMÁGENES LOCALES */
-.bg-proyectos { background-image: url('../assets/proyectos.jpg'); }
-.bg-despliegue { background-image: url('../assets/despliegue.jpg'); }
-.bg-analisis { background-image: url('../assets/analisis.jpg'); }
-.bg-instrumentacion { background-image: url('../assets/instrumentacion.jpg'); }
-.bg-tanques { background-image: url('../assets/tanques.jpg'); }
-.bg-embarcaciones { background-image: url('../assets/embarcacion.jpg'); }
-.bg-calibracion { background-image: url('../assets/calibracion.jpg'); }
-.bg-desarrollo { background-image: url('../assets/desarrollo.jpg'); }
-
-/* 👇 MAGIA EXCLUSIVA PARA MÓVILES (Pantallas pequeñas) 👇 */
-@media (max-width: 768px) {
-  p { 
-    text-align: left; /* Justificar en móvil crea huecos feos y empuja el texto fuera, lo pasamos a la izquierda */
-    font-size: 1rem;
-  }
-  .quienes-somos {
-    padding: 0 5px; /* Evita que el texto pegue justo en el borde del cristal del móvil */
-  }
-  .tarjeta-servicio { 
-    min-height: 280px; /* Le damos más altura a las tarjetas para que no corten el texto */
-  }
-}
+.hero-section { background-color: #005596; color: white; padding: 40px 20px; border-radius: 8px; text-align: center; margin-bottom: 40px; }
+.hero-texto h1 { margin: 0 0 10px 0; font-size: 2.2rem; }
+.hero-texto p { margin: 0; font-size: 1.1rem; opacity: 0.9; }
+.titulo-seccion { color: #005596; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 30px; font-size: 1.6rem; }
+.grid-servicios { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+.tarjeta-servicio { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s; display: flex; flex-direction: column; }
+.tarjeta-servicio:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
+.tarjeta-servicio.destacada { cursor: pointer; border: 2px solid #005596; }
+.imagen-tarjeta { height: 140px; background-color: #e2eef7; }
+.contenido-tarjeta { padding: 20px; flex: 1; }
+.contenido-tarjeta h3 { margin: 0 0 10px 0; color: #005596; font-size: 1.1rem; }
+.contenido-tarjeta p { margin: 0; color: #555; font-size: 0.9rem; line-height: 1.5; }
+.bg-instrumentacion { background-color: #a0c4ff; }
+.bg-vehiculos { background-color: #bdb2ff; }
+.bg-laboratorio { background-color: #ffc6ff; }
+.bg-tanques { background-color: #9bf6ff; }
+.bg-mecatronica { background-color: #ffadad; }
+.bg-logistica { background-color: #ffd6a5; }
+.bg-fondeos { background-color: #fdffb6; }
+.bg-datos { background-color: #caffbf; }
 </style>
