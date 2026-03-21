@@ -1,181 +1,118 @@
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue'
-
-const emit = defineEmits(['volver'])
-
-const props = defineProps({
-  intranetModoEdicion: {
-    type: Boolean,
-    default: false
-  }
-})
-
-const tipoSeleccionado = ref('Todos')
-const modalVisible = ref(false)
-const documentoActual = ref({
-  equipoId: '', equipoNombre: '', equipoSn: '',
-  desde: '', hasta: '', proyecto: '', fechaGeneracion: ''
-})
-
-const LLAVE_ALMACENAMIENTO = 'sio_datos_v5'
-
-const DATOS_INICIALES = [
-  { 
-    id: 'SNS-001', nombre: 'SBE 5 Pressure Sensor', tipo: 'Sensores de Presión', fabricante: 'Sea-Bird', numeroSerie: '11599',
-    ultimaCalibracion: '05/2023', periodicidad: '12 meses', reservas: [], nuevaReserva: { desde: '', hasta: '', proyecto: '' },
-    wiki: {
-      descripcionGeneral: "Sensor de presión de alta precisión.",
-      caracteristicasMedicion: ["Rango: 0 a 10.000 psia", "Precisión: ±0.015% FS"],
-      caracteristicasFisicas: ["Material: Titanio", "Peso: 0.17 kg"],
-      especificacionesElectricas: ["Voltaje: 8-18 V DC"],
-      principioFuncionamiento: "Puente de Wheatstone con galgas.",
-      mantenimientoPreventivo: "Limpieza con agua dulce.",
-      aplicaciones: "Perfiladores CTD."
-    }
-  },
-  { 
-    id: 'SNS-002', nombre: 'Salinómetro Portasal', tipo: 'Laboratorio', fabricante: 'Guildline', numeroSerie: '67890',
-    ultimaCalibracion: '01/2024', periodicidad: '12 meses', reservas: [], nuevaReserva: { desde: '', hasta: '', proyecto: '' },
-    wiki: {
-      descripcionGeneral: "Estándar de oro para salinidad.",
-      caracteristicasMedicion: ["Rango: 0.005 a 42 PSU"],
-      caracteristicasFisicas: ["Material: Maletín rígido"],
-      especificacionesElectricas: ["Voltaje: 110/220 V AC"],
-      principioFuncionamiento: "Mide conductividad eléctrica.",
-      mantenimientoPreventivo: "Enjuague de celda.",
-      aplicaciones: "Calibración in-situ."
-    }
-  }
-]
-
-const inventario = ref(DATOS_INICIALES)
-
-onMounted(() => {
-  const datos = localStorage.getItem(LLAVE_ALMACENAMIENTO)
-  if (datos) {
-    try { inventario.value = JSON.parse(datos) } catch (e) { inventario.value = DATOS_INICIALES }
-  }
-})
-
-watch(inventario, (nuevoValor) => {
-  localStorage.setItem(LLAVE_ALMACENAMIENTO, JSON.stringify(nuevoValor))
-}, { deep: true })
-
-const guardarCambios = () => {
-  localStorage.setItem(LLAVE_ALMACENAMIENTO, JSON.stringify(inventario.value))
-  alert('💾 Datos actualizados correctamente en la Intranet.')
-}
-
-const equiposFiltrados = computed(() => {
-  if (tipoSeleccionado.value === 'Todos') return inventario.value
-  return inventario.value.filter(eq => eq.tipo === tipoSeleccionado.value)
-})
-
-const solicitarReserva = (equipo) => {
-  if (!equipo.nuevaReserva.desde || !equipo.nuevaReserva.hasta || !equipo.nuevaReserva.proyecto) return alert("Faltan datos")
-  equipo.reservas.push({ desde: equipo.nuevaReserva.desde, hasta: equipo.nuevaReserva.hasta, proyecto: equipo.nuevaReserva.proyecto, estado: 'Pendiente', archivo: null })
-  documentoActual.value = {
-    equipoId: equipo.id, equipoNombre: equipo.nombre, equipoSn: equipo.numeroSerie,
-    desde: equipo.nuevaReserva.desde, hasta: equipo.nuevaReserva.hasta, proyecto: equipo.nuevaReserva.proyecto,
-    fechaGeneracion: new Date().toLocaleDateString('es-ES')
-  }
-  equipo.nuevaReserva = { desde: '', hasta: '', proyecto: '' }
-  modalVisible.value = true
-}
-
-const descargarPDF = () => { window.print() }
-const cerrarModal = () => { modalVisible.value = false }
-const subirDoc = (e, r) => { if(e.target.files[0]) { r.estado = 'Aprobada'; r.archivo = e.target.files[0].name; alert("Documento subido") } }
+const emit = defineEmits(['ir-a-instrumentacion'])
 </script>
 
 <template>
-  <div class="pagina">
-    <div class="cabecera">
-      <button @click="$emit('volver')" class="btn-volver">⬅ Volver</button>
-      <h2>Gestión de Instrumentación</h2>
-      <p v-if="props.intranetModoEdicion" class="alerta-intranet">🔓 MODO EDICIÓN ACTIVO</p>
-    </div>
-
-    <div class="filtros">
-      <label>Filtrar:</label>
-      <select v-model="tipoSeleccionado">
-        <option value="Todos">Todos</option>
-        <option value="Sensores de Presión">Sensores de Presión</option>
-        <option value="Laboratorio">Laboratorio</option>
-      </select>
-    </div>
-
-    <div class="grid-equipos">
-      <div v-for="equipo in equiposFiltrados" :key="equipo.id" class="tarjeta-equipo">
-        
-        <div class="cabecera-tarjeta">
-          <span class="tipo">{{ equipo.tipo }}</span>
-        </div>
-        <h4>{{ equipo.nombre }} ({{ equipo.id }})</h4>
-
-        <div v-if="!props.intranetModoEdicion" class="modo-lectura">
-          <p>{{ equipo.wiki.descripcionGeneral }}</p>
-          <ul>
-            <li>Fabricante: {{ equipo.fabricante }}</li>
-            <li>S/N: {{ equipo.numeroSerie }}</li>
-            <li v-for="(med, i) in equipo.wiki.caracteristicasMedicion" :key="i">{{ med }}</li>
-          </ul>
-
-          <div class="caja-reservas">
-            <h5>Reservas:</h5>
-            <ul><li v-for="(r, i) in equipo.reservas" :key="i">{{ r.desde }} al {{ r.hasta }} - {{ r.estado }}</li></ul>
-            <input type="date" v-model="equipo.nuevaReserva.desde" />
-            <input type="date" v-model="equipo.nuevaReserva.hasta" />
-            <input type="text" v-model="equipo.nuevaReserva.proyecto" placeholder="Proyecto" />
-            <button @click="solicitarReserva(equipo)">Generar PDF</button>
-            <input type="file" @change="(e) => subirDoc(e, equipo.reservas[equipo.reservas.length-1])" />
-          </div>
-        </div>
-
-        <div v-else class="modo-edicion">
-          <div class="caja-edicion">
-            <label>Nombre:</label><input v-model="equipo.nombre" />
-            <label>Fabricante:</label><input v-model="equipo.fabricante" />
-            <label>Descripción:</label><textarea v-model="equipo.wiki.descripcionGeneral"></textarea>
-            <label>Mantenimiento:</label><textarea v-model="equipo.wiki.mantenimientoPreventivo"></textarea>
-            <button @click="guardarCambios" class="btn-guardar">💾 Guardar Cambios</button>
-          </div>
-        </div>
-
+  <div class="portada-sio">
+    <div class="hero-section">
+      <div class="hero-texto">
+        <h1>Servicio de Ingeniería Oceanográfica</h1>
+        <p>Instituto de Ciencias del Mar (ICM-CSIC)</p>
+        <p class="subtitulo">Apoyo tecnológico, instrumentación de vanguardia y logística para la investigación marina.</p>
       </div>
     </div>
 
-    <div v-if="modalVisible" class="modal-overlay">
-      <div class="modal-papel">
-        <div class="area-impresion">
-          <h3>DOCUMENTO DE RESPONSABILIDAD</h3>
-          <p>Equipo: {{ documentoActual.equipoNombre }}</p>
-          <p>Fechas: {{ documentoActual.desde }} al {{ documentoActual.hasta }}</p>
-          <div class="firma"><p>Firma:</p></div>
-        </div>
-        <div class="no-imprimir">
-          <button @click="cerrarModal">Cerrar</button>
-          <button @click="descargarPDF">Imprimir</button>
+    <h2 class="titulo-seccion">Nuestras Áreas de Servicio</h2>
+    
+    <div class="grid-servicios">
+      
+      <div class="tarjeta-servicio destacada" @click="$emit('ir-a-instrumentacion')">
+        <div class="imagen-tarjeta bg-instrumentacion"></div>
+        <div class="contenido-tarjeta">
+          <h3>📊 Instrumentación Oceanográfica</h3>
+          <p>Catálogo de sensores, CTDs y rosetas. Accede a las fichas técnicas, WIKISIO y gestiona tus reservas.</p>
+          <span class="btn-falso">Entrar al Catálogo ➔</span>
         </div>
       </div>
+
+      <div class="tarjeta-servicio">
+        <div class="imagen-tarjeta bg-vehiculos"></div>
+        <div class="contenido-tarjeta">
+          <h3>🚁 Vehículos Autónomos</h3>
+          <p>Operación de plataformas no tripuladas (UAS, USV, ROVs) para la exploración del medio marino.</p>
+        </div>
+      </div>
+
+      <div class="tarjeta-servicio">
+        <div class="imagen-tarjeta bg-laboratorio"></div>
+        <div class="contenido-tarjeta">
+          <h3>🔬 Laboratorios y Calibración</h3>
+          <p>Instalaciones para el análisis de muestras y salinometría de precisión.</p>
+        </div>
+      </div>
+
+      <div class="tarjeta-servicio">
+        <div class="imagen-tarjeta bg-tanques"></div>
+        <div class="contenido-tarjeta">
+          <h3>🌊 Zona de Acuarios y Tanques</h3>
+          <p>Mantenimiento de sistemas de experimentación in vivo con control paramétrico.</p>
+        </div>
+      </div>
+
+      <div class="tarjeta-servicio">
+        <div class="imagen-tarjeta bg-desarrollo"></div>
+        <div class="contenido-tarjeta">
+          <h3>⚙️ Desarrollo a Medida</h3>
+          <p>Diseño de soluciones de ingeniería personalizadas y mecanizado de piezas.</p>
+        </div>
+      </div>
+
+      <div class="tarjeta-servicio">
+        <div class="imagen-tarjeta bg-logistica"></div>
+        <div class="contenido-tarjeta">
+          <h3>📦 Logística de Campañas</h3>
+          <p>Preparación y envío de material científico para campañas oceanográficas.</p>
+        </div>
+      </div>
+
+      <div class="tarjeta-servicio">
+        <div class="imagen-tarjeta bg-fondeos"></div>
+        <div class="contenido-tarjeta">
+          <h3>⚓ Fondeos y Boyas</h3>
+          <p>Diseño, preparación y despliegue de líneas de fondeo y boyas instrumentadas.</p>
+        </div>
+      </div>
+
+      <div class="tarjeta-servicio">
+        <div class="imagen-tarjeta bg-datos"></div>
+        <div class="contenido-tarjeta">
+          <h3>💻 Telemetría y Datos</h3>
+          <p>Sistemas de adquisición de datos en tiempo real y transmisión satelital.</p>
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
 
 <style scoped>
-.pagina { padding: 20px; }
-.alerta-intranet { color: red; font-weight: bold; }
-.btn-volver { margin-bottom: 20px; }
-.filtros { margin-bottom: 20px; }
-.grid-equipos { display: flex; flex-direction: column; gap: 20px; }
-.tarjeta-equipo { border: 1px solid #ccc; padding: 20px; border-radius: 8px; background: #fff; }
-.caja-reservas { margin-top: 20px; padding: 10px; background: #f0f8ff; border-radius: 4px; }
-.modo-edicion { margin-top: 20px; border: 2px dashed #005596; padding: 15px; }
-.caja-edicion { display: flex; flex-direction: column; gap: 10px; }
-.caja-edicion input, .caja-edicion textarea { padding: 8px; border: 1px solid #ccc; }
-.btn-guardar { background: #28a745; color: white; padding: 10px; border: none; cursor: pointer; }
-.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; }
-.modal-papel { background: white; padding: 30px; width: 500px; }
-.firma { margin-top: 40px; border-top: 1px solid #000; padding-top: 10px; }
-@media print { body * { visibility: hidden; } .modal-overlay { position: absolute; left: 0; top: 0; } .area-impresion, .area-impresion * { visibility: visible; } .no-imprimir { display: none; } }
+.portada-sio { animation: fadeIn 0.4s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.hero-section { background-color: #005596; color: white; padding: 50px 20px; border-radius: 8px; text-align: center; margin-bottom: 40px; box-shadow: 0 4px 15px rgba(0,85,150,0.2); }
+.hero-texto h1 { margin: 0 0 10px 0; font-size: 2.2rem; }
+.hero-texto p { margin: 0 0 10px 0; font-size: 1.1rem; opacity: 0.9; }
+.hero-texto .subtitulo { font-style: italic; font-size: 1rem; color: #b0dfff; }
+
+.titulo-seccion { color: #005596; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 30px; font-size: 1.8rem; }
+.grid-servicios { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+
+.tarjeta-servicio { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s; display: flex; flex-direction: column; border: 1px solid #eee; }
+.tarjeta-servicio:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
+.tarjeta-servicio.destacada { cursor: pointer; border: 2px solid #005596; }
+
+.imagen-tarjeta { height: 140px; background-color: #e2eef7; }
+.contenido-tarjeta { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+.contenido-tarjeta h3 { margin: 0 0 10px 0; color: #005596; font-size: 1.1rem; }
+.contenido-tarjeta p { margin: 0; color: #555; font-size: 0.9rem; line-height: 1.5; flex: 1; }
+.btn-falso { display: inline-block; margin-top: 15px; color: #005596; font-weight: bold; font-size: 0.9rem; }
+
+.bg-instrumentacion { background-color: #a0c4ff; }
+.bg-vehiculos { background-color: #bdb2ff; }
+.bg-laboratorio { background-color: #ffc6ff; }
+.bg-tanques { background-color: #9bf6ff; }
+.bg-desarrollo { background-color: #ffadad; }
+.bg-logistica { background-color: #ffd6a5; }
+.bg-fondeos { background-color: #fdffb6; }
+.bg-datos { background-color: #caffbf; }
 </style>
