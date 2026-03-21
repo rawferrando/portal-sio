@@ -1,194 +1,159 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import QuienesSomos from './components/QuienesSomos.vue'
 import Instrumentacion from './components/Instrumentacion.vue'
+import Embarcacion from './components/Embarcacion.vue'
+import Proyectos from './components/Proyectos.vue'
+import Diseno from './components/Diseno.vue'
+import IntranetFondeos from './components/IntranetFondeos.vue'
+import FormularioSensor from './components/FormularioSensor.vue'
+import FormularioFondeo from './components/FormularioFondeo.vue'
 
-// Vistas: 'inicio', 'instrumentacion', 'intranet'
-const vistaActual = ref('inicio')
-const menuPrivadoVisible = ref(false)
+// Control de navegación principal
+const paginaActual = ref('inicio')
 
-// Login Intranet SIO
-const usuarioLogueadoSio = ref(false)
-const inputUsuario = ref('')
-const inputPassword = ref('')
-const errorLogin = ref(false)
-
-// Formulario de Alta en Intranet
-const nuevoEquipo = ref({ id: '', nombre: '', tipo: 'Sensores de Presión', fabricante: '' })
-
-onMounted(() => {
-  if (sessionStorage.getItem('sio_auth') === 'true') {
-    usuarioLogueadoSio.value = true
-  }
-})
+// Control de Intranet
+const estaAutenticado = ref(false)
+const usuarioInput = ref('')
+const passwordInput = ref('')
+const pestañaIntranet = ref('sensores') // 👈 ¡Nuevo! Controla qué formulario se ve
 
 const intentarLogin = () => {
-  if (inputUsuario.value === 'admin' && inputPassword.value === 'sio2026') {
-    sessionStorage.setItem('sio_auth', 'true')
-    usuarioLogueadoSio.value = true
-    inputUsuario.value = ''
-    inputPassword.value = ''
-    errorLogin.value = false
+  if (usuarioInput.value === 'admin' && passwordInput.value === 'sio2026') {
+    estaAutenticado.value = true
   } else {
-    errorLogin.value = true
-    inputPassword.value = ''
+    alert("❌ Credenciales incorrectas.")
+    usuarioInput.value = ''
+    passwordInput.value = ''
   }
 }
 
-const cerrarSesion = () => {
-  sessionStorage.removeItem('sio_auth')
-  usuarioLogueadoSio.value = false
-  menuPrivadoVisible.value = false
-  if (vistaActual.value === 'intranet') vistaActual.value = 'inicio'
-}
-
-const irAIntranet = () => {
-  vistaActual.value = 'intranet'
-  menuPrivadoVisible.value = false
-  window.scrollTo(0, 0)
-}
-
-const irAInstrumentacion = () => { 
-  vistaActual.value = 'instrumentacion'
-  window.scrollTo(0, 0)
-}
-
-const volverAInicio = () => { 
-  vistaActual.value = 'inicio' 
-  window.scrollTo(0, 0)
-}
-
-const guardarNuevoEquipo = () => {
-  alert(`✅ El equipo ${nuevoEquipo.value.nombre} ha sido guardado en la base de datos del catálogo.`)
-  nuevoEquipo.value = { id: '', nombre: '', tipo: 'Sensores de Presión', fabricante: '' }
+const salir = () => {
+  estaAutenticado.value = false
+  paginaActual.value = 'inicio'
+  usuarioInput.value = ''
+  passwordInput.value = ''
+  pestañaIntranet.value = 'sensores' // Reseteamos la pestaña al salir
 }
 </script>
 
 <template>
-  <div class="app-container">
-    <header class="main-header">
-      <div class="contenedor-cabecera">
-        
-        <div class="logo-area">
-          <img src="./assets/logo-sio.jpg" alt="Logo SIO ICM-CSIC" class="imagen-logo" />
-        </div>
-        
-        <nav class="menu-principal">
-          <div class="selector-idiomas">
-            <button class="btn-idioma">CAT</button>
-            <button class="btn-idioma active">CAS</button>
-            <button class="btn-idioma">ENG</button>
-          </div>
-          
-          <div class="area-privada-wrapper">
-            <button class="btn-intranet" :class="{ 'logueado': usuarioLogueadoSio }" @click="menuPrivadoVisible = !menuPrivadoVisible">
-              <span v-if="!usuarioLogueadoSio">👤 Área Privada</span>
-              <span v-else>🔒 Admin SIO</span>
-            </button>
-            
-            <div v-if="menuPrivadoVisible" class="menu-desplegable-privado">
-              <div v-if="!usuarioLogueadoSio" class="formulario-login-menu">
-                <h6>Acceso Corporativo SIO</h6>
-                <input v-model="inputUsuario" type="text" placeholder="Usuario (admin)" />
-                <input v-model="inputPassword" type="password" placeholder="Contraseña (sio2026)" />
-                <p v-if="errorLogin" class="error-text">❌ Credenciales incorrectas.</p>
-                <button @click="intentarLogin" class="btn-entrar-login">Entrar</button>
-              </div>
-
-              <div v-else class="menu-acciones-intranet">
-                <button @click="irAIntranet">➕ Añadir Instrumentación</button>
-                <button @click="cerrarSesion" class="btn-cerrar-sesion-interna">🚪 Cerrar Sesión</button>
-              </div>
-            </div>
-          </div>
-        </nav>
+  <div id="layout-sio">
+    <header class="header-icm">
+      <div class="logo-area">
+        <img src="./assets/logo-sio.jpg" class="logo-img" @click="paginaActual = 'inicio'" alt="Logo SIO" />
       </div>
+      <nav class="nav-idiomas">
+        <span>CA | ES | EN</span>
+        <a href="#" @click.prevent="paginaActual = 'intranet'" class="enlace-privado">
+          {{ estaAutenticado ? '🔓 Salir' : '🔒' }}
+        </a>
+      </nav>
     </header>
 
-    <main class="main-content">
-      <QuienesSomos v-if="vistaActual === 'inicio'" @ir-a-instrumentacion="irAInstrumentacion" />
+    <main class="contenedor-principal">
       
-      <Instrumentacion v-else-if="vistaActual === 'instrumentacion'" @volver="volverAInicio" />
+      <div v-if="paginaActual !== 'intranet'">
+        <QuienesSomos v-if="paginaActual === 'inicio'" @cambiar-pagina="paginaActual = $event" />
+        <Instrumentacion v-else-if="paginaActual === 'instrumentacion'" @volver="paginaActual = 'inicio'" />
+        <Embarcacion v-else-if="paginaActual === 'embarcacion'" @volver="paginaActual = 'inicio'" />
+        <Proyectos v-else-if="paginaActual === 'proyectos'" @volver="paginaActual = 'inicio'" />
+        <Diseno v-else-if="paginaActual === 'diseno'" @volver="paginaActual = 'inicio'" />
+      </div>
 
-      <div v-else-if="vistaActual === 'intranet'" class="vista-intranet">
-        <button @click="volverAInicio" class="btn-volver">⬅ Volver al Inicio</button>
-        <h2>🛡️ Intranet SIO - Alta de Instrumentación</h2>
-        <p>Añade nuevos equipos al catálogo de la WIKISIO.</p>
+      <div v-else class="seccion-intranet">
         
-        <div class="caja-formulario-alta">
-          <div class="campo">
-            <label>ID del Equipo:</label>
-            <input v-model="nuevoEquipo.id" type="text" placeholder="Ej. SNS-005" />
+        <div v-if="!estaAutenticado" class="login-card">
+          <h3 style="color: #005596; margin-bottom: 5px;">Intranet SIO</h3>
+          <p style="color: #666; font-size: 0.85rem; margin-top: 0; margin-bottom: 25px;">Área exclusiva para personal investigador</p>
+          
+          <div class="form-login">
+            <div class="campo-input">
+              <label>Usuario:</label>
+              <input v-model="usuarioInput" type="text" placeholder="ej: admin">
+            </div>
+            <div class="campo-input">
+              <label>Contraseña:</label>
+              <input v-model="passwordInput" type="password">
+            </div>
+            <button @click="intentarLogin" class="btn-entrar">Iniciar Sesión</button>
           </div>
-          <div class="campo">
-            <label>Nombre del Instrumento:</label>
-            <input v-model="nuevoEquipo.nombre" type="text" placeholder="Ej. CTD SBE 911plus" />
-          </div>
-          <div class="campo">
-            <label>Categoría:</label>
-            <select v-model="nuevoEquipo.tipo">
-              <option value="Sensores de Presión">Sensores de Presión</option>
-              <option value="Laboratorio">Equipos de Laboratorio</option>
-              <option value="Vehículos Autónomos">Vehículos Autónomos</option>
-            </select>
-          </div>
-          <div class="campo">
-            <label>Fabricante:</label>
-            <input v-model="nuevoEquipo.fabricante" type="text" placeholder="Ej. Sea-Bird" />
-          </div>
-          <button @click="guardarNuevoEquipo" class="btn-guardar-alta">💾 Añadir al Catálogo</button>
         </div>
+
+        <div v-else class="panel-control">
+          
+          <div class="cabecera-panel">
+            <h2 style="color: #005596; margin: 0;">⚙️ Panel de Gestión SIO</h2>
+            <button @click="salir" class="btn-salir">Cerrar Sesión</button>
+          </div>
+
+          <div class="menu-pestanas">
+            <button 
+              :class="['btn-pestana', { activo: pestañaIntranet === 'sensores' }]" 
+              @click="pestañaIntranet = 'sensores'"
+            >
+              📡 Gestión de Sensores
+            </button>
+            <button 
+              :class="['btn-pestana', { activo: pestañaIntranet === 'fondeos' }]" 
+              @click="pestañaIntranet = 'fondeos'"
+            >
+              ⚓ Gestión de Fondeos
+            </button>
+          </div>
+
+          <div class="contenido-pestana">
+            <FormularioSensor v-if="pestañaIntranet === 'sensores'" />
+            
+            <div v-if="pestañaIntranet === 'fondeos'" style="width: 100%;">
+              <FormularioFondeo />
+              <hr style="width: 100%; border: 0; border-top: 2px solid #eee; margin: 40px 0;" />
+              <IntranetFondeos />
+            </div>
+          </div>
+
+        </div>
+
       </div>
     </main>
 
-    <footer class="main-footer">
-      <p>&copy; 2026 SIO - Instituto de Ciencias del Mar (CSIC)</p>
+    <footer class="footer-sio">
+      <p><strong>Institut de Ciències del Mar (ICM-CSIC)</strong></p>
+      <p>📧 sio@icm.csic.es | 📍 Pg. Marítim de la Barceloneta, 37, 08003 Barcelona</p>
     </footer>
   </div>
 </template>
 
 <style>
-body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f9; color: #333; }
-.app-container { display: flex; flex-direction: column; min-height: 100vh; }
-.main-content { flex: 1; padding: 30px 20px; box-sizing: border-box; width: 100%; max-width: 1200px; margin: 0 auto; }
+/* ... (Estilos Base y Login se mantienen igual) ... */
+#layout-sio { font-family: Arial, sans-serif; display: flex; flex-direction: column; min-height: 100vh; }
+.header-icm { background-color: #005596; color: white; display: flex; justify-content: space-between; align-items: center; padding: 1rem 5%; }
+.logo-img { height: 80px; cursor: pointer; }
+.nav-idiomas { display: flex; align-items: center; gap: 15px; font-weight: bold; color: white; }
+.enlace-privado { font-size: 1.2rem; text-decoration: none; cursor: pointer; color: white; }
+.contenedor-principal { flex: 1; padding: 2rem 5%; max-width: 1200px; margin: 0 auto; width: 100%; }
+.seccion-intranet { display: flex; flex-direction: column; align-items: center; width: 100%; }
 
-.main-header { background-color: #005596; color: white; padding: 10px 0; display: flex; justify-content: center; border-bottom: 3px solid #003366; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-.contenedor-cabecera { width: 100%; max-width: 1200px; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
-.logo-area { display: flex; align-items: center; }
-.imagen-logo { height: auto; max-height: 60px; width: auto; display: block; }
+/* Estilos Login */
+.login-card { background: white; padding: 35px 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border-top: 4px solid #005596; text-align: center; max-width: 320px; width: 100%; margin: 50px auto; }
+.form-login { display: flex; flex-direction: column; gap: 20px; }
+.campo-input { text-align: left; }
+.campo-input label { display: block; font-size: 0.9rem; font-weight: bold; color: #333; margin-bottom: 5px; }
+.campo-input input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.95rem; box-sizing: border-box; }
+.btn-entrar { background: #005596; color: white; border: none; padding: 12px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 1rem; width: 100%; margin-top: 10px; }
+.btn-entrar:hover { background: #00447a; }
 
-.menu-principal { display: flex; align-items: center; gap: 20px; }
-.selector-idiomas { display: flex; gap: 5px; }
-.btn-idioma { background: none; border: none; color: white; font-size: 0.85rem; cursor: pointer; padding: 3px 6px; border-radius: 3px; transition: background 0.2s; }
-.btn-idioma:hover { background-color: rgba(255,255,255,0.1); }
-.btn-idioma.active { background-color: white; color: #005596; font-weight: bold; }
+/* ESTILOS NUEVOS: PANEL Y PESTAÑAS */
+.panel-control { width: 100%; display: flex; flex-direction: column; align-items: center; }
+.cabecera-panel { display: flex; justify-content: space-between; width: 100%; align-items: center; margin-bottom: 20px; }
+.btn-salir { background: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; }
 
-.area-privada-wrapper { position: relative; }
-.btn-intranet { background-color: white; color: #005596; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 5px; }
-.btn-intranet.logueado { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.menu-pestanas { display: flex; gap: 10px; width: 100%; border-bottom: 2px solid #ddd; margin-bottom: 30px; }
+.btn-pestana { background: none; border: none; padding: 10px 20px; font-size: 1rem; font-weight: bold; color: #666; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; }
+.btn-pestana:hover { color: #005596; background: #f8f9fa; border-radius: 4px 4px 0 0; }
+.btn-pestana.activo { color: #005596; border-bottom-color: #005596; }
 
-.menu-desplegable-privado { position: absolute; top: 100%; right: 0; background: white; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); display: flex; flex-direction: column; min-width: 250px; margin-top: 10px; z-index: 100; overflow: hidden; }
-.formulario-login-menu { padding: 20px; display: flex; flex-direction: column; gap: 10px; }
-.formulario-login-menu h6 { margin: 0 0 10px 0; color: #005596; font-size: 1rem; text-align: center; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-.formulario-login-menu input { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.9rem; }
-.error-text { color: #dc3545; font-size: 0.8rem; margin: 0; text-align: center; font-weight: bold; }
-.btn-entrar-login { background-color: #005596; color: white; border: none; padding: 12px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 5px; }
+.contenido-pestana { width: 100%; display: flex; flex-direction: column; align-items: center; }
 
-.menu-acciones-intranet { display: flex; flex-direction: column; }
-.menu-acciones-intranet button { background: none; border: none; color: #333; padding: 12px 15px; text-align: left; cursor: pointer; font-size: 0.95rem; border-bottom: 1px solid #eee; transition: background 0.2s; }
-.menu-acciones-intranet button:hover { background-color: #f4f7f9; color: #005596; font-weight: bold; }
-.btn-cerrar-sesion-interna { background-color: #fff5f5 !important; color: #dc3545 !important; border-bottom: none !important; }
-
-/* ESTILOS INTRANET */
-.vista-intranet { animation: fadeIn 0.4s ease; }
-.vista-intranet h2 { color: #005596; margin-bottom: 5px; }
-.btn-volver { background: #6c757d; color: white; border: none; padding: 10px 18px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-bottom: 20px; }
-.caja-formulario-alta { background: white; padding: 30px; border-radius: 8px; border: 1px solid #ddd; max-width: 600px; margin-top: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-.campo { display: flex; flex-direction: column; margin-bottom: 15px; gap: 5px; }
-.campo label { font-weight: bold; color: #555; font-size: 0.9rem; }
-.campo input, .campo select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; }
-.btn-guardar-alta { background-color: #28a745; color: white; border: none; padding: 12px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 1rem; margin-top: 10px; width: 100%; }
-
-.main-footer { background-color: #333; color: #ccc; padding: 15px 20px; text-align: center; font-size: 0.9rem; margin-top: auto; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.footer-sio { background-color: #005596; color: white; text-align: center; padding: 2rem 1rem; margin-top: auto; }
 </style>
