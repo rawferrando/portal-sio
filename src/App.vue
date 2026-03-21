@@ -1,45 +1,9 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import QuienesSomos from './components/QuienesSomos.vue'
 import Instrumentacion from './components/Instrumentacion.vue'
 
 const vistaActual = ref('inicio')
-const menuPrivadoVisible = ref(false)
-
-// Estado del SIO
-const usuarioLogueadoSio = ref(false)
-const USUARIO_MOCK = 'admin'
-const PASSWORD_MOCK = 'sio2026'
-
-const inputUsuario = ref('')
-const inputPassword = ref('')
-const errorLogin = ref(false)
-
-onMounted(() => {
-  if (sessionStorage.getItem('sio_icm_auth_sio') === 'true') {
-    usuarioLogueadoSio.value = true
-  }
-})
-
-const intentarLogin = () => {
-  if (inputUsuario.value === USUARIO_MOCK && inputPassword.value === PASSWORD_MOCK) {
-    sessionStorage.setItem('sio_icm_auth_sio', 'true')
-    usuarioLogueadoSio.value = true
-    inputUsuario.value = ''
-    inputPassword.value = ''
-    errorLogin.value = false
-    menuPrivadoVisible.value = false
-  } else {
-    errorLogin.value = true
-    inputPassword.value = ''
-  }
-}
-
-const cerrarSesion = () => {
-  sessionStorage.removeItem('sio_icm_auth_sio')
-  usuarioLogueadoSio.value = false
-  menuPrivadoVisible.value = false
-}
 
 const irAInstrumentacion = () => { 
   vistaActual.value = 'instrumentacion'
@@ -50,8 +14,6 @@ const volverAInicio = () => {
   vistaActual.value = 'inicio' 
   window.scrollTo(0, 0)
 }
-
-const toggleMenuPrivado = () => { menuPrivadoVisible.value = !menuPrivadoVisible.value }
 </script>
 
 <template>
@@ -71,34 +33,21 @@ const toggleMenuPrivado = () => { menuPrivadoVisible.value = !menuPrivadoVisible
           </div>
           
           <div class="area-privada-wrapper">
-            <button class="btn-intranet" :class="{ 'logueado': usuarioLogueadoSio }" @click="toggleMenuPrivado">
-              <span v-if="!usuarioLogueadoSio">👤 Área Privada</span>
-              <span v-else>🔒 Admin SIO</span>
+            <button class="btn-intranet" @click="alert('Área Privada: En desarrollo para la fase 2')">
+              👤 Área Privada
             </button>
-            
-            <div v-if="menuPrivadoVisible" class="menu-desplegable-privado">
-              <div v-if="!usuarioLogueadoSio" class="formulario-login-menu">
-                <h6>Acceso Corporativo SIO</h6>
-                <input v-model="inputUsuario" type="text" placeholder="Usuario (admin)" />
-                <input v-model="inputPassword" type="password" placeholder="Contraseña (sio2026)" />
-                <p v-if="errorLogin" class="error-text">❌ Credenciales incorrectas.</p>
-                <button @click="intentarLogin" class="btn-entrar-login">Entrar</button>
-              </div>
-
-              <div v-else class="menu-acciones-intranet">
-                <button @click="cerrarSesion" class="btn-cerrar-sesion-interna">🚪 Cerrar Sesión</button>
-              </div>
-            </div>
           </div>
         </nav>
       </div>
     </header>
 
     <main class="main-content">
-      <QuienesSomos v-if="vistaActual === 'inicio'" @ir-a-instrumentacion="irAInstrumentacion" />
+      <QuienesSomos 
+        v-if="vistaActual === 'inicio'" 
+        @ir-a-instrumentacion="irAInstrumentacion" 
+      />
       <Instrumentacion 
         v-else-if="vistaActual === 'instrumentacion'" 
-        :intranet-modo-edicion="usuarioLogueadoSio"
         @volver="volverAInicio" 
       />
     </main>
@@ -112,20 +61,22 @@ const toggleMenuPrivado = () => { menuPrivadoVisible.value = !menuPrivadoVisible
 <style>
 body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f9; color: #333; }
 .app-container { display: flex; flex-direction: column; min-height: 100vh; }
-.main-content { flex: 1; padding: 20px; box-sizing: border-box; width: 100%; max-width: 1200px; margin: 0 auto; }
+.main-content { flex: 1; padding: 40px 20px; box-sizing: border-box; width: 100%; max-width: 1200px; margin: 0 auto; }
 
+/* AZUL CORPORATIVO BLINDADO */
 .main-header {
   background-color: #005596; 
   color: white;
-  padding: 10px 0;
+  padding: 15px 0;
   display: flex;
   justify-content: center;
   border-bottom: 3px solid #003366;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 .contenedor-cabecera { width: 100%; max-width: 1200px; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+
 .logo-area { display: flex; align-items: center; }
-.imagen-logo { height: auto; max-height: 60px; width: auto; display: block; }
+.imagen-logo { height: auto; max-height: 65px; width: auto; display: block; }
 
 .menu-principal { display: flex; align-items: center; gap: 20px; }
 .selector-idiomas { display: flex; gap: 5px; }
@@ -134,22 +85,8 @@ body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
 .btn-idioma.active { background-color: white; color: #005596; font-weight: bold; }
 
 .area-privada-wrapper { position: relative; }
-.btn-intranet { background-color: white; color: #005596; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 5px; transition: background 0.2s; }
+.btn-intranet { background-color: white; color: #005596; border: none; padding: 10px 18px; border-radius: 4px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 5px; transition: background 0.2s; }
 .btn-intranet:hover { background-color: #e2eef7; }
-.btn-intranet.logueado { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
 
-.menu-desplegable-privado { position: absolute; top: 100%; right: 0; background: white; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); display: flex; flex-direction: column; min-width: 250px; margin-top: 10px; z-index: 100; overflow: hidden; }
-.formulario-login-menu { padding: 20px; display: flex; flex-direction: column; gap: 10px; }
-.formulario-login-menu h6 { margin: 0 0 10px 0; color: #005596; font-size: 1rem; text-align: center; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-.formulario-login-menu input { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.9rem; }
-.error-text { color: #dc3545; font-size: 0.8rem; margin: 0; text-align: center; font-weight: bold; }
-.btn-entrar-login { background-color: #005596; color: white; border: none; padding: 12px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 5px; }
-
-.menu-acciones-intranet { display: flex; flex-direction: column; }
-.menu-acciones-intranet button { background: none; border: none; color: #333; padding: 12px 15px; text-align: left; cursor: pointer; font-size: 0.95rem; transition: background 0.2s; border-bottom: 1px solid #eee; }
-.menu-acciones-intranet button:hover { background-color: #f4f7f9; color: #005596; font-weight: bold; }
-.btn-cerrar-sesion-interna { background-color: #fff5f5 !important; color: #dc3545 !important; border-bottom: none !important; }
-.btn-cerrar-sesion-interna:hover { background-color: #ffeaea !important; }
-
-.main-footer { background-color: #333; color: #ccc; padding: 15px 20px; text-align: center; font-size: 0.9rem; margin-top: auto; }
+.main-footer { background-color: #333; color: #ccc; padding: 20px; text-align: center; font-size: 0.9rem; margin-top: auto; }
 </style>
