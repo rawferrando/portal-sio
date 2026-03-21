@@ -170,13 +170,16 @@ const cerrarModal = () => { modalVisible.value = false }
                 <h6>1. Nueva solicitud de cesión:</h6>
                 <div class="inputs-reserva">
                   <div class="campo-etiquetado">
-                    <label>📅 Fecha Inicio:</label><input type="date" v-model="equipo.nuevaReserva.desde" />
+                    <label>📅 Fecha Inicio:</label>
+                    <input type="date" v-model="equipo.nuevaReserva.desde" />
                   </div>
                   <div class="campo-etiquetado">
-                    <label>📅 Fecha Fin:</label><input type="date" v-model="equipo.nuevaReserva.hasta" />
+                    <label>📅 Fecha Fin:</label>
+                    <input type="date" v-model="equipo.nuevaReserva.hasta" />
                   </div>
                   <div class="campo-etiquetado">
-                    <label>🔬 Proyecto:</label><input type="text" v-model="equipo.nuevaReserva.proyecto" placeholder="Ej. Mareas" />
+                    <label>🔬 Proyecto:</label>
+                    <input type="text" v-model="equipo.nuevaReserva.proyecto" placeholder="Ej. Mareas" />
                   </div>
                 </div>
                 <button @click="solicitarReserva(equipo)" class="btn-generar-doc">Generar Documento PDF</button>

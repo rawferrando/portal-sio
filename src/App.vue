@@ -33,7 +33,7 @@ const volverAInicio = () => {
           </div>
           
           <div class="area-privada-wrapper">
-            <button class="btn-intranet" @click="alert('Área Privada: En desarrollo para la fase 2')">
+            <button class="btn-intranet" @click="alert('Área Privada: En desarrollo')">
               👤 Área Privada
             </button>
           </div>
@@ -63,7 +63,7 @@ body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
 .app-container { display: flex; flex-direction: column; min-height: 100vh; }
 .main-content { flex: 1; padding: 40px 20px; box-sizing: border-box; width: 100%; max-width: 1200px; margin: 0 auto; }
 
-/* AZUL CORPORATIVO BLINDADO */
+/* AZUL BLINDADO */
 .main-header {
   background-color: #005596; 
   color: white;
@@ -74,19 +74,15 @@ body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 .contenedor-cabecera { width: 100%; max-width: 1200px; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
-
 .logo-area { display: flex; align-items: center; }
 .imagen-logo { height: auto; max-height: 65px; width: auto; display: block; }
-
 .menu-principal { display: flex; align-items: center; gap: 20px; }
 .selector-idiomas { display: flex; gap: 5px; }
 .btn-idioma { background: none; border: none; color: white; font-size: 0.85rem; cursor: pointer; padding: 3px 6px; border-radius: 3px; transition: background 0.2s; }
 .btn-idioma:hover { background-color: rgba(255,255,255,0.1); }
 .btn-idioma.active { background-color: white; color: #005596; font-weight: bold; }
-
 .area-privada-wrapper { position: relative; }
 .btn-intranet { background-color: white; color: #005596; border: none; padding: 10px 18px; border-radius: 4px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 5px; transition: background 0.2s; }
 .btn-intranet:hover { background-color: #e2eef7; }
-
 .main-footer { background-color: #333; color: #ccc; padding: 20px; text-align: center; font-size: 0.9rem; margin-top: auto; }
 </style>

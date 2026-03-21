@@ -1,92 +1,112 @@
 <script setup>
-import { ref } from 'vue'
-import QuienesSomos from './components/QuienesSomos.vue'
-import Instrumentacion from './components/Instrumentacion.vue'
-
-const vistaActual = ref('inicio')
-
-const irAInstrumentacion = () => { 
-  vistaActual.value = 'instrumentacion'
-  window.scrollTo(0, 0)
-}
-
-const volverAInicio = () => { 
-  vistaActual.value = 'inicio' 
-  window.scrollTo(0, 0)
-}
+const emit = defineEmits(['ir-a-instrumentacion'])
 </script>
 
 <template>
-  <div class="app-container">
-    <header class="main-header">
-      <div class="contenedor-cabecera">
-        
-        <div class="logo-area">
-          <img src="./assets/logo-sio.jpg" alt="Logo SIO ICM-CSIC" class="imagen-logo" />
-        </div>
-        
-        <nav class="menu-principal">
-          <div class="selector-idiomas">
-            <button class="btn-idioma">CAT</button>
-            <button class="btn-idioma active">CAS</button>
-            <button class="btn-idioma">ENG</button>
-          </div>
-          
-          <div class="area-privada-wrapper">
-            <button class="btn-intranet" @click="alert('Área Privada: En desarrollo para la fase 2')">
-              👤 Área Privada
-            </button>
-          </div>
-        </nav>
+  <div class="portada-sio">
+    <div class="hero-section">
+      <div class="hero-texto">
+        <h1>Servicio de Ingeniería Oceanográfica</h1>
+        <p>Instituto de Ciencias del Mar (ICM-CSIC)</p>
+        <p class="subtitulo">Apoyo tecnológico, instrumentación de vanguardia y logística para la investigación marina.</p>
       </div>
-    </header>
+    </div>
 
-    <main class="main-content">
-      <QuienesSomos 
-        v-if="vistaActual === 'inicio'" 
-        @ir-a-instrumentacion="irAInstrumentacion" 
-      />
-      <Instrumentacion 
-        v-else-if="vistaActual === 'instrumentacion'" 
-        @volver="volverAInicio" 
-      />
-    </main>
+    <h2 class="titulo-seccion">Nuestras Áreas de Servicio</h2>
+    
+    <div class="grid-servicios">
+      <div class="tarjeta-servicio destacada" @click="$emit('ir-a-instrumentacion')">
+        <div class="imagen-tarjeta bg-instrumentacion"></div>
+        <div class="contenido-tarjeta">
+          <h3>📊 Instrumentación Oceanográfica</h3>
+          <p>Catálogo de sensores, CTDs, rosetas y perfiladores. Accede a las fichas técnicas, WIKISIO y gestiona tus reservas de equipos.</p>
+          <span class="btn-falso">Entrar al Catálogo ➔</span>
+        </div>
+      </div>
 
-    <footer class="main-footer">
-      <p>&copy; 2026 SIO - Instituto de Ciencias del Mar (CSIC)</p>
-    </footer>
+      <div class="tarjeta-servicio">
+        <div class="imagen-tarjeta bg-vehiculos"></div>
+        <div class="contenido-tarjeta">
+          <h3>🚁 Vehículos Autónomos</h3>
+          <p>Operación y mantenimiento de plataformas no tripuladas (UAS, USV, ROVs) para la exploración del medio marino y costero.</p>
+        </div>
+      </div>
+
+      <div class="tarjeta-servicio">
+        <div class="imagen-tarjeta bg-laboratorio"></div>
+        <div class="contenido-tarjeta">
+          <h3>🔬 Laboratorios y Calibración</h3>
+          <p>Instalaciones para el análisis de muestras, salinometría de precisión y calibración de instrumentación científica.</p>
+        </div>
+      </div>
+
+      <div class="tarjeta-servicio">
+        <div class="imagen-tarjeta bg-tanques"></div>
+        <div class="contenido-tarjeta">
+          <h3>🌊 Zona de Acuarios y Tanques</h3>
+          <p>Mantenimiento de sistemas de experimentación in vivo con control paramétrico de temperatura, salinidad y luz.</p>
+        </div>
+      </div>
+
+      <div class="tarjeta-servicio">
+        <div class="imagen-tarjeta bg-desarrollo"></div>
+        <div class="contenido-tarjeta">
+          <h3>⚙️ Desarrollo a Medida</h3>
+          <p>Diseño de soluciones de ingeniería personalizadas y mecanizado de piezas.</p>
+        </div>
+      </div>
+
+      <div class="tarjeta-servicio">
+        <div class="imagen-tarjeta bg-logistica"></div>
+        <div class="contenido-tarjeta">
+          <h3>📦 Logística de Campañas</h3>
+          <p>Preparación, embalaje y envío de material científico para campañas oceanográficas nacionales e internacionales.</p>
+        </div>
+      </div>
+
+      <div class="tarjeta-servicio">
+        <div class="imagen-tarjeta bg-fondeos"></div>
+        <div class="contenido-tarjeta">
+          <h3>⚓ Fondeos y Boyas</h3>
+          <p>Diseño, preparación y despliegue de líneas de fondeo oceanográfico y boyas instrumentadas de monitorización continua.</p>
+        </div>
+      </div>
+
+      <div class="tarjeta-servicio">
+        <div class="imagen-tarjeta bg-datos"></div>
+        <div class="contenido-tarjeta">
+          <h3>💻 Telemetría y Datos</h3>
+          <p>Sistemas de adquisición de datos en tiempo real y transmisión satelital para plataformas de observación remotas.</p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
-<style>
-body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f9; color: #333; }
-.app-container { display: flex; flex-direction: column; min-height: 100vh; }
-.main-content { flex: 1; padding: 40px 20px; box-sizing: border-box; width: 100%; max-width: 1200px; margin: 0 auto; }
-
-/* AZUL CORPORATIVO BLINDADO */
-.main-header {
-  background-color: #005596; 
-  color: white;
-  padding: 15px 0;
-  display: flex;
-  justify-content: center;
-  border-bottom: 3px solid #003366;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-.contenedor-cabecera { width: 100%; max-width: 1200px; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
-
-.logo-area { display: flex; align-items: center; }
-.imagen-logo { height: auto; max-height: 65px; width: auto; display: block; }
-
-.menu-principal { display: flex; align-items: center; gap: 20px; }
-.selector-idiomas { display: flex; gap: 5px; }
-.btn-idioma { background: none; border: none; color: white; font-size: 0.85rem; cursor: pointer; padding: 3px 6px; border-radius: 3px; transition: background 0.2s; }
-.btn-idioma:hover { background-color: rgba(255,255,255,0.1); }
-.btn-idioma.active { background-color: white; color: #005596; font-weight: bold; }
-
-.area-privada-wrapper { position: relative; }
-.btn-intranet { background-color: white; color: #005596; border: none; padding: 10px 18px; border-radius: 4px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 5px; transition: background 0.2s; }
-.btn-intranet:hover { background-color: #e2eef7; }
-
-.main-footer { background-color: #333; color: #ccc; padding: 20px; text-align: center; font-size: 0.9rem; margin-top: auto; }
+<style scoped>
+.portada-sio { animation: fadeIn 0.4s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.hero-section { background-color: #005596; color: white; padding: 60px 20px; border-radius: 8px; text-align: center; margin-bottom: 40px; box-shadow: 0 4px 15px rgba(0,85,150,0.2); }
+.hero-texto h1 { margin: 0 0 10px 0; font-size: 2.5rem; }
+.hero-texto p { margin: 0 0 15px 0; font-size: 1.2rem; opacity: 0.9; }
+.hero-texto .subtitulo { font-style: italic; font-size: 1.1rem; color: #b0dfff; }
+.titulo-seccion { color: #005596; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 30px; font-size: 1.8rem; }
+.grid-servicios { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+.tarjeta-servicio { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
+.tarjeta-servicio:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
+.tarjeta-servicio.destacada { cursor: pointer; border: 2px solid #005596; }
+.tarjeta-servicio.destacada:hover { background-color: #f0f7ff; }
+.imagen-tarjeta { height: 160px; background-color: #e2eef7; background-size: cover; background-position: center; border-bottom: 1px solid #eee; }
+.contenido-tarjeta { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+.contenido-tarjeta h3 { margin: 0 0 10px 0; color: #005596; font-size: 1.2rem; }
+.contenido-tarjeta p { margin: 0; color: #555; font-size: 0.95rem; line-height: 1.5; flex: 1; }
+.btn-falso { display: inline-block; margin-top: 15px; color: #005596; font-weight: bold; font-size: 0.9rem; }
+.bg-instrumentacion { background-color: #a0c4ff; }
+.bg-vehiculos { background-color: #bdb2ff; }
+.bg-laboratorio { background-color: #ffc6ff; }
+.bg-tanques { background-color: #9bf6ff; }
+.bg-desarrollo { background-color: #ffadad; }
+.bg-logistica { background-color: #ffd6a5; }
+.bg-fondeos { background-color: #fdffb6; }
+.bg-datos { background-color: #caffbf; }
 </style>
