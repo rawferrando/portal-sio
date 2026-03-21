@@ -12,8 +12,8 @@ const emit = defineEmits(['ir-a-instrumentacion'])
     </div>
 
     <h2 class="titulo-seccion">Nuestras Áreas de Servicio</h2>
-    
     <div class="grid-servicios">
+      
       <div class="tarjeta-servicio destacada" @click="$emit('ir-a-instrumentacion')">
         <div class="imagen-tarjeta bg-instrumentacion"></div>
         <div class="contenido-tarjeta">
@@ -82,14 +82,14 @@ const emit = defineEmits(['ir-a-instrumentacion'])
 </template>
 
 <style scoped>
-.hero-section { background-color: #005596; color: white; padding: 50px 20px; border-radius: 8px; text-align: center; margin-bottom: 40px; }
+.hero-section { background-color: #005596; color: white; padding: 40px 20px; border-radius: 8px; text-align: center; margin-bottom: 40px; }
 .hero-texto h1 { margin: 0 0 10px 0; font-size: 2.2rem; }
-.hero-texto p { margin: 0; font-size: 1.1rem; }
-.titulo-seccion { color: #005596; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 30px; font-size: 1.8rem; }
-.grid-servicios { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; }
-.tarjeta-servicio { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; flex-direction: column; cursor: pointer; border: 1px solid #eee; }
-.tarjeta-servicio.destacada { border: 2px solid #005596; }
-.imagen-tarjeta { height: 150px; background-color: #e2eef7; }
+.hero-texto p { margin: 0; font-size: 1.1rem; opacity: 0.9; }
+.titulo-seccion { color: #005596; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 30px; font-size: 1.6rem; }
+.grid-servicios { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+.tarjeta-servicio { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
+.tarjeta-servicio.destacada { cursor: pointer; border: 2px solid #005596; }
+.imagen-tarjeta { height: 140px; background-color: #e2eef7; }
 .contenido-tarjeta { padding: 20px; flex: 1; }
 .contenido-tarjeta h3 { margin: 0 0 10px 0; color: #005596; font-size: 1.1rem; }
 .contenido-tarjeta p { margin: 0; color: #555; font-size: 0.9rem; line-height: 1.5; }
