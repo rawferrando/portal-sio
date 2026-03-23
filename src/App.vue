@@ -47,7 +47,6 @@ const irAIntranet = () => {
   window.scrollTo(0, 0)
 }
 
-// ESTA ES LA FUNCIÓN QUE HACE FUNCIONAR EL CLIC DE LA PORTADA
 const irAInstrumentacion = () => { 
   vistaActual.value = 'instrumentacion'
   window.scrollTo(0, 0)
@@ -140,7 +139,14 @@ const guardarNuevoEquipo = () => {
     </main>
 
     <footer class="main-footer">
-      <p>&copy; 2026 SIO - Instituto de Ciencias del Mar (CSIC)</p>
+      <div class="footer-info">
+        <p><strong>Instituto de Ciencias del Mar (ICM-CSIC)</strong></p>
+        <p>📍 Passeig Marítim de la Barceloneta, 37-49, 08003 Barcelona</p>
+        <p>📞 Tel: +34 932 30 95 00</p>
+      </div>
+      <div class="footer-copy">
+        <p>&copy; 2026 SIO - Servicio de Ingeniería Oceanográfica</p>
+      </div>
     </footer>
   </div>
 </template>
@@ -184,6 +190,10 @@ body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
 .campo input, .campo select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; }
 .btn-guardar-alta { background-color: #28a745; color: white; border: none; padding: 12px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 1rem; margin-top: 10px; width: 100%; }
 
-.main-footer { background-color: #333; color: #ccc; padding: 15px 20px; text-align: center; font-size: 0.9rem; margin-top: auto; }
+/* ESTILOS DEL FOOTER */
+.main-footer { background-color: #005596; color: white; padding: 25px 20px; text-align: center; font-size: 0.95rem; margin-top: auto; border-top: 3px solid #003366; }
+.footer-info p { margin: 5px 0; }
+.footer-copy { margin-top: 15px; font-size: 0.85rem; opacity: 0.8; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px; }
+
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 </style>

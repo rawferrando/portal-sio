@@ -32,8 +32,16 @@ const irCatalogo = () => {
       <div class="tarjeta-servicio">
         <div class="imagen-tarjeta bg-vehiculos"></div>
         <div class="contenido-tarjeta">
-          <h3>🚁 UAS / USV / ROVs</h3>
-          <p>Operación de plataformas autónomas y remotas para la exploración del medio marino superficial y submarino.</p>
+          <h3>🚁 Vehículos Autónomos</h3>
+          <p>Operación de plataformas no tripuladas (UAS, USV, ROVs) para la exploración del medio marino.</p>
+        </div>
+      </div>
+
+      <div class="tarjeta-servicio">
+        <div class="imagen-tarjeta bg-laboratorio"></div>
+        <div class="contenido-tarjeta">
+          <h3>🔬 Laboratorios y Calibración</h3>
+          <p>Instalaciones para el análisis de muestras y salinometría de precisión.</p>
         </div>
       </div>
 
@@ -105,6 +113,7 @@ const irCatalogo = () => {
 
 .bg-instrumentacion { background-image: url('../assets/instrumentacion.jpg'); background-color: #a0c4ff; }
 .bg-vehiculos { background-image: url('../assets/vehiculos.jpg'); background-color: #bdb2ff; }
+.bg-laboratorio { background-image: url('../assets/laboratorio.jpg'); background-color: #ffc6ff; }
 .bg-tanques { background-image: url('../assets/tanques.jpg'); background-color: #9bf6ff; }
 .bg-desarrollo { background-image: url('../assets/desarrollo.jpg'); background-color: #ffadad; }
 .bg-logistica { background-image: url('../assets/logistica.jpg'); background-color: #ffd6a5; }
