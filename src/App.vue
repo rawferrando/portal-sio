@@ -47,6 +47,7 @@ const irAIntranet = () => {
   window.scrollTo(0, 0)
 }
 
+// ESTA ES LA FUNCIÓN QUE HACE FUNCIONAR EL CLIC DE LA PORTADA
 const irAInstrumentacion = () => { 
   vistaActual.value = 'instrumentacion'
   window.scrollTo(0, 0)
