@@ -1,101 +1,188 @@
-<template>
-  <div class="quienes-somos">
-    <h2>Quiénes Somos</h2>
-    <p>El <strong>Servicio de Ingeniería Oceanográfica</strong> del Instituto de Ciencias del Mar ofrece soporte técnico especializado a grupos de investigación y proyectos en el ámbito de las ciencias del mar.</p>
-    <p>Nuestro objetivo es proporcionar soluciones técnicas adaptadas a las necesidades específicas de cada cliente, además de ofrecer asesoramiento experto basado en años de experiencia en el sector. Contamos con un equipo altamente cualificado y una amplia gama de instrumentación y recursos, lo que nos permite innovar, desarrollar y personalizar equipos, así como diseñar, desplegar e implementar sistemas avanzados de adquisición de datos, tanto fijos como móviles. También ofrecemos herramientas y técnicas de verificación específicas para garantizar la calidad de los datos obtenidos en los estudios oceanográficos.</p>
+<script setup>
+import { ref, onMounted } from 'vue'
+import QuienesSomos from './components/QuienesSomos.vue'
+import Instrumentacion from './components/Instrumentacion.vue'
 
-    <h2 class="titulo-ofrecemos">¿Qué ofrecemos?</h2>
-    
-    <div class="grid-servicios">
-      <div class="tarjeta-servicio bg-proyectos">
-        <div class="contenido-tarjeta">
-          <h3>Proyectos de Investigación</h3>
-          <p>Aportamos experiencia técnica especializada, innovación tecnológica y soporte logístico en todas las fases del proyecto.</p>
+const vistaActual = ref('inicio')
+const menuPrivadoVisible = ref(false)
+
+const usuarioLogueadoSio = ref(false)
+const inputUsuario = ref('')
+const inputPassword = ref('')
+const errorLogin = ref(false)
+
+const nuevoEquipo = ref({ id: '', nombre: '', tipo: 'Sensores de Presión', fabricante: '' })
+
+onMounted(() => {
+  if (sessionStorage.getItem('sio_auth') === 'true') {
+    usuarioLogueadoSio.value = true
+  }
+})
+
+const intentarLogin = () => {
+  if (inputUsuario.value === 'admin' && inputPassword.value === 'sio2026') {
+    sessionStorage.setItem('sio_auth', 'true')
+    usuarioLogueadoSio.value = true
+    inputUsuario.value = ''
+    inputPassword.value = ''
+    errorLogin.value = false
+    menuPrivadoVisible.value = false
+    vistaActual.value = 'intranet'
+  } else {
+    errorLogin.value = true
+    inputPassword.value = ''
+  }
+}
+
+const cerrarSesion = () => {
+  sessionStorage.removeItem('sio_auth')
+  usuarioLogueadoSio.value = false
+  menuPrivadoVisible.value = false
+  if (vistaActual.value === 'intranet') vistaActual.value = 'inicio'
+}
+
+const irAIntranet = () => {
+  vistaActual.value = 'intranet'
+  menuPrivadoVisible.value = false
+  window.scrollTo(0, 0)
+}
+
+const irAInstrumentacion = () => { 
+  vistaActual.value = 'instrumentacion'
+  window.scrollTo(0, 0)
+}
+
+const volverAInicio = () => { 
+  vistaActual.value = 'inicio' 
+  window.scrollTo(0, 0)
+}
+
+const guardarNuevoEquipo = () => {
+  alert(`✅ El equipo ${nuevoEquipo.value.nombre} ha sido añadido al catálogo.`)
+  nuevoEquipo.value = { id: '', nombre: '', tipo: 'Sensores de Presión', fabricante: '' }
+}
+</script>
+
+<template>
+  <div class="app-container">
+    <header class="main-header">
+      <div class="contenedor-cabecera">
+        
+        <div class="logo-area">
+          <img src="./assets/logo-sio.jpg" alt="Logo SIO ICM-CSIC" class="imagen-logo" @click="volverAInicio" style="cursor:pointer;" />
+        </div>
+        
+        <nav class="menu-principal">
+          <div class="selector-idiomas">
+            <button class="btn-idioma">CAT</button>
+            <button class="btn-idioma active">CAS</button>
+            <button class="btn-idioma">ENG</button>
+          </div>
+          
+          <div class="area-privada-wrapper">
+            <button class="btn-intranet" :class="{ 'logueado': usuarioLogueadoSio }" @click="menuPrivadoVisible = !menuPrivadoVisible">
+              <span>Intranet SIO</span>
+            </button>
+            
+            <div v-if="menuPrivadoVisible" class="menu-desplegable-privado">
+              <div v-if="!usuarioLogueadoSio" class="formulario-login-menu">
+                <input v-model="inputUsuario" type="text" placeholder="Usuario" />
+                <input v-model="inputPassword" type="password" placeholder="Contraseña" />
+                <p v-if="errorLogin" class="error-text">❌ Credenciales incorrectas.</p>
+                <button @click="intentarLogin" class="btn-entrar-login">Acceder</button>
+              </div>
+
+              <div v-else class="menu-acciones-intranet">
+                <button @click="irAIntranet">➕ Añadir Instrumentación</button>
+                <button @click="cerrarSesion" class="btn-cerrar-sesion-interna">🚪 Cerrar Sesión</button>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <QuienesSomos v-if="vistaActual === 'inicio'" @ir-a-instrumentacion="irAInstrumentacion" />
+      
+      <Instrumentacion v-else-if="vistaActual === 'instrumentacion'" @volver="volverAInicio" />
+
+      <div v-else-if="vistaActual === 'intranet'" class="vista-intranet">
+        <button @click="volverAInicio" class="btn-volver">⬅ Volver al Inicio</button>
+        <h2>🛡️ Intranet SIO - Alta de Instrumentación</h2>
+        <p>Añade nuevos equipos al catálogo de la WIKISIO.</p>
+        
+        <div class="caja-formulario-alta">
+          <div class="campo">
+            <label>ID del Equipo:</label>
+            <input v-model="nuevoEquipo.id" type="text" placeholder="Ej. SNS-005" />
+          </div>
+          <div class="campo">
+            <label>Nombre del Instrumento:</label>
+            <input v-model="nuevoEquipo.nombre" type="text" placeholder="Ej. CTD SBE 911plus" />
+          </div>
+          <div class="campo">
+            <label>Categoría:</label>
+            <select v-model="nuevoEquipo.tipo">
+              <option value="Sensores de Presión">Sensores de Presión</option>
+              <option value="Equipos de Laboratorio">Equipos de Laboratorio</option>
+              <option value="Vehículos Autónomos">Vehículos Autónomos</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label>Fabricante:</label>
+            <input v-model="nuevoEquipo.fabricante" type="text" placeholder="Ej. Sea-Bird" />
+          </div>
+          <button @click="guardarNuevoEquipo" class="btn-guardar-alta">💾 Añadir al Catálogo</button>
         </div>
       </div>
-      <div class="tarjeta-servicio bg-despliegue">
-        <div class="contenido-tarjeta">
-          <h3>Despliegue y Mantenimiento</h3>
-          <p>Diseño, despliegue y mantenimiento de líneas de instrumentación fondeadas.</p>
-        </div>
-      </div>
-      <div class="tarjeta-servicio bg-analisis">
-        <div class="contenido-tarjeta">
-          <h3>Análisis y Caracterización</h3>
-          <p>Caracterización de agua marina con perfilador vertical y análisis de salinidad.</p>
-        </div>
-      </div>
-      <div class="tarjeta-servicio bg-instrumentacion clicable" @click="$emit('cambiar-pagina', 'instrumentacion')">
-        <div class="contenido-tarjeta">
-          <h3>Instrumentación Científica</h3>
-          <p>Gestión del catálogo completo de sondas CTD, salinómetros y sensores disponibles.</p>
-          <span class="enlace-falso">🔍 Buscar Equipos y Reservar ➔</span>
-        </div>
-      </div>
-      <div class="tarjeta-servicio bg-tanques">
-        <div class="contenido-tarjeta">
-          <h3>Tanques y Laboratorio</h3>
-          <p>Infraestructuras experimentales equipadas para simulación en condiciones controladas.</p>
-        </div>
-      </div>
-      <div class="tarjeta-servicio bg-embarcaciones">
-        <div class="contenido-tarjeta">
-          <h3>Embarcaciones y Logística</h3>
-          <p>Apoyo operativo con embarcaciones propias y drones para trabajos costeros.</p>
-        </div>
-      </div>
-      <div class="tarjeta-servicio bg-calibracion">
-        <div class="contenido-tarjeta">
-          <h3>Calibración y Verificación</h3>
-          <p>Técnicas de control riguroso para garantizar la precisión de los datos oceanográficos.</p>
-        </div>
-      </div>
-      <div class="tarjeta-servicio bg-desarrollo">
-        <div class="contenido-tarjeta">
-          <h3>Desarrollo a Medida</h3>
-          <p>Diseño de soluciones de ingeniería personalizadas y mecanizado de piezas.</p>
-        </div>
-      </div>
-    </div>
+    </main>
+
+    <footer class="main-footer">
+      <p>&copy; 2026 SIO - Instituto de Ciencias del Mar (CSIC)</p>
+    </footer>
   </div>
 </template>
 
-<style scoped>
-.quienes-somos { margin-bottom: 40px; animation: fadeIn 0.5s ease-in-out; width: 100%; box-sizing: border-box; }
+<style>
+body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f9; color: #333; }
+.app-container { display: flex; flex-direction: column; min-height: 100vh; }
+.main-content { flex: 1; padding: 30px 20px; box-sizing: border-box; width: 100%; max-width: 1200px; margin: 0 auto; }
+
+.main-header { background-color: #005596; color: white; padding: 10px 0; display: flex; justify-content: center; border-bottom: 3px solid #003366; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+.contenedor-cabecera { width: 100%; max-width: 1200px; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+.logo-area { display: flex; align-items: center; }
+.imagen-logo { height: auto; max-height: 60px; width: auto; display: block; }
+
+.menu-principal { display: flex; align-items: center; gap: 20px; }
+.selector-idiomas { display: flex; gap: 5px; }
+.btn-idioma { background: none; border: none; color: white; font-size: 0.85rem; cursor: pointer; padding: 3px 6px; border-radius: 3px; }
+.btn-idioma.active { background-color: white; color: #005596; font-weight: bold; }
+
+.area-privada-wrapper { position: relative; }
+.btn-intranet { background-color: white; color: #005596; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 5px; }
+.btn-intranet.logueado { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+
+.menu-desplegable-privado { position: absolute; top: 100%; right: 0; background: white; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); display: flex; flex-direction: column; min-width: 250px; margin-top: 10px; z-index: 100; overflow: hidden; }
+.formulario-login-menu { padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+.formulario-login-menu input { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.9rem; }
+.error-text { color: #dc3545; font-size: 0.8rem; margin: 0; text-align: center; font-weight: bold; }
+.btn-entrar-login { background-color: #005596; color: white; border: none; padding: 12px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 5px; }
+
+.menu-acciones-intranet { display: flex; flex-direction: column; }
+.menu-acciones-intranet button { background: none; border: none; color: #333; padding: 12px 15px; text-align: left; cursor: pointer; font-size: 0.95rem; border-bottom: 1px solid #eee; }
+.menu-acciones-intranet button:hover { background-color: #f4f7f9; color: #005596; font-weight: bold; }
+.btn-cerrar-sesion-interna { background-color: #fff5f5 !important; color: #dc3545 !important; border-bottom: none !important; }
+
+.vista-intranet { animation: fadeIn 0.4s ease; }
+.vista-intranet h2 { color: #005596; margin-bottom: 5px; }
+.btn-volver { background: #6c757d; color: white; border: none; padding: 10px 18px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-bottom: 20px; }
+.caja-formulario-alta { background: white; padding: 30px; border-radius: 8px; border: 1px solid #ddd; max-width: 600px; margin-top: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+.campo { display: flex; flex-direction: column; margin-bottom: 15px; gap: 5px; }
+.campo label { font-weight: bold; color: #555; font-size: 0.9rem; }
+.campo input, .campo select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; }
+.btn-guardar-alta { background-color: #28a745; color: white; border: none; padding: 12px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 1rem; margin-top: 10px; width: 100%; }
+
+.main-footer { background-color: #333; color: #ccc; padding: 15px 20px; text-align: center; font-size: 0.9rem; margin-top: auto; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-h2 { color: #005596; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 30px; }
-p { line-height: 1.6; color: #444; font-size: 1.05rem; text-align: justify; word-wrap: break-word; }
-
-.titulo-ofrecemos { margin-top: 50px; margin-bottom: 30px; }
-
-.grid-servicios { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; }
-
-.tarjeta-servicio { position: relative; border-radius: 10px; overflow: hidden; min-height: 250px; display: flex; align-items: flex-end; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; background-color: #005596; background-size: cover; background-position: center; }
-.tarjeta-servicio:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
-.tarjeta-servicio::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to top, rgba(0, 30, 60, 0.95) 0%, rgba(0, 30, 60, 0.2) 100%); transition: background 0.3s ease; }
-.tarjeta-servicio:hover::before { background: linear-gradient(to top, rgba(0, 30, 60, 0.98) 0%, rgba(0, 30, 60, 0.4) 100%); }
-
-.contenido-tarjeta { position: relative; z-index: 1; padding: 25px; color: white; width: 100%; box-sizing: border-box; }
-.contenido-tarjeta h3 { color: white; border: none; padding: 0; margin: 0 0 10px 0; font-size: 1.25rem; text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
-.contenido-tarjeta p { color: #e2eef7; margin: 0; font-size: 0.9rem; line-height: 1.5; text-align: left; }
-
-.clicable { cursor: pointer; border: 2px solid transparent; }
-.clicable:hover { border: 2px solid #66b2ff; }
-.enlace-falso { display: inline-block; margin-top: 15px; color: #66b2ff; font-weight: bold; font-size: 0.95rem; background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 4px; }
-
-.bg-proyectos { background-image: url('../assets/proyectos.jpg'); }
-.bg-despliegue { background-image: url('../assets/despliegue.jpg'); }
-.bg-analisis { background-image: url('../assets/analisis.jpg'); }
-.bg-instrumentacion { background-image: url('../assets/instrumentacion.jpg'); }
-.bg-tanques { background-image: url('../assets/tanques.jpg'); }
-.bg-embarcaciones { background-image: url('../assets/embarcacion.jpg'); }
-.bg-calibracion { background-image: url('../assets/calibracion.jpg'); }
-.bg-desarrollo { background-image: url('../assets/desarrollo.jpg'); }
-
-@media (max-width: 768px) {
-  p { text-align: justify; font-size: 1rem; hyphens: auto; -webkit-hyphens: auto; }
-  .quienes-somos { padding: 0 15px; }
-  .tarjeta-servicio { min-height: 280px; }
-}
 </style>

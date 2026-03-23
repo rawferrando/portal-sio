@@ -19,7 +19,6 @@ const toggleDetalles = (id) => {
   else equiposExpandidos.value.push(id)
 }
 
-// INVENTARIO CON LA INFORMACIÓN 100% COMPLETA DE LA WIKISIO
 const inventario = ref([
   { 
     id: 'SNS-001', nombre: 'SBE 5 Pressure Sensor', tipo: 'Sensores de Presión', 
@@ -28,32 +27,70 @@ const inventario = ref([
     ultimaCalibracion: '05/2023', periodicidad: '12 a 24 meses',
     reservas: [], nuevaReserva: { desde: '', hasta: '', proyecto: '' },
     wiki: {
-      descripcionGeneral: "Sensor de presión de alta precisión basado en la tecnología de galgas extensiométricas. Diseñado para entornos oceanográficos hostiles, ofrece una estabilidad excepcional a largo plazo.",
-      caracteristicasMedicion: "• Rango de operación: 0 a 10.000 psia\n• Precisión: ±0.015% de la escala completa\n• Resolución: 0.001% de la escala completa\n• Estabilidad: 0.0015% por mes",
-      caracteristicasFisicas: "• Material de la carcasa: Titanio (clasificación 7000m)\n• Diámetro: 19 mm\n• Longitud: 76 mm\n• Peso en el aire: 0.17 kg",
-      especificacionesElectricas: "• Voltaje de entrada: 8-18 V DC\n• Consumo: 15 mA (activo), 5 µA (reposo)\n• Salida de señal: Analógica 0-5 V DC",
-      principioFuncionamiento: "Utiliza un puente de Wheatstone con galgas extensiométricas unidas a un diafragma de titanio. La presión deforma el diafragma generando un voltaje proporcional.",
-      mantenimientoPreventivo: "Limpieza periódica con agua dulce. Inspección del diafragma para detectar corrosión. Verificación de la calibración anual.",
-      aplicaciones: "Perfiladores CTD de alta precisión, monitoreo de mareas y olas en fondeos fijos, control de profundidad para vehículos submarinos."
+      descripcionGeneral: "Sensor de presión de alta precisión basado en la tecnología de galgas extensiométricas. Diseñado para entornos hostiles.",
+      caracteristicasMedicion: ["Rango: 0 a 10.000 psia", "Precisión: ±0.015% FS", "Resolución: 0.001%"],
+      caracteristicasFisicas: ["Material: Titanio", "Diámetro: 19 mm", "Peso: 0.17 kg"],
+      especificacionesElectricas: ["Voltaje: 8-18 V DC", "Consumo: 15 mA (activo)"],
+      principioFuncionamiento: "Utiliza un puente de Wheatstone con galgas extensiométricas unidas a un diafragma de titanio.",
+      mantenimientoPreventivo: "Limpieza periódica con agua dulce. Inspección del diafragma para detectar corrosión.",
+      aplicaciones: "Perfiladores CTD de alta precisión, monitoreo en fondeos fijos."
     }
   },
   { 
-    id: 'SNS-002', nombre: 'Salinómetro Guildline Portasal', tipo: 'Equipos de Laboratorio', 
+    id: 'LAB-001', nombre: 'Salinómetro Guildline Portasal', tipo: 'Equipos de Laboratorio', 
     desc: 'Análisis de salinidad en muestras de agua con altísima precisión.',
     fabricante: 'Guildline Instruments', numeroSerie: '67890',
     ultimaCalibracion: '01/2024', periodicidad: '12 meses',
     reservas: [], nuevaReserva: { desde: '', hasta: '', proyecto: '' }, 
     wiki: {
-      descripcionGeneral: "El Salinómetro Portasal es el estándar de oro para la determinación de la salinidad en muestras de agua de mar en laboratorio. Su diseño portátil lo hace indispensable en campañas.",
-      caracteristicasMedicion: "• Rango de salinidad: 0.005 a 42 PSU\n• Precisión: ±0.003 PSU\n• Tiempo de análisis: Aprox. 3 min/muestra",
-      caracteristicasFisicas: "• Diseño: Portátil con maletín rígido\n• Celda: Vidrio de borosilicato\n• Dimensiones: 53 x 41 x 23 cm\n• Peso: 15 kg",
-      especificacionesElectricas: "• Voltaje de entrada: 110/220 V AC\n• Frecuencia: 50/60 Hz\n• Interfaz: RS-232 para PC",
-      principioFuncionamiento: "Mide la conductividad eléctrica de la muestra de agua de mar y la temperatura simultáneamente utilizando algoritmos basados en la Escala Práctica de Salinidad (PSS-78).",
-      mantenimientoPreventivo: "Limpieza y enjuague de la celda de conductividad después de cada uso. Calibración periódica utilizando Agua de Mar Estándar IAPSO.",
-      aplicaciones: "Calibración de sensores CTD in-situ, estudios de masas de agua, control de calidad de datos oceanográficos."
+      descripcionGeneral: "El Salinómetro Portasal es el estándar de oro para la determinación de la salinidad en muestras de agua de mar en laboratorio.",
+      caracteristicasMedicion: ["Rango de salinidad: 0.005 a 42 PSU", "Precisión: ±0.003 PSU"],
+      caracteristicasFisicas: ["Diseño: Portátil con maletín rígido", "Peso: 15 kg"],
+      especificacionesElectricas: ["Voltaje de entrada: 110/220 V AC", "Interfaz: RS-232"],
+      principioFuncionamiento: "Mide la conductividad eléctrica de la muestra de agua de mar y la temperatura simultáneamente.",
+      mantenimientoPreventivo: "Limpieza y enjuague de la celda de conductividad después de cada uso.",
+      aplicaciones: "Calibración de sensores CTD in-situ."
+    }
+  },
+  { 
+    id: 'UAS-001', nombre: 'DJI Matrice 30T', tipo: 'Vehículos Autónomos', 
+    desc: 'Plataforma aérea no tripulada para inspección visual y térmica costera.',
+    fabricante: 'DJI', numeroSerie: 'M30T-998',
+    ultimaCalibracion: '10/2025', periodicidad: '12 meses',
+    reservas: [], nuevaReserva: { desde: '', hasta: '', proyecto: '' }, 
+    wiki: {
+      descripcionGeneral: "Plataforma aérea no tripulada compacta y de alto rendimiento para inspección oceánica superficial.",
+      caracteristicasMedicion: ["Cámara térmica: 640×512@30fps", "Cámara zoom: 48MP", "Telémetro láser: 1.200m"],
+      caracteristicasFisicas: ["Peso: 3.77 kg", "Resistencia viento: 15 m/s", "Protección: IP55"],
+      especificacionesElectricas: ["Autonomía: 41 minutos", "Baterías: TB30 duales"],
+      principioFuncionamiento: "Vuelo estabilizado por satélite (RTK) con sensores omnidireccionales.",
+      mantenimientoPreventivo: "Revisión de hélices y calibración trimestral de brújula.",
+      aplicaciones: "Monitoreo de costa, conteo de fauna marina, rescate."
+    }
+  },
+  { 
+    id: 'ROV-001', nombre: 'BlueROV2', tipo: 'Vehículos Autónomos', 
+    desc: 'Vehículo operado remotamente para inspección submarina hasta 100m.',
+    fabricante: 'Blue Robotics', numeroSerie: 'BR-ROV-442',
+    ultimaCalibracion: '02/2025', periodicidad: '6 meses',
+    reservas: [], nuevaReserva: { desde: '', hasta: '', proyecto: '' }, 
+    wiki: {
+      descripcionGeneral: "Micro ROV de alto rendimiento ideal para exploración oceanográfica en aguas someras e inspección de estructuras.",
+      caracteristicasMedicion: ["Profundidad máxima: 100m", "Cámara: HD 1080p con tilt"],
+      caracteristicasFisicas: ["Peso en aire: 10 kg", "Propulsores: 6 vectorizados"],
+      especificacionesElectricas: ["Alimentación: Batería Li-ion 14.8V", "Autonomía: 2-4 horas"],
+      principioFuncionamiento: "Controlado desde superficie mediante umbilical (tether) que transmite datos en tiempo real.",
+      mantenimientoPreventivo: "Enjuague con agua dulce. Verificación de estanqueidad y juntas tóricas.",
+      aplicaciones: "Inspección de fondeos, transectos bentónicos, rescate de equipos."
     }
   }
 ])
+
+// ESTO CREA EL DESPLEGABLE DINÁMICO LEYENDO LAS CATEGORÍAS AUTOMÁTICAMENTE
+const tiposDisponibles = computed(() => {
+  const tipos = new Set(inventario.value.map(eq => eq.tipo))
+  return ['Todos', ...Array.from(tipos)]
+})
 
 const equiposFiltrados = computed(() => {
   return inventario.value.filter(equipo => {
@@ -102,20 +139,18 @@ const cerrarModal = () => { modalVisible.value = false }
     <div class="cabecera-catalogo">
       <button @click="$emit('volver')" class="btn-volver">⬅ Volver al Inicio</button>
       <h2>Catálogo de Instrumentación Científica</h2>
-      <p>Explora el catálogo, bloquea fechas y genera el PDF de responsabilidad de custodia.</p>
+      <p>Explora el catálogo de la WikiSIO, bloquea fechas y genera el PDF de responsabilidad de custodia.</p>
     </div>
 
     <div class="caja-filtros">
       <div class="grupo-filtro">
         <label>🔍 Buscar por palabra clave o ID:</label>
-        <input v-model="textoBusqueda" type="text" placeholder="Ej. SBE 5, presión..." />
+        <input v-model="textoBusqueda" type="text" placeholder="Ej. SBE 5, ROV..." />
       </div>
       <div class="grupo-filtro">
-        <label>📂 Filtrar por categoría:</label>
+        <label>📂 Filtrar por categoría (Desplegable Dinámico):</label>
         <select v-model="tipoSeleccionado">
-          <option value="Todos">Todas las categorías</option>
-          <option value="Sensores de Presión">Sensores de Presión</option>
-          <option value="Equipos de Laboratorio">Equipos de Laboratorio</option>
+          <option v-for="tipo in tiposDisponibles" :key="tipo" :value="tipo">{{ tipo }}</option>
         </select>
       </div>
     </div>
@@ -135,7 +170,7 @@ const cerrarModal = () => { modalVisible.value = false }
           <p class="descripcion-corta">{{ equipo.desc }}</p>
           
           <button @click="toggleDetalles(equipo.id)" class="btn-desplegar">
-            {{ equiposExpandidos.includes(equipo.id) ? '▲ Ocultar Ficha y Gestor' : '▼ Ver Ficha Técnica y Gestor de Cesión' }}
+            {{ equiposExpandidos.includes(equipo.id) ? '▲ Ocultar Ficha' : '▼ Ver Ficha de la WikiSIO y Reservar' }}
           </button>
 
           <div v-if="equiposExpandidos.includes(equipo.id)" class="ficha-tecnica-desplegada">
@@ -152,7 +187,7 @@ const cerrarModal = () => { modalVisible.value = false }
                     <div class="acciones-reserva">
                       <span v-if="res.estado === 'Aprobada'" class="estado-ok">✅ {{ res.archivo }}</span>
                       <label v-if="res.estado === 'Pendiente'" class="btn-subir">
-                        📤 Subir PDF Firmado
+                        📤 Subir PDF
                         <input type="file" accept=".pdf" @change="subirDocumento($event, res)" style="display: none;" />
                       </label>
                     </div>
@@ -195,15 +230,15 @@ const cerrarModal = () => { modalVisible.value = false }
                 </div>
                 <div class="seccion-wiki">
                   <h6>Características de Medición</h6>
-                  <p class="texto-preformateado">{{ equipo.wiki.caracteristicasMedicion }}</p>
+                  <ul><li v-for="(item, i) in equipo.wiki.caracteristicasMedicion" :key="'med'+i">{{ item }}</li></ul>
                 </div>
                 <div class="seccion-wiki">
                   <h6>Características Físicas</h6>
-                  <p class="texto-preformateado">{{ equipo.wiki.caracteristicasFisicas }}</p>
+                  <ul><li v-for="(item, i) in equipo.wiki.caracteristicasFisicas" :key="'fis'+i">{{ item }}</li></ul>
                 </div>
                 <div class="seccion-wiki">
                   <h6>Especificaciones Eléctricas</h6>
-                  <p class="texto-preformateado">{{ equipo.wiki.especificacionesElectricas }}</p>
+                  <ul><li v-for="(item, i) in equipo.wiki.especificacionesElectricas" :key="'elec'+i">{{ item }}</li></ul>
                 </div>
                 <div class="seccion-wiki">
                   <h6>Principio de Funcionamiento</h6>
@@ -245,7 +280,7 @@ const cerrarModal = () => { modalVisible.value = false }
             </p>
             <div class="zona-firma">
               <p><strong>Fecha de expedición:</strong> {{ documentoActual.fechaGeneracion }}</p>
-              <div class="caja-firma-vacia"><p>Firma del Responsable (Certificado Digital o Manuscrita)</p></div>
+              <div class="caja-firma-vacia"><p>Firma del Responsable</p></div>
             </div>
           </div>
         </div>
@@ -290,7 +325,6 @@ const cerrarModal = () => { modalVisible.value = false }
 
 .ficha-tecnica-desplegada { background: #fdfdfd; border: 1px solid #eee; border-radius: 8px; margin-top: 20px; overflow: hidden; display: flex; flex-direction: column; }
 
-/* RESERVAS */
 .bloque-reservas { background-color: #f0f7ff; padding: 25px; border-bottom: 1px solid #cce0f0; }
 .bloque-reservas h5 { margin: 0 0 20px 0; color: #005596; font-size: 1.2rem; }
 .lista-reservas { background: white; padding: 15px; border-radius: 6px; border: 1px solid #cce0f0; margin-bottom: 20px; }
@@ -305,7 +339,6 @@ const cerrarModal = () => { modalVisible.value = false }
 .btn-generar-doc { background: #005596; color: white; border: none; padding: 15px; border-radius: 4px; font-weight: bold; font-size: 1.1rem; cursor: pointer; width: 100%; transition: background 0.2s; }
 .btn-generar-doc:hover { background: #00447a; }
 
-/* WIKI SIO */
 .bloque-wiki { padding: 30px; background-color: #fff; }
 .bloque-wiki h5 { margin: 0 0 20px 0; color: #005596; font-size: 1.3rem; border-bottom: 2px solid #eee; padding-bottom: 10px; }
 .datos-identificativos { display: flex; flex-wrap: wrap; gap: 20px; background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 25px; border-left: 4px solid #005596; }
@@ -314,10 +347,9 @@ const cerrarModal = () => { modalVisible.value = false }
 .wiki-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
 .seccion-wiki h6 { margin: 0 0 10px 0; color: #005596; font-size: 1.05rem; }
 .seccion-wiki p { font-size: 0.95rem; color: #444; line-height: 1.6; margin: 0; text-align: justify; }
-.texto-preformateado { white-space: pre-line; } 
+.seccion-wiki ul { padding-left: 20px; margin: 0; font-size: 0.95rem; color: #444; line-height: 1.6; }
 .full-width { grid-column: 1 / -1; }
 
-/* MODAL PDF */
 .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.8); display: flex; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
 .modal-papel { background: white; width: 100%; max-width: 800px; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); display: flex; flex-direction: column; max-height: 90vh; overflow-y: auto; }
 .area-impresion { font-family: 'Times New Roman', serif; padding: 50px; }
