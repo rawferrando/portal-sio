@@ -85,7 +85,7 @@
   display: inline-block;
   color: #ffffff;
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin-bottom: 5px;
   text-align: left;
   width: 100%;
