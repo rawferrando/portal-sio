@@ -5,42 +5,38 @@
         <div class="hero-logo-box">
           <img src="../assets/logo-sio.jpg" alt="Logo SIO" class="logo-hero" />
         </div>
-        
-        <div class="hero-text-box linea-divisoria">
+        <div class="hero-text-box">
           <p class="resumen-sio">
             <span class="highlight-white">Soporte tecnológico integral para la investigación marina:</span><br>
             Como equipo integrante del <span class="destacado-bold">Institut de Ciències del Mar (ICM-CSIC)</span>, el Servicio de Ingeniería Oceanográfica aporta experiencia técnica, soporte logístico e <span class="destacado-bold">I+D+I</span> en todas las fases de la investigación científica. 
             Nos encargamos del diseño, preparación e instalación de fondeos instrumentados, la gestión de un catálogo avanzado de instrumentación oceanográfica y el soporte operativo con embarcación propia. 
             Trabajamos de forma colaborativa para maximizar la calidad de los resultados y asegurar el éxito de cada proyecto en el medio marino.
           </p>
+        </div> </div> </div> <div class="grid-servicios-tres">
+      
+      <div class="tarjeta-sio bg-proyectos">
+        <div class="overlay-tarjeta">
+          <h3>Proyectos</h3>
+          <p>Soporte técnico y logístico para campañas de investigación en el medio marino.</p>
         </div>
       </div>
-    </div>
-<div class="grid-servicios-tres"></div>
 
-<div class="tarjeta-sio bg-proyectos">
-    <div class="overlay-tarjeta">
-      <h3>Proyectos</h3>
-      <p>Soporte técnico y logístico para campañas de investigación en el medio marino.</p>
-    </div>
-  </div>
+      <div class="tarjeta-sio bg-instrumentacion-activa" @click="$emit('cambiar-pagina')">
+        <div class="overlay-tarjeta">
+          <h3>Instrumentación-embarcación</h3>
+          <p>Accede al catálogo completo de equipos, consulta disponibilidad de la lancha y reserva.</p>
+          <span class="btn-ver-mas">Entrar al Catálogo ➔</span>
+        </div>
+      </div>
 
-  <div class="tarjeta-sio bg-instrumentacion-activa" @click="$emit('cambiar-pagina')">
-    <div class="overlay-tarjeta">
-      <h3>Instrumentación-embarcación</h3>
-      <p>Accede al catálogo completo de equipos, consulta disponibilidad de la lancha y reserva.</p>
-      <span class="btn-ver-mas">Entrar al Catálogo ➔</span>
-    </div>
-  </div>
+      <div class="tarjeta-sio bg-idi">
+        <div class="overlay-tarjeta">
+          <h3>Desarrollo I+D+I</h3>
+          <p>Innovación tecnológica, diseño de prototipos y soluciones de ingeniería a medida.</p>
+        </div>
+      </div>
 
-  <div class="tarjeta-sio bg-idi">
-    <div class="overlay-tarjeta">
-      <h3>Desarrollo I+D+I</h3>
-      <p>Innovación tecnológica, diseño de prototipos y soluciones de ingeniería a medida.</p>
-    </div>
-  </div>
-  </div>
-</template>
+    </div> </div> </template>
 
 <style scoped>
 /* HERO SECTION: AJUSTE CEÑIDO AL CONTENIDO */
