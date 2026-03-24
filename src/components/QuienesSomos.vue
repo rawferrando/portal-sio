@@ -1,7 +1,19 @@
 <template>
   <div class="portada-sio">
     <div class="hero-section">
-      <img src="../assets/logo-sio.jpg" alt="Logo SIO" class="logo-hero" />
+      <div class="hero-container">
+        <div class="hero-logo-box">
+          <img src="../assets/logo-sio.jpg" alt="Logo SIO" class="logo-hero" />
+        </div>
+        <div class="hero-text-box">
+          <p class="resumen-sio">
+            <strong>Soporte tecnológico integral para la investigación marina:</strong> 
+            gestión de instrumentación científica avanzada, diseño y despliegue de fondeos, 
+            apoyo técnico especializado en campañas y servicios de logística con embarcación propia. 
+            Aportamos innovación y experiencia para maximizar la calidad de tus resultados científicos.
+          </p>
+        </div>
+      </div>
     </div>
 
     <div class="grid-servicios-tres">
@@ -31,23 +43,53 @@
 </template>
 
 <style scoped>
-/* HERO AJUSTADO PARA EL LOGO */
+/* HERO SECTION: DISTRIBUCIÓN HORIZONTAL */
 .hero-section { 
   background-color: #005596; 
-  padding: 30px 20px; 
-  text-align: center; 
+  padding: 40px; 
   border-radius: 8px; 
   margin-bottom: 40px; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.logo-hero { 
-  max-width: 400px; 
-  height: auto; 
-  filter: drop-shadow(0 0 10px rgba(0,0,0,0.2));
 }
 
+.hero-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 40px; /* Espacio entre logo y texto */
+}
+
+.hero-logo-box {
+  flex: 0 0 350px; /* Ancho fijo para el logo */
+}
+
+.logo-hero { 
+  width: 100%;
+  height: auto; 
+  border-radius: 4px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.hero-text-box {
+  flex: 1; /* El texto ocupa el resto del espacio */
+}
+
+.resumen-sio {
+  color: white;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  text-align: left; /* Justificado a la izquierda como pediste */
+  margin: 0;
+}
+
+.resumen-sio strong {
+  display: block;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  color: #b0dfff; /* Un tono celeste para destacar el título */
+}
+
+/* GRID DE 3 FICHAS */
 .grid-servicios-tres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
 
 .tarjeta-sio { 
@@ -56,7 +98,7 @@
   overflow: hidden; 
   background-size: cover; 
   background-position: center; 
-  min-height: 350px; 
+  min-height: 380px; 
   transition: transform 0.3s ease;
   border: 1px solid #ddd;
 }
@@ -77,8 +119,11 @@
 .overlay-tarjeta p { margin: 0; font-size: 0.95rem; line-height: 1.4; }
 .btn-ver-mas { display: inline-block; margin-top: 10px; font-weight: bold; font-size: 0.8rem; }
 
+/* Responsive para tablets y móviles */
 @media (max-width: 900px) {
+  .hero-container { flex-direction: column; text-align: center; }
+  .resumen-sio { text-align: center; }
   .grid-servicios-tres { grid-template-columns: 1fr; }
-  .logo-hero { max-width: 80%; }
+  .hero-logo-box { flex: 0 0 auto; max-width: 250px; }
 }
 </style>
