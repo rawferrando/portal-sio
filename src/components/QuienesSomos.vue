@@ -5,50 +5,6 @@
         <div class="hero-logo-box">
           <img src="../assets/logo-sio.jpg" alt="Logo SIO" class="logo-hero" />
         </div>
-        <div class="hero-text-box">
-          <p class="resumen-sio">
-            <span class="highlight-white">Soporte tecnológico integral para la investigación marina:</span><br>
-            Como equipo integrante del ICM-CSIC, el Servicio de Ingeniería Oceanográfica aporta experiencia técnica, soporte logístico e I+D+I en todas las fases de la investigación científica. 
-            Nos encargamos del diseño, preparación e instalación de fondeos instrumentados, la gestión de un catálogo avanzado de instrumentación oceanográfica y el soporte operativo con embarcación propia. 
-            Trabajamos de forma colaborativa para maximizar la calidad de los resultados y asegurar el éxito de cada proyecto en el medio marino.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid-servicios-tres">
-      <div class="tarjeta-sio bg-proyectos">
-        <div class="overlay-tarjeta">
-          <h3>Proyectos</h3>
-          <p>Soporte técnico y logístico para campañas de investigación.</p>
-        </div>
-      </div>
-
-      <div class="tarjeta-sio bg-instrumentacion-activa" @click="$emit('cambiar-pagina')">
-        <div class="overlay-tarjeta">
-          <h3>Instrumentación-embarcación</h3>
-          <p>Catálogo de equipos, embarcaciones y gestión de reservas.</p>
-          <span class="btn-ver-mas">Entrar al Catálogo ➔</span>
-        </div>
-      </div>
-
-      <div class="tarjeta-sio bg-idi">
-        <div class="overlay-tarjeta">
-          <h3>Desarrollo I+D+I</h3>
-          <p>Innovación tecnológica y diseño de soluciones a medida.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
-<template>
-  <div class="portada-sio">
-    <div class="hero-section">
-      <div class="hero-container">
-        <div class="hero-logo-box">
-          <img src="../assets/logo-sio.jpg" alt="Logo SIO" class="logo-hero" />
-        </div>
         
         <div class="hero-text-box linea-divisoria">
           <p class="resumen-sio">
@@ -110,7 +66,7 @@
 
 .resumen-sio {
   color: white;
-  font-size: 0.95rem; /* Texto un pelín más pequeño para elegancia */
+  font-size: 0.85rem; /* Texto un pelín más pequeño para elegancia */
   line-height: 1.4;
   text-align: justify; /* Texto justificado */
   margin: 0;
@@ -121,7 +77,7 @@
   display: inline-block;
   color: #ffffff;
   font-weight: bold;
-  font-size: 1.1rem; /* Título secundario proporcionado al texto pequeño */
+  font-size: 1rem; /* Título secundario proporcionado al texto pequeño */
   margin-bottom: 5px;
   text-align: left;
   width: 100%;
