@@ -4,43 +4,62 @@ import QuienesSomos from './components/QuienesSomos.vue'
 import Instrumentacion from './components/Instrumentacion.vue'
 import IntranetPanel from './components/IntranetPanel.vue'
 
+// --- VARIABLES DE ESTADO ---
 const vistaActual = ref('inicio')
-const menuPrivadoVisible = ref(false)
 const usuarioLogueadoSio = ref(false)
+const mostrarModalLogin = ref(false) // Controla si se ve la ventana emergente
 const inputUsuario = ref('')
 const inputPassword = ref('')
 const errorLogin = ref(false)
 
+// --- LÓGICA DE SESIÓN ---
+// Comprueba si ya habías iniciado sesión antes
 onMounted(() => {
   if (sessionStorage.getItem('sio_auth') === 'true') {
     usuarioLogueadoSio.value = true
   }
 })
 
+// Qué hace el botón de la cabecera
+const manejarClicIntranet = () => {
+  if (usuarioLogueadoSio.value) {
+    vistaActual.value = 'intranet' 
+  } else {
+    mostrarModalLogin.value = true 
+  }
+}
+
+// Proceso de Login
 const intentarLogin = () => {
   if (inputUsuario.value === 'admin' && inputPassword.value === 'sio2026') {
     sessionStorage.setItem('sio_auth', 'true')
     usuarioLogueadoSio.value = true
     errorLogin.value = false
-    menuPrivadoVisible.value = false
-    vistaActual.value = 'intranet'
+    mostrarModalLogin.value = false // Cierra la ventana emergente
+    vistaActual.value = 'intranet'  // Te lleva al panel
+    inputUsuario.value = ''         // Limpia el usuario
+    inputPassword.value = ''        // Limpia la contraseña
   } else {
     errorLogin.value = true
+    alert("Usuario o contraseña incorrectos")
   }
 }
 
+// Cierra la ventana si le das a cancelar
+const cerrarModalLogin = () => {
+  mostrarModalLogin.value = false
+  inputUsuario.value = ''
+  inputPassword.value = ''
+}
+
+// Salir de la intranet
 const cerrarSesion = () => {
   sessionStorage.removeItem('sio_auth')
   usuarioLogueadoSio.value = false
   vistaActual.value = 'inicio'
 }
 
-const irAIntranet = () => {
-  vistaActual.value = 'intranet'
-  menuPrivadoVisible.value = false
-  window.scrollTo(0, 0)
-}
-
+// --- NAVEGACIÓN ---
 const irAInstrumentacion = () => { 
   vistaActual.value = 'instrumentacion'
   window.scrollTo(0, 0)
@@ -66,98 +85,97 @@ const volverAInicio = () => {
           </div>
 
           <div class="area-privada-wrapper">
-            <button class="btn-intranet" @click="menuPrivadoVisible = !menuPrivadoVisible">
-              <span>{{ usuarioLogueadoSio ? '🔒 Admin SIO' : '👤 Área Privada' }}</span>
+            <button class="btn-intranet-sio" @click="manejarClicIntranet">
+              {{ usuarioLogueadoSio ? '🔒 Admin SIO' : '👤 Intranet SIO' }}
             </button>
-            
-            <div v-if="menuPrivadoVisible" class="menu-desplegable-privado">
-              <div v-if="!usuarioLogueadoSio" class="formulario-login-menu">
-                <input v-model="inputUsuario" type="text" placeholder="Usuario" />
-                <input v-model="inputPassword" type="password" placeholder="Pass" />
-                <button @click="intentarLogin" class="btn-entrar-login">Acceder</button>
-              </div>
-              <div v-else class="menu-acciones-intranet">
-                <button @click="irAIntranet">➕ Añadir Instrumentación</button>
-                <button @click="cerrarSesion" class="btn-cerrar-sesion-interna">🚪 Cerrar Sesión</button>
-              </div>
-            </div>
           </div>
         </nav>
       </div>
     </header>
 
-<main class="main-content">
-  <QuienesSomos v-if="vistaActual === 'inicio'" @cambiar-pagina="irAInstrumentacion" />
-  <Instrumentacion v-else-if="vistaActual === 'instrumentacion'" @volver="volverAInicio" />
-  
-  <IntranetPanel v-else-if="vistaActual === 'intranet'" @volver="volverAInicio" />
-</main>
+    <main class="main-content">
+      <QuienesSomos v-if="vistaActual === 'inicio'" @cambiar-pagina="irAInstrumentacion" />
+      <Instrumentacion v-else-if="vistaActual === 'instrumentacion'" @volver="volverAInicio" />
+      <IntranetPanel v-else-if="vistaActual === 'intranet'" @volver="volverAInicio" />
+    </main>
 
     <footer class="footer-sio">
       <p><strong>Institut de Ciències del Mar (ICM-CSIC)</strong></p>
       <p>📧 sio@icm.csic.es | 📍 Pg. Marítim de la Barceloneta, 37, 08003 Barcelona</p>
     </footer>
+
+    <div v-if="mostrarModalLogin" class="modal-overlay" @click.self="cerrarModalLogin">
+      <div class="modal-login">
+        <h3>Acceso Restringido</h3>
+        <p>Introduce tus credenciales del SIO</p>
+        
+        <div class="form-group">
+          <input 
+            v-model="inputUsuario" 
+            type="text" 
+            placeholder="Usuario" 
+            @keyup.enter="intentarLogin"
+            autofocus 
+          />
+        </div>
+        
+        <div class="form-group">
+          <input 
+            v-model="inputPassword" 
+            type="password" 
+            placeholder="Contraseña" 
+            @keyup.enter="intentarLogin" 
+          />
+        </div>
+        
+        <div class="modal-actions">
+          <button @click="intentarLogin" class="btn-entrar">Acceder</button>
+          <button @click="cerrarModalLogin" class="btn-cancelar">Cancelar</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <style>
+/* ESTILOS GENERALES */
 body { margin: 0; font-family: 'Segoe UI', sans-serif; background-color: #f4f7f9; }
 .app-container { display: flex; flex-direction: column; min-height: 100vh; }
 
-/* HEADER AJUSTADO AL CONTENIDO (MENOS ALTO) */
-.main-header { 
-  background-color: #005596; 
-  color: white; 
-  padding: 5px 0; 
-  border-bottom: 2px solid #003366; 
-}
-.contenedor-cabecera { 
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center; 
-  max-width: 1200px; 
-  margin: 0 auto; 
-  padding: 0 20px; 
-}
-
+/* HEADER */
+.main-header { background-color: #005596; color: white; padding: 5px 0; border-bottom: 2px solid #003366; }
+.contenedor-cabecera { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 .menu-principal { display: flex; align-items: center; gap: 20px; }
 
-/* ESTILOS IDIOMAS */
+/* IDIOMAS */
 .selector-idiomas { display: flex; gap: 5px; }
-.btn-idioma { 
-  background: none; 
-  border: none; 
-  color: white; 
-  font-size: 0.75rem; 
-  cursor: pointer; 
-  padding: 2px 5px; 
-  border-radius: 3px; 
-  opacity: 0.7;
-}
+.btn-idioma { background: none; border: none; color: white; font-size: 0.75rem; cursor: pointer; padding: 2px 5px; border-radius: 3px; opacity: 0.7; }
 .btn-idioma.active { opacity: 1; font-weight: bold; border: 1px solid white; }
 
-.btn-intranet { 
-  background: white; 
-  color: #005596; 
-  border: none; 
-  padding: 5px 12px; 
-  border-radius: 4px; 
-  cursor: pointer; 
-  font-weight: bold; 
-  font-size: 0.85rem;
-}
+/* BOTÓN INTRANET CABECERA */
+.btn-intranet-sio { background-color: white; color: #005596; border: none; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 0.85rem; cursor: pointer; transition: background-color 0.3s; }
+.btn-intranet-sio:hover { background-color: #e6f0fa; }
 
-.main-content { 
-  flex: 1;
-  width: 100%; 
-  max-width: 1200px; 
-  margin: 0 auto; 
-  padding: 20px; /* Le damos 60px de margen por abajo para que respire un poco antes del footer */
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: center; 
-}
+/* CONTENIDO PRINCIPAL Y FOOTER */
+.main-content { flex: 1; width: 100%; max-width: 1200px; margin: 0 auto; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
 .footer-sio { background-color: #005596; color: white; text-align: center; padding: 20px; margin-top: auto; border-top: 3px solid #003366; font-size: 0.9rem; }
 .footer-sio p { margin: 3px 0; }
+
+/* ESTILOS DE LA VENTANA EMERGENTE (MODAL) */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center;
+  z-index: 9999; backdrop-filter: blur(3px);
+}
+.modal-login { background-color: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 350px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); text-align: center; }
+.modal-login h3 { color: #005596; margin-top: 0; margin-bottom: 5px; }
+.modal-login p { font-size: 0.9rem; color: #666; margin-bottom: 20px; }
+.modal-login .form-group { margin-bottom: 15px; }
+.modal-login input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+.modal-login input:focus { border-color: #005596; outline: none; }
+.modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+.btn-entrar { flex: 1; background-color: #005596; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+.btn-entrar:hover { background-color: #003d73; }
+.btn-cancelar { flex: 1; background-color: #e0e0e0; color: #333; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+.btn-cancelar:hover { background-color: #ccc; }
 </style>
