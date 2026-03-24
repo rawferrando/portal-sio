@@ -8,7 +8,7 @@
         <div class="hero-text-box">
           <p class="resumen-sio">
             <span class="highlight-white">Soporte tecnológico integral para la investigación marina:</span><br>
-            Como equipo integrante del **Institut de Ciències del Mar (ICM-CSIC)**, el Servicio de Ingeniería Oceanográfica aporta experiencia técnica, soporte logístico e **I+D+I** en todas las fases de la investigación científica. 
+            Como equipo integrante del <span class="destacado-bold">Institut de Ciències del Mar (ICM-CSIC)</span>, el Servicio de Ingeniería Oceanográfica aporta experiencia técnica, soporte logístico e <span class="destacado-bold">I+D+I</span> en todas las fases de la investigación científica. 
             Nos encargamos del diseño, preparación e instalación de fondeos instrumentados, la gestión de un catálogo avanzado de instrumentación oceanográfica y el soporte operativo con embarcación propia. 
             Trabajamos de forma colaborativa para maximizar la calidad de los resultados y asegurar el éxito de cada proyecto en el medio marino.
           </p>
@@ -43,10 +43,10 @@
 </template>
 
 <style scoped>
-/* HERO SECTION: AJUSTADO AL CONTENIDO */
+/* HERO SECTION: AJUSTE CEÑIDO AL CONTENIDO */
 .hero-section { 
   background-color: #005596; 
-  padding: 25px 40px; /* Reducido el padding vertical para ajustar al logo */
+  padding: 15px 35px; /* Padding muy reducido para ajustar el azul */
   border-radius: 8px; 
   margin-bottom: 40px; 
 }
@@ -56,18 +56,18 @@
   margin: 0 auto;
   display: flex;
   align-items: center;
-  gap: 35px;
+  gap: 30px;
 }
 
 .hero-logo-box {
-  flex: 0 0 320px; /* Ajustado el tamaño del logo */
+  flex: 0 0 300px; /* Tamaño del logo ligeramente más compacto */
 }
 
 .logo-hero { 
   width: 100%;
   height: auto; 
   border-radius: 2px;
-  filter: none; /* Quitada la sombra como pediste */
+  filter: none;
   display: block;
 }
 
@@ -78,8 +78,8 @@
 .resumen-sio {
   color: white;
   font-size: 1.05rem;
-  line-height: 1.5;
-  text-align: left;
+  line-height: 1.4; /* Interlineado más compacto */
+  text-align: justify; /* TEXTO JUSTIFICADO */
   margin: 0;
 }
 
@@ -89,19 +89,18 @@
   color: #ffffff;
   font-weight: bold;
   font-size: 1.2rem;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
+  text-align: left; /* El título queda mejor a la izquierda aunque el párrafo sea justificado */
+  width: 100%;
 }
 
-.resumen-sio strong {
-  color: #b0dfff; /* Color para resaltar ICM-CSIC e I+D+I */
+.destacado-bold {
+  font-weight: bold;
+  color: #ffffff; /* Quitamos el azul clarito para que sea todo blanco puro y serio */
 }
 
 /* GRID DE 3 FICHAS */
-.grid-servicios-tres { 
-  display: grid; 
-  grid-template-columns: repeat(3, 1fr); 
-  gap: 25px; 
-}
+.grid-servicios-tres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
 
 .tarjeta-sio { 
   position: relative; 
@@ -134,6 +133,5 @@
   .hero-container { flex-direction: column; text-align: center; gap: 20px; }
   .resumen-sio { text-align: center; }
   .grid-servicios-tres { grid-template-columns: 1fr; }
-  .hero-logo-box { flex: 0 0 auto; max-width: 280px; }
 }
 </style>
