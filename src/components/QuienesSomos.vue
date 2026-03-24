@@ -1,16 +1,14 @@
 <template>
   <div class="portada-sio">
     <div class="hero-section">
-      <h1>Servicio de Ingeniería Oceanográfica</h1>
-      <p>Apoyo tecnológico e instrumentación de vanguardia para la investigación marina.</p>
+      <img src="../assets/logo-sio.jpg" alt="Logo SIO" class="logo-hero" />
     </div>
 
     <div class="grid-servicios-tres">
-      
       <div class="tarjeta-sio bg-proyectos">
         <div class="overlay-tarjeta">
           <h3>Proyectos</h3>
-          <p>Apoyo técnico especializado en campañas nacionales e internacionales.</p>
+          <p>Soporte técnico y logístico para campañas de investigación.</p>
         </div>
       </div>
 
@@ -25,20 +23,32 @@
       <div class="tarjeta-sio bg-idi">
         <div class="overlay-tarjeta">
           <h3>Desarrollo I+D+I</h3>
-          <p>Diseño de soluciones de ingeniería personalizadas y nuevos sensores.</p>
+          <p>Innovación tecnológica y diseño de soluciones a medida.</p>
         </div>
       </div>
-
     </div>
   </div>
 </template>
 
 <style scoped>
-.hero-section { background-color: #005596; color: white; padding: 50px 20px; text-align: center; border-radius: 8px; margin-bottom: 40px; }
-.hero-section h1 { margin: 0; font-size: 2.4rem; }
-.hero-section p { opacity: 0.9; font-size: 1.1rem; margin-top: 10px; }
+/* HERO AJUSTADO PARA EL LOGO */
+.hero-section { 
+  background-color: #005596; 
+  padding: 30px 20px; 
+  text-align: center; 
+  border-radius: 8px; 
+  margin-bottom: 40px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.logo-hero { 
+  max-width: 400px; 
+  height: auto; 
+  filter: drop-shadow(0 0 10px rgba(0,0,0,0.2));
+}
 
-.grid-servicios-tres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; min-height: 400px; }
+.grid-servicios-tres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
 
 .tarjeta-sio { 
   position: relative; 
@@ -47,11 +57,10 @@
   background-size: cover; 
   background-position: center; 
   min-height: 350px; 
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease;
   border: 1px solid #ddd;
 }
-
-.tarjeta-sio:hover { transform: translateY(-10px); box-shadow: 0 12px 25px rgba(0,0,0,0.2); }
+.tarjeta-sio:hover { transform: translateY(-10px); }
 
 .bg-proyectos { background-image: url('../assets/proyectos.jpg'); background-color: #e3f2fd; }
 .bg-instrumentacion-activa { background-image: url('../assets/instrumentacion.jpg'); background-color: #bbdefb; cursor: pointer; border: 2px solid #005596; }
@@ -60,18 +69,16 @@
 .overlay-tarjeta { 
   position: absolute; 
   bottom: 0; left: 0; right: 0; 
-  background: linear-gradient(transparent, rgba(0,85,150,0.9)); 
-  padding: 30px 20px; 
+  background: linear-gradient(transparent, rgba(0,85,150,0.95)); 
+  padding: 25px 15px; 
   color: white; 
 }
+.overlay-tarjeta h3 { margin: 0 0 8px 0; font-size: 1.4rem; }
+.overlay-tarjeta p { margin: 0; font-size: 0.95rem; line-height: 1.4; }
+.btn-ver-mas { display: inline-block; margin-top: 10px; font-weight: bold; font-size: 0.8rem; }
 
-.overlay-tarjeta h3 { margin: 0 0 10px 0; font-size: 1.6rem; }
-.overlay-tarjeta p { margin: 0; font-size: 1rem; line-height: 1.4; opacity: 0.95; }
-.btn-ver-mas { display: inline-block; margin-top: 15px; font-weight: bold; text-transform: uppercase; font-size: 0.85rem; }
-
-/* Adaptable a móviles */
 @media (max-width: 900px) {
   .grid-servicios-tres { grid-template-columns: 1fr; }
-  .tarjeta-sio { min-height: 250px; }
+  .logo-hero { max-width: 80%; }
 }
 </style>
