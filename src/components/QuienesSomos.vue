@@ -7,10 +7,10 @@
         </div>
         <div class="hero-text-box">
           <p class="resumen-sio">
-            <strong>Soporte tecnológico integral para la investigación marina:</strong> 
-            gestión de instrumentación científica avanzada, diseño y despliegue de fondeos, 
-            apoyo técnico especializado en campañas y servicios de logística con embarcación propia. 
-            Aportamos innovación y experiencia para maximizar la calidad de tus resultados científicos.
+            <span class="highlight-white">Soporte tecnológico integral para la investigación marina:</span><br>
+            Como equipo integrante del **Institut de Ciències del Mar (ICM-CSIC)**, el Servicio de Ingeniería Oceanográfica aporta experiencia técnica, soporte logístico e **I+D+I** en todas las fases de la investigación científica. 
+            Nos encargamos del diseño, preparación e instalación de fondeos instrumentados, la gestión de un catálogo avanzado de instrumentación oceanográfica y el soporte operativo con embarcación propia. 
+            Trabajamos de forma colaborativa para maximizar la calidad de los resultados y asegurar el éxito de cada proyecto en el medio marino.
           </p>
         </div>
       </div>
@@ -27,7 +27,7 @@
       <div class="tarjeta-sio bg-instrumentacion-activa" @click="$emit('cambiar-pagina')">
         <div class="overlay-tarjeta">
           <h3>Instrumentación-embarcación</h3>
-          <p>Consulta nuestro catálogo de equipos, embarcaciones y gestiona tus reservas.</p>
+          <p>Catálogo de equipos, embarcaciones y gestión de reservas.</p>
           <span class="btn-ver-mas">Entrar al Catálogo ➔</span>
         </div>
       </div>
@@ -43,54 +43,65 @@
 </template>
 
 <style scoped>
-/* HERO SECTION: DISTRIBUCIÓN HORIZONTAL */
+/* HERO SECTION: AJUSTADO AL CONTENIDO */
 .hero-section { 
   background-color: #005596; 
-  padding: 40px; 
+  padding: 25px 40px; /* Reducido el padding vertical para ajustar al logo */
   border-radius: 8px; 
   margin-bottom: 40px; 
 }
 
 .hero-container {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
   display: flex;
   align-items: center;
-  gap: 40px; /* Espacio entre logo y texto */
+  gap: 35px;
 }
 
 .hero-logo-box {
-  flex: 0 0 350px; /* Ancho fijo para el logo */
+  flex: 0 0 320px; /* Ajustado el tamaño del logo */
 }
 
 .logo-hero { 
   width: 100%;
   height: auto; 
-  border-radius: 4px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  border-radius: 2px;
+  filter: none; /* Quitada la sombra como pediste */
+  display: block;
 }
 
 .hero-text-box {
-  flex: 1; /* El texto ocupa el resto del espacio */
+  flex: 1;
 }
 
 .resumen-sio {
   color: white;
-  font-size: 1.15rem;
-  line-height: 1.6;
-  text-align: left; /* Justificado a la izquierda como pediste */
+  font-size: 1.05rem;
+  line-height: 1.5;
+  text-align: left;
   margin: 0;
 }
 
+/* Título en Negrita y Blanco */
+.highlight-white {
+  display: inline-block;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
+
 .resumen-sio strong {
-  display: block;
-  font-size: 1.3rem;
-  margin-bottom: 10px;
-  color: #b0dfff; /* Un tono celeste para destacar el título */
+  color: #b0dfff; /* Color para resaltar ICM-CSIC e I+D+I */
 }
 
 /* GRID DE 3 FICHAS */
-.grid-servicios-tres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
+.grid-servicios-tres { 
+  display: grid; 
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 25px; 
+}
 
 .tarjeta-sio { 
   position: relative; 
@@ -98,11 +109,11 @@
   overflow: hidden; 
   background-size: cover; 
   background-position: center; 
-  min-height: 380px; 
+  min-height: 360px; 
   transition: transform 0.3s ease;
   border: 1px solid #ddd;
 }
-.tarjeta-sio:hover { transform: translateY(-10px); }
+.tarjeta-sio:hover { transform: translateY(-8px); }
 
 .bg-proyectos { background-image: url('../assets/proyectos.jpg'); background-color: #e3f2fd; }
 .bg-instrumentacion-activa { background-image: url('../assets/instrumentacion.jpg'); background-color: #bbdefb; cursor: pointer; border: 2px solid #005596; }
@@ -119,11 +130,10 @@
 .overlay-tarjeta p { margin: 0; font-size: 0.95rem; line-height: 1.4; }
 .btn-ver-mas { display: inline-block; margin-top: 10px; font-weight: bold; font-size: 0.8rem; }
 
-/* Responsive para tablets y móviles */
-@media (max-width: 900px) {
-  .hero-container { flex-direction: column; text-align: center; }
+@media (max-width: 950px) {
+  .hero-container { flex-direction: column; text-align: center; gap: 20px; }
   .resumen-sio { text-align: center; }
   .grid-servicios-tres { grid-template-columns: 1fr; }
-  .hero-logo-box { flex: 0 0 auto; max-width: 250px; }
+  .hero-logo-box { flex: 0 0 auto; max-width: 280px; }
 }
 </style>
