@@ -103,7 +103,7 @@ const guardarNuevoEquipo = () => {
     </header>
 
     <main class="main-content">
-      <QuienesSomos v-if="vistaActual === 'inicio'" @ir-a-instrumentacion="irAInstrumentacion" />
+      <QuienesSomos v-if="vistaActual === 'inicio'" @cambiar-pagina="irAInstrumentacion" />
       
       <Instrumentacion v-else-if="vistaActual === 'instrumentacion'" @volver="volverAInicio" />
 
