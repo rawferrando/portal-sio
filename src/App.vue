@@ -104,7 +104,7 @@ const volverAInicio = () => {
 
 <style>
 body { margin: 0; font-family: 'Segoe UI', sans-serif; background-color: #f4f7f9; }
-.app-container { display: flex; flex-direction: column; }
+.app-container { display: flex; flex-direction: column; min-height: 100vh; }
 
 /* HEADER AJUSTADO AL CONTENIDO (MENOS ALTO) */
 .main-header { 
@@ -150,11 +150,15 @@ body { margin: 0; font-family: 'Segoe UI', sans-serif; background-color: #f4f7f9
 }
 
 .main-content { 
+  flex: 1;
   width: 100%; 
   max-width: 1200px; 
   margin: 0 auto; 
-  padding: 30px 20px 60px 20px; /* Le damos 60px de margen por abajo para que respire un poco antes del footer */
-  box-sizing: border-box; 
+  padding: 20px; /* Le damos 60px de margen por abajo para que respire un poco antes del footer */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
 }
 .footer-sio { background-color: #005596; color: white; text-align: center; padding: 20px; margin-top: auto; border-top: 3px solid #003366; font-size: 0.9rem; }
 .footer-sio p { margin: 3px 0; }
