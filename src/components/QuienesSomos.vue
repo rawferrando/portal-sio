@@ -101,7 +101,7 @@
 
 /* GRID DE 3 FICHAS (Sigue igual) */
 .grid-servicios-tres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-.tarjeta-sio { position: relative; border-radius: 12px; overflow: hidden; background-size: cover; background-position: center; min-height: 200px; transition: transform 0.3s ease; border: 1px solid #ddd; }
+.tarjeta-sio { position: relative; border-radius: 12px; overflow: hidden; background-size: cover; background-position: center; aspect-ratio: 3 / 4; transition: transform 0.3s ease; border: 1px solid #ddd; }
 .tarjeta-sio:hover { transform: translateY(-8px); }
 .bg-proyectos { background-image: url('../assets/proyectos.jpg'); background-color: #e3f2fd; }
 .bg-instrumentacion-activa { background-image: url('../assets/instrumentacion.jpg'); background-color: #bbdefb; cursor: pointer; border: 2px solid #005596; }
