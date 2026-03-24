@@ -86,15 +86,12 @@ const volverAInicio = () => {
       </div>
     </header>
 
-    <main class="main-content">
-      <QuienesSomos v-if="vistaActual === 'inicio'" @cambiar-pagina="irAInstrumentacion" />
-      <Instrumentacion v-else-if="vistaActual === 'instrumentacion'" @volver="volverAInicio" />
-      
-      <div v-else-if="vistaActual === 'intranet'" class="vista-intranet">
-        <button @click="volverAInicio" class="btn-volver">⬅ Volver al Inicio</button>
-        <h2>🛡️ Intranet SIO</h2>
-      </div>
-    </main>
+<main class="main-content">
+  <QuienesSomos v-if="vistaActual === 'inicio'" @cambiar-pagina="irAInstrumentacion" />
+  <Instrumentacion v-else-if="vistaActual === 'instrumentacion'" @volver="volverAInicio" />
+  
+  <IntranetPanel v-else-if="vistaActual === 'intranet'" @volver="volverAInicio" />
+</main>
 
     <footer class="footer-sio">
       <p><strong>Institut de Ciències del Mar (ICM-CSIC)</strong></p>
