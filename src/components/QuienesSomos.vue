@@ -14,26 +14,40 @@
           </p>
         </div> </div> </div> <div class="grid-servicios-tres">
       
-      <div class="tarjeta-sio bg-proyectos">
-        <div class="overlay-tarjeta">
-          <h3>Proyectos</h3>
-          <p>Soporte técnico y logístico para campañas de investigación en el medio marino.</p>
-        </div>
-      </div>
+ <div 
+    class="tarjeta-sio bg-proyectos" 
+    style="cursor: pointer;"
+    @click="$emit('cambiar-pagina', 'proyectos')" 
+  >
+    <div class="overlay-tarjeta">
+      <h3>Proyectos</h3>
+      <p>Soporte técnico y logístico para campañas de investigación en el medio marino.</p>
+      <span class="btn-ver-mas">Ver Campañas ➔</span>
+    </div>
+  </div>
 
-      <div class="tarjeta-sio bg-instrumentacion-activa" @click="$emit('cambiar-pagina')">
-        <div class="overlay-tarjeta">
-          <h3>Instrumentación-embarcación</h3>
-          <p>Accede al catálogo completo de equipos, consulta disponibilidad de la lancha y reserva.</p>
-          <span class="btn-ver-mas">Entrar al Catálogo ➔</span>
-        </div>
-      </div>
+  <div 
+    class="tarjeta-sio bg-instrumentacion-activa" 
+    style="cursor: pointer;"
+    @click="$emit('cambiar-pagina', 'instrumentacion')" 
+  >
+    <div class="overlay-tarjeta">
+      <h3>Instrumentación-embarcación</h3>
+      <p>Accede al catálogo completo de equipos, consulta disponibilidad de la lancha y reserva.</p>
+      <span class="btn-ver-mas">Entrar al Catálogo ➔</span>
+    </div>
+  </div>
 
-      <div class="tarjeta-sio bg-idi">
-        <div class="overlay-tarjeta">
-          <h3>Desarrollo I+D+I</h3>
-          <p>Innovación tecnológica, diseño de prototipos y soluciones de ingeniería a medida.</p>
-        </div>
+  <div 
+    class="tarjeta-sio bg-idi" 
+    style="cursor: pointer;"
+    @click="$emit('cambiar-pagina', 'idi')" 
+  >
+    <div class="overlay-tarjeta">
+      <h3>Desarrollo I+D+I</h3>
+      <p>Innovación tecnológica, diseño de prototipos y soluciones de ingeniería a medida.</p>
+      <span class="btn-ver-mas">Conoce más ➔</span>
+    </div>
       </div>
 
     </div> </div> </template>

@@ -57,9 +57,9 @@ const cerrarSesion = () => {
   vistaActual.value = 'inicio'
 }
 
-// --- NAVEGACIÓN ---
-const irAInstrumentacion = () => { 
-  vistaActual.value = 'instrumentacion'
+// Esta función ahora es inteligente: recibe el nombre de la página a la que quieres ir
+const cambiarVista = (nuevaVista) => { 
+  vistaActual.value = nuevaVista
   window.scrollTo(0, 0)
 }
 
@@ -92,7 +92,7 @@ const volverAInicio = () => {
     </header>
 
     <main class="main-content">
-      <QuienesSomos v-if="vistaActual === 'inicio'" @cambiar-pagina="irAInstrumentacion" />
+      <QuienesSomos v-if="vistaActual === 'inicio'" @cambiar-pagina="cambiarVista" />
       <Instrumentacion v-else-if="vistaActual === 'instrumentacion'" @volver="volverAInicio" />
       
       <Proyectos v-else-if="vistaActual === 'proyectos'" @volver="volverAInicio" />
