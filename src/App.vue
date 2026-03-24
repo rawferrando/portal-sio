@@ -138,10 +138,13 @@ const guardarNuevoEquipo = () => {
       </div>
     </main>
 
-<footer class="footer-sio">
-      <p>Institut de Ciències del Mar (ICM-CSIC)</p>
-      <p>📧 sio@icm.csic.es | 📍 Pg. Marítim de la Barceloneta, 37, Ciutat Vella, 08003 Barcelona</p>
-    </footer>
+<footer class="main-footer">
+  <p><strong>Institut de Ciències del Mar (ICM-CSIC)</strong></p>
+  <p>📧 sio@icm.csic.es | 📍 Pg. Marítim de la Barceloneta, 37, 08003 Barcelona</p>
+  <p style="opacity: 0.7; font-size: 0.8rem; margin-top: 15px;">
+    &copy; 2026 Servicio de Ingeniería Oceanográfica
+  </p>
+</footer>
   </div>
 </template>
 
@@ -184,6 +187,11 @@ body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
 .campo input, .campo select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; }
 .btn-guardar-alta { background-color: #28a745; color: white; border: none; padding: 12px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 1rem; margin-top: 10px; width: 100%; }
 
-.main-footer { background-color: #333; color: #ccc; padding: 15px 20px; text-align: center; font-size: 0.9rem; margin-top: auto; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+<footer class="main-footer">
+  <p><strong>Institut de Ciències del Mar (ICM-CSIC)</strong></p>
+  <p>📧 sio@icm.csic.es | 📍 Pg. Marítim de la Barceloneta, 37, 08003 Barcelona</p>
+  <p style="opacity: 0.7; font-size: 0.8rem; margin-top: 15px;">
+    &copy; 2026 Servicio de Ingeniería Oceanográfica
+  </p>
+</footer>
 </style>
