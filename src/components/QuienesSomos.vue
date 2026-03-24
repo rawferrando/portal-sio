@@ -8,7 +8,7 @@
         <div class="hero-text-box">
           <p class="resumen-sio">
             <span class="highlight-white">Soporte tecnológico integral para la investigación marina:</span><br>
-            Como equipo integrante del <span class="destacado-bold">Institut de Ciències del Mar (ICM-CSIC)</span>, el Servicio de Ingeniería Oceanográfica aporta experiencia técnica, soporte logístico e <span class="destacado-bold">I+D+I</span> en todas las fases de la investigación científica. 
+            Como equipo integrante del ICM-CSIC, el Servicio de Ingeniería Oceanográfica aporta experiencia técnica, soporte logístico e I+D+I en todas las fases de la investigación científica. 
             Nos encargamos del diseño, preparación e instalación de fondeos instrumentados, la gestión de un catálogo avanzado de instrumentación oceanográfica y el soporte operativo con embarcación propia. 
             Trabajamos de forma colaborativa para maximizar la calidad de los resultados y asegurar el éxito de cada proyecto en el medio marino.
           </p>
@@ -70,7 +70,7 @@
 }
 
 .hero-text-box {
-  flex: 1;
+  flex: 0;
 }
 
 .resumen-sio {
