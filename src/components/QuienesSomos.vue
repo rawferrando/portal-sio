@@ -70,12 +70,12 @@
 }
 
 .hero-text-box {
-  flex: 0;
+  flex: 1;
 }
 
 .resumen-sio {
   color: white;
-  font-size: 1.05rem;
+  font-size: 0.8 rem;
   line-height: 1.4;
   text-align: justify; /* Texto sigue justificado */
   margin: 0;
