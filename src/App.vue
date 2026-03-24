@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import QuienesSomos from './components/QuienesSomos.vue'
 import Instrumentacion from './components/Instrumentacion.vue'
+import IntranetPanel from './components/IntranetPanel.vue'
 
 const vistaActual = ref('inicio')
 const menuPrivadoVisible = ref(false)
