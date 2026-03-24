@@ -138,8 +138,9 @@ const guardarNuevoEquipo = () => {
       </div>
     </main>
 
-    <footer class="main-footer">
-      <p>&copy; 2026 SIO - Instituto de Ciencias del Mar (CSIC)</p>
+<footer class="footer-sio">
+      <p>Institut de Ciències del Mar (ICM-CSIC)</p>
+      <p>📧 sio@icm.csic.es | 📍 Pg. Marítim de la Barceloneta, 37, Ciutat Vella, 08003 Barcelona</p>
     </footer>
   </div>
 </template>
