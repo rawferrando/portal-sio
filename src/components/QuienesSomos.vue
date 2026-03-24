@@ -1,101 +1,77 @@
 <template>
-  <div class="quienes-somos">
-    <h2>Quiénes Somos</h2>
-    <p>El <strong>Servicio de Ingeniería Oceanográfica</strong> del Instituto de Ciencias del Mar ofrece soporte técnico especializado a grupos de investigación y proyectos en el ámbito de las ciencias del mar.</p>
-    <p>Nuestro objetivo es proporcionar soluciones técnicas adaptadas a las necesidades específicas de cada cliente, además de ofrecer asesoramiento experto basado en años de experiencia en el sector. Contamos con un equipo altamente cualificado y una amplia gama de instrumentación y recursos, lo que nos permite innovar, desarrollar y personalizar equipos, así como diseñar, desplegar e implementar sistemas avanzados de adquisición de datos, tanto fijos como móviles. También ofrecemos herramientas y técnicas de verificación específicas para garantizar la calidad de los datos obtenidos en los estudios oceanográficos.</p>
+  <div class="portada-sio">
+    <div class="hero-section">
+      <h1>Servicio de Ingeniería Oceanográfica</h1>
+      <p>Apoyo tecnológico e instrumentación de vanguardia para la investigación marina.</p>
+    </div>
 
-    <h2 class="titulo-ofrecemos">¿Qué ofrecemos?</h2>
-    
-    <div class="grid-servicios">
-      <div class="tarjeta-servicio bg-proyectos">
-        <div class="contenido-tarjeta">
-          <h3>Proyectos de Investigación</h3>
-          <p>Aportamos experiencia técnica especializada, innovación tecnológica y soporte logístico en todas las fases del proyecto.</p>
+    <div class="grid-servicios-tres">
+      
+      <div class="tarjeta-sio bg-proyectos">
+        <div class="overlay-tarjeta">
+          <h3>Proyectos</h3>
+          <p>Apoyo técnico especializado en campañas nacionales e internacionales.</p>
         </div>
       </div>
-      <div class="tarjeta-servicio bg-despliegue">
-        <div class="contenido-tarjeta">
-          <h3>Despliegue y Mantenimiento</h3>
-          <p>Diseño, despliegue y mantenimiento de líneas de instrumentación fondeadas.</p>
+
+      <div class="tarjeta-sio bg-instrumentacion-activa" @click="$emit('cambiar-pagina')">
+        <div class="overlay-tarjeta">
+          <h3>Instrumentación-embarcación</h3>
+          <p>Consulta nuestro catálogo de equipos, embarcaciones y gestiona tus reservas.</p>
+          <span class="btn-ver-mas">Entrar al Catálogo ➔</span>
         </div>
       </div>
-      <div class="tarjeta-servicio bg-analisis">
-        <div class="contenido-tarjeta">
-          <h3>Análisis y Caracterización</h3>
-          <p>Caracterización de agua marina con perfilador vertical y análisis de salinidad.</p>
+
+      <div class="tarjeta-sio bg-idi">
+        <div class="overlay-tarjeta">
+          <h3>Desarrollo I+D+I</h3>
+          <p>Diseño de soluciones de ingeniería personalizadas y nuevos sensores.</p>
         </div>
       </div>
-      <div class="tarjeta-servicio bg-instrumentacion clicable" @click="$emit('cambiar-pagina', 'instrumentacion')">
-        <div class="contenido-tarjeta">
-          <h3>Instrumentación Científica</h3>
-          <p>Gestión del catálogo completo de sondas CTD, salinómetros y sensores disponibles.</p>
-          <span class="enlace-falso">🔍 Buscar Equipos y Reservar ➔</span>
-        </div>
-      </div>
-      <div class="tarjeta-servicio bg-tanques">
-        <div class="contenido-tarjeta">
-          <h3>Tanques y Laboratorio</h3>
-          <p>Infraestructuras experimentales equipadas para simulación en condiciones controladas.</p>
-        </div>
-      </div>
-      <div class="tarjeta-servicio bg-embarcaciones">
-        <div class="contenido-tarjeta">
-          <h3>Embarcaciones y Logística</h3>
-          <p>Apoyo operativo con embarcaciones propias y drones para trabajos costeros.</p>
-        </div>
-      </div>
-      <div class="tarjeta-servicio bg-calibracion">
-        <div class="contenido-tarjeta">
-          <h3>Calibración y Verificación</h3>
-          <p>Técnicas de control riguroso para garantizar la precisión de los datos oceanográficos.</p>
-        </div>
-      </div>
-      <div class="tarjeta-servicio bg-desarrollo">
-        <div class="contenido-tarjeta">
-          <h3>Desarrollo a Medida</h3>
-          <p>Diseño de soluciones de ingeniería personalizadas y mecanizado de piezas.</p>
-        </div>
-      </div>
+
     </div>
   </div>
 </template>
 
 <style scoped>
-.quienes-somos { margin-bottom: 40px; animation: fadeIn 0.5s ease-in-out; width: 100%; box-sizing: border-box; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.hero-section { background-color: #005596; color: white; padding: 50px 20px; text-align: center; border-radius: 8px; margin-bottom: 40px; }
+.hero-section h1 { margin: 0; font-size: 2.4rem; }
+.hero-section p { opacity: 0.9; font-size: 1.1rem; margin-top: 10px; }
 
-h2 { color: #005596; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 30px; }
-p { line-height: 1.6; color: #444; font-size: 1.05rem; text-align: justify; word-wrap: break-word; }
+.grid-servicios-tres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; min-height: 400px; }
 
-.titulo-ofrecemos { margin-top: 50px; margin-bottom: 30px; }
+.tarjeta-sio { 
+  position: relative; 
+  border-radius: 12px; 
+  overflow: hidden; 
+  background-size: cover; 
+  background-position: center; 
+  min-height: 350px; 
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #ddd;
+}
 
-.grid-servicios { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; }
+.tarjeta-sio:hover { transform: translateY(-10px); box-shadow: 0 12px 25px rgba(0,0,0,0.2); }
 
-.tarjeta-servicio { position: relative; border-radius: 10px; overflow: hidden; min-height: 250px; display: flex; align-items: flex-end; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; background-color: #005596; background-size: cover; background-position: center; }
-.tarjeta-servicio:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
-.tarjeta-servicio::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to top, rgba(0, 30, 60, 0.95) 0%, rgba(0, 30, 60, 0.2) 100%); transition: background 0.3s ease; }
-.tarjeta-servicio:hover::before { background: linear-gradient(to top, rgba(0, 30, 60, 0.98) 0%, rgba(0, 30, 60, 0.4) 100%); }
+.bg-proyectos { background-image: url('../assets/proyectos.jpg'); background-color: #e3f2fd; }
+.bg-instrumentacion-activa { background-image: url('../assets/instrumentacion.jpg'); background-color: #bbdefb; cursor: pointer; border: 2px solid #005596; }
+.bg-idi { background-image: url('../assets/idi.jpg'); background-color: #e1f5fe; }
 
-.contenido-tarjeta { position: relative; z-index: 1; padding: 25px; color: white; width: 100%; box-sizing: border-box; }
-.contenido-tarjeta h3 { color: white; border: none; padding: 0; margin: 0 0 10px 0; font-size: 1.25rem; text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
-.contenido-tarjeta p { color: #e2eef7; margin: 0; font-size: 0.9rem; line-height: 1.5; text-align: left; }
+.overlay-tarjeta { 
+  position: absolute; 
+  bottom: 0; left: 0; right: 0; 
+  background: linear-gradient(transparent, rgba(0,85,150,0.9)); 
+  padding: 30px 20px; 
+  color: white; 
+}
 
-.clicable { cursor: pointer; border: 2px solid transparent; }
-.clicable:hover { border: 2px solid #66b2ff; }
-.enlace-falso { display: inline-block; margin-top: 15px; color: #66b2ff; font-weight: bold; font-size: 0.95rem; background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 4px; }
+.overlay-tarjeta h3 { margin: 0 0 10px 0; font-size: 1.6rem; }
+.overlay-tarjeta p { margin: 0; font-size: 1rem; line-height: 1.4; opacity: 0.95; }
+.btn-ver-mas { display: inline-block; margin-top: 15px; font-weight: bold; text-transform: uppercase; font-size: 0.85rem; }
 
-.bg-proyectos { background-image: url('../assets/proyectos.jpg'); }
-.bg-despliegue { background-image: url('../assets/despliegue.jpg'); }
-.bg-analisis { background-image: url('../assets/analisis.jpg'); }
-.bg-instrumentacion { background-image: url('../assets/instrumentacion.jpg'); }
-.bg-tanques { background-image: url('../assets/tanques.jpg'); }
-.bg-embarcaciones { background-image: url('../assets/embarcacion.jpg'); }
-.bg-calibracion { background-image: url('../assets/calibracion.jpg'); }
-.bg-desarrollo { background-image: url('../assets/desarrollo.jpg'); }
-
-@media (max-width: 768px) {
-  p { text-align: justify; font-size: 1rem; hyphens: auto; -webkit-hyphens: auto; }
-  .quienes-somos { padding: 0 15px; }
-  .tarjeta-servicio { min-height: 280px; }
+/* Adaptable a móviles */
+@media (max-width: 900px) {
+  .grid-servicios-tres { grid-template-columns: 1fr; }
+  .tarjeta-sio { min-height: 250px; }
 }
 </style>
