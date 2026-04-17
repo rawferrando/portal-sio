@@ -44,10 +44,6 @@ const cerrarModalLogin = () => {
 }
 
 const cambiarVista = (nuevaVista) => { 
-  if (nuevaVista === 'intranet' && !usuarioLogueadoSio.value) {
-    mostrarModalLogin.value = true
-    return
-  }
   vistaActual.value = nuevaVista
   window.scrollTo(0, 0)
 }
@@ -70,7 +66,7 @@ const volverAInicio = () => {
             {{ usuarioLogueadoSio ? '🔓 Intranet' : '🔒 Intranet' }}
           </button>
           <div class="idiomas">
-            <span>ca</span> | <span class="active">es</span> | <span>en</span>
+            <span class="active">ca</span> | <span>es</span> | <span>en</span>
           </div>
         </div>
       </div>
@@ -90,16 +86,13 @@ const volverAInicio = () => {
             <a href="#" @click.prevent="cambiarVista('proyectos')" class="nav-item" :class="{ activo: vistaActual === 'proyectos' }">Proyectos</a>
             <a href="#" @click.prevent="cambiarVista('idi')" class="nav-item" :class="{ activo: vistaActual === 'idi' }">I+D+i</a>
           </nav>
-          <div class="search-box">
-            <button class="btn-search">🔍</button>
-          </div>
+          <button class="btn-search">🔍</button>
         </div>
 
         <div class="institutional-seals">
           <img src="@/assets/logo-severo.png" alt="" class="seal-img">
           <img src="@/assets/logo-icm.png" alt="" class="seal-img">
         </div>
-
       </div>
     </header>
 
@@ -120,43 +113,47 @@ const volverAInicio = () => {
         </div>
       </div>
     </footer>
+
+    <div v-if="mostrarModalLogin" class="modal-overlay" @click.self="cerrarModalLogin">
+      <div class="modal-login">
+        <h3>Acceso Restringido</h3>
+        <p>Introduce tus credenciales del SIO</p>
+        <input v-model="inputUsuario" type="text" placeholder="Usuario" />
+        <input v-model="inputPassword" type="password" placeholder="Contraseña" @keyup.enter="intentarLogin" />
+        <div class="modal-actions">
+          <button @click="intentarLogin" class="btn-entrar">Acceder</button>
+          <button @click="cerrarModalLogin" class="btn-cancelar">Cancelar</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
-/* Colores ICM */
-:root {
-  --azul-icm: #0a2540;
-  --celeste-icm: #0088cc;
-}
-
-/* Barra Superior */
-.top-bar { background-color: #0a2540; padding: 8px 0; font-size: 0.85rem; color: white; }
+/* Top Bar */
+.top-bar { background-color: white; border-bottom: 1px solid #e5e5e5; padding: 10px 0; font-size: 0.85rem; color: #666; }
 .top-bar-inner { display: flex; justify-content: space-between; align-items: center; }
-.top-link { color: white; text-decoration: none; font-weight: bold; opacity: 0.9; }
-.btn-intranet-sio { background: none; border: none; color: white; font-weight: bold; cursor: pointer; font-size: 0.85rem; margin-right: 15px; }
-.idiomas { display: inline-block; opacity: 0.8; }
-.idiomas .active { font-weight: bold; opacity: 1; }
+.top-link { color: #666; text-decoration: none; font-weight: bold; }
+.btn-intranet-sio { background: none; border: none; color: #0088cc; font-weight: bold; cursor: pointer; margin-right: 15px; }
+.idiomas .active { font-weight: bold; color: #333; }
 
 /* Header */
-.main-header { background: white; padding: 15px 0; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 1000; }
+.main-header { background: white; padding: 20px 0; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
 .header-inner { display: flex; justify-content: space-between; align-items: center; }
+.logo-sio-main { height: 70px; width: auto; }
 
-/* Logo SIO */
-.logo-sio-main { height: 75px; width: auto; }
-
-/* Menú y Buscador */
+/* Navegación */
 .nav-container { display: flex; align-items: center; gap: 20px; }
-.nav-menu { display: flex; gap: 25px; }
-.nav-item { text-decoration: none; color: #0a2540; font-weight: bold; padding-bottom: 5px; border-bottom: 3px solid transparent; }
+.nav-menu { display: flex; gap: 30px; }
+.nav-item { text-decoration: none; color: #0a2540; font-weight: bold; font-size: 1.1rem; padding-bottom: 5px; border-bottom: 3px solid transparent; transition: 0.3s; }
 .nav-item.activo, .nav-item:hover { color: #0088cc; border-bottom-color: #0088cc; }
-.btn-search { background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 0; }
+.btn-search { background: none; border: none; font-size: 1.2rem; cursor: pointer; }
 
-/* Logos Derecha */
-.institutional-seals { display: flex; gap: 15px; align-items: center; }
+/* Sellos */
+.institutional-seals { display: flex; gap: 15px; }
 .seal-img { height: 45px; width: auto; }
 
 /* Footer */
-.footer-icm { background: #0a2540; color: white; padding: 40px 0; text-align: center; }
-.logo-csic-white { height: 50px; filter: brightness(0) invert(1); margin-bottom: 15px; }
+.footer-icm { background: #0a2540; color: white; padding: 50px 0; text-align: center; margin-top: 40px; }
+.logo-csic-white { height: 60px; filter: brightness(0) invert(1); margin-bottom: 20px; }
 </style>
