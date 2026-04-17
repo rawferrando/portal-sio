@@ -6,7 +6,7 @@ import Servicios from './components/Servicios.vue'
 import DesarrolloIdi from './components/DesarrolloIdi.vue'
 import IntranetPanel from './components/IntranetPanel.vue'
 
-// --- IMPORTACIÓN DINÁMICA DE LOGOS (La forma que no falla) ---
+// --- IMPORTACIÓN DE LOGOS ---
 import imgLogoSio from './assets/logovector.png'
 import imgLogoCsic from './assets/logo-csic.png'
 import imgLogoIcm from './assets/logo-icm.png'
@@ -43,14 +43,15 @@ const volverAInicio = () => { cambiarVista('inicio') }
     
     <div class="top-bar">
       <div class="contenedor-ancho top-bar-inner">
-        <div class="spacer"></div> <div class="top-nav-group">
-          <a href="#" class="top-item border-left">CONTACT</a>
+        <div class="spacer"></div>
+        <div class="top-nav-group">
+          <a href="#" class="top-item border-left">CONTACTO</a>
           <button class="top-item border-left btn-reset" @click="manejarClicIntranet">INTRANET</button>
           <div class="top-item border-left idiomas">
             <span>CA</span> | <span class="active">ES</span> | <span>EN</span>
           </div>
-          <div class="top-item border-left search-icon">
-            <button class="btn-reset">🔍</button>
+          <div class="top-item border-left search-block">
+            <img src="https://icm.csic.es/sites/all/themes/bootstrap_icm/icons/lupa.png" alt="Buscar" class="icon-lupa-img">
           </div>
         </div>
       </div>
@@ -65,10 +66,10 @@ const volverAInicio = () => { cambiarVista('inicio') }
         </div>
 
         <nav class="nav-menu">
-          <a href="#" @click.prevent="cambiarVista('inicio')" :class="{ active: vistaActual === 'inicio' }">L'SIO</a>
-          <a href="#" @click.prevent="cambiarVista('servicios')" :class="{ active: vistaActual === 'servicios' }">SERVEIS</a>
-          <a href="#" @click.prevent="cambiarVista('proyectos')" :class="{ active: vistaActual === 'proyectos' }">PROJECTES</a>
-          <a href="#" @click.prevent="cambiarVista('idi')" :class="{ active: vistaActual === 'idi' }">RECERCA I+D+i</a>
+          <a href="#" @click.prevent="cambiarVista('inicio')" :class="{ active: vistaActual === 'inicio' }">EL SIO</a>
+          <a href="#" @click.prevent="cambiarVista('servicios')" :class="{ active: vistaActual === 'servicios' }">SERVICIOS</a>
+          <a href="#" @click.prevent="cambiarVista('proyectos')" :class="{ active: vistaActual === 'proyectos' }">PROYECTOS</a>
+          <a href="#" @click.prevent="cambiarVista('idi')" :class="{ active: vistaActual === 'idi' }">I+D+i</a>
           <img :src="imgLogoCsic" alt="CSIC" class="logo-csic-nav">
         </nav>
       </div>
@@ -93,45 +94,43 @@ const volverAInicio = () => { cambiarVista('inicio') }
 </template>
 
 <style>
-/* Reset y Variables */
-:root { --icm-navy: #0a2540; --icm-blue: #0088cc; }
-body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+/* COLORES OFICIALES ICM */
+:root { 
+  --icm-navy: #032b44;  /* Azul oscuro barra superior */
+  --icm-blue: #0086c0;  /* Azul corporativo principal */
+}
 
+body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
 .contenedor-ancho { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
 .btn-reset { background: none; border: none; color: inherit; font: inherit; cursor: pointer; padding: 0; }
 
 /* TOP BAR */
 .top-bar { background: var(--icm-navy); color: white; height: 40px; }
 .top-bar-inner { display: flex; justify-content: space-between; align-items: center; height: 100%; }
-.top-nav-group { display: flex; height: 100%; align-items: center; border-right: 1px solid rgba(255,255,255,0.3); }
+.top-nav-group { display: flex; height: 100%; align-items: center; border-right: 1px solid rgba(255,255,255,0.2); }
 .top-item { 
   display: flex; align-items: center; height: 100%; padding: 0 15px;
   font-size: 11px; font-weight: bold; text-decoration: none; color: white;
-  transition: background 0.2s;
 }
-.top-item:hover { background: rgba(255,255,255,0.1); }
-.border-left { border-left: 1px solid rgba(255,255,255,0.3); }
+.border-left { border-left: 1px solid rgba(255,255,255,0.2); }
 .idiomas span { opacity: 0.6; margin: 0 2px; }
 .idiomas .active { opacity: 1; }
-.search-icon { background: var(--icm-blue); font-size: 14px; }
+.search-block { background: var(--icm-blue); padding: 0 12px; cursor: pointer; }
+.icon-lupa-img { height: 16px; }
 
 /* HEADER */
 .main-header { background: white; padding: 25px 0; border-bottom: 1px solid #eee; }
 .header-inner { display: flex; justify-content: space-between; align-items: center; }
 .header-left { display: flex; align-items: center; gap: 20px; }
-.logo-sio { height: 60px; cursor: pointer; }
+.logo-sio { height: 65px; cursor: pointer; }
 .divider { width: 1px; height: 40px; background: #ddd; }
 .logo-severo { height: 45px; }
 
 .nav-menu { display: flex; align-items: center; gap: 25px; }
-.nav-menu a { 
-  text-decoration: none; color: var(--icm-navy); 
-  font-weight: bold; font-size: 13px; letter-spacing: 0.5px;
-}
+.nav-menu a { text-decoration: none; color: var(--icm-navy); font-weight: bold; font-size: 13px; }
 .nav-menu a.active, .nav-menu a:hover { color: var(--icm-blue); }
 .logo-csic-nav { height: 35px; margin-left: 10px; }
 
-/* FOOTER */
-.footer-icm { background: #f9f9f9; padding: 60px 0; text-align: center; border-top: 1px solid #eee; color: #666; font-size: 12px; }
+.footer-icm { background: #f9f9f9; padding: 60px 0; text-align: center; color: #666; font-size: 12px; }
 .footer-logo-main { height: 50px; margin-bottom: 25px; }
 </style>
