@@ -6,11 +6,11 @@ import Servicios from './components/Servicios.vue'
 import DesarrolloIdi from './components/DesarrolloIdi.vue'
 import IntranetPanel from './components/IntranetPanel.vue'
 
-// --- IMPORTACIÓN DE LOGOS ---
-import imgLogoSio from './assets/logovector.png'
-import imgLogoCsic from './assets/logo-csic.png'
-import imgLogoIcm from './assets/logo-icm.png'
-import imgLogoSevero from './assets/logo-severo.png'
+// Importación robusta: Esto asegura que Vite procese las imágenes al hacer el build
+import logoSio from '@/assets/logovector.png'
+import logoCsic from '@/assets/logo-csic.png'
+import logoIcm from '@/assets/logo-icm.png'
+import logoSevero from '@/assets/logo-severo.png'
 
 const vistaActual = ref('inicio')
 const usuarioLogueadoSio = ref(false)
@@ -60,17 +60,17 @@ const volverAInicio = () => { cambiarVista('inicio') }
     <header class="main-header">
       <div class="contenedor-ancho header-inner">
         <div class="header-left">
-          <img :src="imgLogoSio" alt="SIO" class="logo-sio" @click="volverAInicio">
+          <img :src="logoSio" alt="SIO" class="logo-sio" @click="volverAInicio">
           <div class="divider"></div>
-          <img :src="imgLogoSevero" alt="Severo Ochoa" class="logo-severo">
+          <img :src="logoSevero" alt="Severo Ochoa" class="logo-severo">
         </div>
 
         <nav class="nav-menu">
-          <a href="#" @click.prevent="cambiarVista('inicio')" :class="{ active: vistaActual === 'inicio' }">EL SIO</a>
-          <a href="#" @click.prevent="cambiarVista('servicios')" :class="{ active: vistaActual === 'servicios' }">SERVICIOS</a>
-          <a href="#" @click.prevent="cambiarVista('proyectos')" :class="{ active: vistaActual === 'proyectos' }">PROYECTOS</a>
-          <a href="#" @click.prevent="cambiarVista('idi')" :class="{ active: vistaActual === 'idi' }">I+D+i</a>
-          <img :src="imgLogoCsic" alt="CSIC" class="logo-csic-nav">
+          <a href="#" @click.prevent="cambiarVista('inicio')" class="nav-item" :class="{ activo: vistaActual === 'inicio' }">EL SIO</a>
+          <a href="#" @click.prevent="cambiarVista('servicios')" class="nav-item" :class="{ activo: vistaActual === 'servicios' }">SERVICIOS</a>
+          <a href="#" @click.prevent="cambiarVista('proyectos')" class="nav-item" :class="{ activo: vistaActual === 'proyectos' }">PROYECTOS</a>
+          <a href="#" @click.prevent="cambiarVista('idi')" class="nav-item" :class="{ activo: vistaActual === 'idi' }">I+D+i</a>
+          <img :src="logoCsic" alt="CSIC" class="logo-csic-nav">
         </nav>
       </div>
     </header>
@@ -85,8 +85,7 @@ const volverAInicio = () => { cambiarVista('inicio') }
 
     <footer class="footer-icm">
       <div class="contenedor-ancho">
-        <img :src="imgLogoIcm" alt="ICM" class="footer-logo-main">
-        <p>Passeig Marítim de la Barceloneta, 37-49. 08003 Barcelona (Spain)</p>
+        <img :src="logoIcm" alt="ICM" class="footer-logo-main">
         <p>© 2026 Servicio de Ingeniería Oceanográfica - CSIC</p>
       </div>
     </footer>
@@ -94,13 +93,13 @@ const volverAInicio = () => { cambiarVista('inicio') }
 </template>
 
 <style>
-/* COLORES OFICIALES ICM */
+/* COLORES OFICIALES ICM ACTUALIZADOS */
 :root { 
-  --icm-navy: #032b44;  /* Azul oscuro barra superior */
-  --icm-blue: #0086c0;  /* Azul corporativo principal */
+  --icm-navy: #002d4b;   /* Color exacto barra superior ICM */
+  --icm-blue: #0086c0;   /* Color exacto logos/lupa/hover */
 }
 
-body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; }
 .contenedor-ancho { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
 .btn-reset { background: none; border: none; color: inherit; font: inherit; cursor: pointer; padding: 0; }
 
@@ -118,7 +117,7 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
 .search-block { background: var(--icm-blue); padding: 0 12px; cursor: pointer; }
 .icon-lupa-img { height: 16px; }
 
-/* HEADER */
+/* HEADER Y MENÚ CON SUBRAYADO */
 .main-header { background: white; padding: 25px 0; border-bottom: 1px solid #eee; }
 .header-inner { display: flex; justify-content: space-between; align-items: center; }
 .header-left { display: flex; align-items: center; gap: 20px; }
@@ -127,10 +126,37 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
 .logo-severo { height: 45px; }
 
 .nav-menu { display: flex; align-items: center; gap: 25px; }
-.nav-menu a { text-decoration: none; color: var(--icm-navy); font-weight: bold; font-size: 13px; }
-.nav-menu a.active, .nav-menu a:hover { color: var(--icm-blue); }
+.nav-item { 
+  text-decoration: none; 
+  color: var(--icm-navy); 
+  font-weight: bold; 
+  font-size: 13px;
+  position: relative;
+  padding: 5px 0;
+}
+
+/* Efecto subrayado al pasar el puntero (hover) */
+.nav-item::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--icm-blue);
+  transition: width 0.3s ease;
+}
+
+.nav-item:hover::after, .nav-item.activo::after {
+  width: 100%;
+}
+
+.nav-item:hover, .nav-item.activo {
+  color: var(--icm-blue);
+}
+
 .logo-csic-nav { height: 35px; margin-left: 10px; }
 
 .footer-icm { background: #f9f9f9; padding: 60px 0; text-align: center; color: #666; font-size: 12px; }
-.footer-logo-main { height: 50px; margin-bottom: 25px; }
+.footer-logo-main { height: 50px; margin-bottom: 15px; }
 </style>
