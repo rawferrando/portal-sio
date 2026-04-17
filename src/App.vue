@@ -6,8 +6,7 @@ import Servicios from './components/Servicios.vue'
 import DesarrolloIdi from './components/DesarrolloIdi.vue'
 import IntranetPanel from './components/IntranetPanel.vue'
 
-// --- CARGA DE IMÁGENES (Método infalible para GitHub) ---
-// Usamos URL para que Vite genere la ruta correcta sí o sí
+// --- CARGA DE IMÁGENES ROBUSTA ---
 const imgSio = new URL('./assets/logovector.png', import.meta.url).href
 const imgCsic = new URL('./assets/logo-csic.png', import.meta.url).href
 const imgIcm = new URL('./assets/logo-icm.png', import.meta.url).href
@@ -46,11 +45,16 @@ const volverAInicio = () => { cambiarVista('inicio') }
       <div class="contenedor-ancho top-bar-inner">
         <div class="spacer"></div>
         <div class="top-nav-group">
-          <a href="#" class="top-item border-left">CONTACTO</a>
-          <button class="top-item border-left btn-reset" @click="manejarClicIntranet">INTRANET</button>
-          <div class="top-item border-left idiomas">
+          <a href="#" class="top-item border-left underline-white">CONTACTO</a>
+          
+          <button class="top-item border-left btn-reset underline-white" @click="manejarClicIntranet">
+            {{ usuarioLogueadoSio ? 'INTRANET' : 'INTRANET' }}
+          </button>
+
+          <div class="top-item border-left idiomas underline-white">
             <span>CA</span> | <span class="active">ES</span> | <span>EN</span>
           </div>
+
           <div class="top-item border-left search-block">
             <img src="https://icm.csic.es/sites/all/themes/bootstrap_icm/icons/lupa.png" alt="" class="icon-lupa-img">
           </div>
@@ -96,8 +100,8 @@ const volverAInicio = () => { cambiarVista('inicio') }
 <style>
 /* COLORES OFICIALES ICM */
 :root { 
-  --icm-navy: #002d4b;   /* Azul marino barra superior */
-  --icm-blue: #0086c0;   /* Azul cian para hover y lupa */
+  --icm-navy: #002d4b;   
+  --icm-blue: #0086c0;   
 }
 
 body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
@@ -108,17 +112,49 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
 .top-bar { background: var(--icm-navy); height: 40px; }
 .top-bar-inner { display: flex; justify-content: space-between; align-items: center; height: 100%; }
 .top-nav-group { display: flex; height: 100%; align-items: center; border-right: 1px solid rgba(255,255,255,0.2); }
+
 .top-item { 
   display: flex; align-items: center; height: 100%; padding: 0 15px;
   font-size: 11px; font-weight: bold; color: white; text-decoration: none;
+  position: relative;
 }
-.border-left { border-left: 1px solid rgba(255,255,255,0.2); }
-.idiomas span { opacity: 0.6; margin: 0 2px; }
-.idiomas .active { opacity: 1; }
-.search-block { background: var(--icm-blue); padding: 0 12px; cursor: pointer; }
-.icon-lupa-img { height: 16px; }
 
-/* HEADER Y NAVEGACIÓN CON SUBRAYADO */
+.border-left { border-left: 1px solid rgba(255,255,255,0.2); }
+
+/* SUBRAYADO BLANCO EN BARRA SUPERIOR */
+.underline-white::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 8px;
+  left: 15px;
+  background-color: white;
+  transition: width 0.3s ease;
+}
+.underline-white:hover::after {
+  width: calc(100% - 30px);
+}
+
+/* BLOQUE LUPA Y CAMBIO DE COLOR */
+.search-block { 
+  background: var(--icm-blue); 
+  padding: 0 12px; 
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.search-block:hover {
+  background: #00a4eb; /* Un azul un poco más claro al pasar el ratón */
+}
+.icon-lupa-img { 
+  height: 16px; 
+  transition: transform 0.2s ease;
+}
+.search-block:hover .icon-lupa-img {
+  transform: scale(1.1); /* La lupa crece un poquito al pasar el ratón */
+}
+
+/* HEADER Y NAVEGACIÓN (SUBRAYADO AZUL) */
 .main-header { background: white; padding: 25px 0; border-bottom: 1px solid #eee; }
 .header-inner { display: flex; justify-content: space-between; align-items: center; }
 .header-left { display: flex; align-items: center; gap: 20px; }
@@ -136,7 +172,6 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
   padding-bottom: 5px;
 }
 
-/* EFECTO SUBRAYADO */
 .nav-item::after {
   content: '';
   position: absolute;
@@ -147,14 +182,8 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
   background-color: var(--icm-blue);
   transition: width 0.3s ease;
 }
-
-.nav-item:hover::after, .nav-item.activo::after {
-  width: 100%;
-}
-
-.nav-item:hover, .nav-item.activo {
-  color: var(--icm-blue);
-}
+.nav-item:hover::after, .nav-item.activo::after { width: 100%; }
+.nav-item:hover, .nav-item.activo { color: var(--icm-blue); }
 
 .logo-csic-nav { height: 35px; margin-left: 10px; }
 
