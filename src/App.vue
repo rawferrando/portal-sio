@@ -63,14 +63,14 @@ const volverAInicio = () => {
     <div class="top-bar">
       <div class="contenedor-ancho top-bar-inner">
         <div class="top-links-left">
-          <a href="https://icm.csic.es" target="_blank">Web ICM-CSIC</a>
+          <a href="#" style="color: #666; text-decoration: none; font-weight: bold;">Contacto</a>
         </div>
         <div class="top-links-right">
           <button class="btn-intranet-sio" @click="manejarClicIntranet">
             {{ usuarioLogueadoSio ? '🔒 Admin SIO' : '👤 Intranet SIO' }}
           </button>
           <div class="idiomas">
-            <span class="active">ca</span> | <span>es</span> | <span>en</span>
+            <span>ca</span> | <span class="active">es</span> | <span>en</span>
           </div>
         </div>
       </div>
@@ -80,7 +80,7 @@ const volverAInicio = () => {
       <div class="contenedor-ancho header-inner">
         
         <div class="sio-brand" @click="volverAInicio" style="cursor: pointer;">
-          <img src="./assets/logovector.png" alt="Logo SIO" class="logo-sio-main">
+          <img src="./assets/logovector.png" alt="" class="logo-sio-main">
           <div class="sio-text">
             <span class="sio-siglas">SIO</span>
             <span class="sio-nombre">Servicio de Ingeniería Oceanográfica</span>
@@ -95,8 +95,8 @@ const volverAInicio = () => {
         </nav>
 
         <div class="institutional-seals">
-          <img src="./assets/logo-severo.png" alt="Severo Ochoa" class="seal-img">
-          <img src="./assets/logo-icm.png" alt="ICM" class="seal-img">
+          <img src="./assets/logo-severo.png" alt="" class="seal-img">
+          <img src="./assets/logo-icm.png" alt="" class="seal-img">
         </div>
 
       </div>
@@ -113,7 +113,7 @@ const volverAInicio = () => {
     <footer class="footer-icm">
       <div class="contenedor-ancho footer-content">
         <div class="footer-logo-csic">
-          <img src="./assets/logo-csic.png" alt="CSIC" class="logo-csic-white">
+          <img src="./assets/logo-csic.png" alt="" class="logo-csic-white">
         </div>
         <div class="footer-info">
           <p><strong>Passeig Marítim de la Barceloneta, 37-49. 08003 Barcelona</strong></p>
