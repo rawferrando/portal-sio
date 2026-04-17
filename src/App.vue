@@ -59,15 +59,23 @@ const manejarClicIntranet = () => {
     <header class="main-header header-transparente" :class="{ 'header-solido-contacto': vistaActual === 'contacto' }">
       <div class="contenedor-ancho header-inner">
         
-        <div class="header-left">
+<div class="header-left">
           <img :src="logoSio" alt="SIO" class="logo-principal" @click="volverAInicio">
           
           <div class="divider"></div>
           
           <div class="logos-grupo">
-            <img :src="logoIcm" alt="ICM" class="logo-pequeno">
-            <img :src="logoSevero" alt="Severo Ochoa" class="logo-pequeno">
-            <img :src="logoCsic" alt="CSIC" class="logo-pequeno filter-white">
+            <a href="https://www.icm.csic.es" target="_blank" rel="noopener noreferrer">
+              <img :src="logoIcm" alt="ICM" class="logo-pequeno">
+            </a>
+            
+            <a href="https://www.icm.csic.es/es/excelencia-severo-ochoa" target="_blank" rel="noopener noreferrer">
+              <img :src="logoSevero" alt="Severo Ochoa" class="logo-pequeno">
+            </a>
+            
+            <a href="https://www.csic.es" target="_blank" rel="noopener noreferrer">
+              <img :src="logoCsic" alt="CSIC" class="logo-pequeno filter-white">
+            </a>
           </div>
         </div>
 
