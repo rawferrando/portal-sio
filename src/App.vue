@@ -55,7 +55,7 @@ const volverAInicio = () => { cambiarVista('inicio') }
           <a href="#" class="top-item border-left underline-item" @click.prevent="irAContacto">CONTACTO</a>
           <button class="top-item border-left btn-reset underline-item" @click="manejarClicIntranet">INTRANET</button>
           <div class="top-item border-left idiomas-container">
-            <span class="lang-link">CA</span> | <span class="lang-link active">CAS</span> | <span class="lang-link">EN</span>
+            <span class="lang-link">CA</span> | <span class="lang-link active">ES</span> | <span class="lang-link">EN</span>
           </div>
           <div class="top-item border-left search-block">
             <span class="search-label">BUSCAR</span>
@@ -200,7 +200,7 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
 .search-block:hover { background: #00a4eb; }
 .lupa-svg { height: 16px; width: 16px; fill: white; }
 
-.main-header { background: white; padding: 25px 0; border-bottom: 1px solid #eee; }
+.main-header { background: black; padding: 25px 0; border-bottom: 1px solid #eee; }
 .header-inner { display: flex; justify-content: space-between; align-items: center; }
 .logo-sio { height: 65px; cursor: pointer; }
 .divider { width: 1px; height: 40px; background: #ddd; margin: 0 15px; }
