@@ -6,11 +6,18 @@ import Servicios from './components/Servicios.vue'
 import DesarrolloIdi from './components/DesarrolloIdi.vue'
 import IntranetPanel from './components/IntranetPanel.vue'
 
+import logoSio from './assets/sio.png'
+import logoCsic from './assets/csic.png'
+import logoIcm from './assets/icm.png'
+import logoSevero from './assets/severo.png'
+
 // --- ESTADO ---
 const vistaActual = ref('inicio')
 const usuarioLogueadoSio = ref(false)
 const mostrarModalLogin = ref(false)
-
+const irAContacto = () => {
+  cambiarVista('contacto')
+}
 onMounted(() => {
   if (sessionStorage.getItem('sio_auth') === 'true') {
     usuarioLogueadoSio.value = true
@@ -45,7 +52,7 @@ const volverAInicio = () => { cambiarVista('inicio') }
       <div class="contenedor-ancho top-bar-inner">
         <div class="spacer"></div>
         <div class="top-nav-group">
-          <a href="#" class="top-item border-left underline-item">CONTACTO</a>
+          <a href="#" class="top-item border-left underline-item" @click.prevent="irAContacto">CONTACTO</a>
           <button class="top-item border-left btn-reset underline-item" @click="manejarClicIntranet">INTRANET</button>
           <div class="top-item border-left idiomas-container">
             <span class="lang-link">CA</span> | <span class="lang-link active">CAS</span> | <span class="lang-link">EN</span>
@@ -61,31 +68,92 @@ const volverAInicio = () => { cambiarVista('inicio') }
     <header class="main-header">
       <div class="contenedor-ancho header-inner">
         <div class="header-left">
-          <img :src="getImageUrl('sio.png')" alt="SIO" class="logo-sio" @click="volverAInicio">
+          <img :src="logoSio" alt="SIO" class="logo-sio" @click="volverAInicio">
           <div class="divider"></div>
-          <img :src="getImageUrl('severo.png')" alt="Severo Ochoa" class="logo-severo">
+          <img :src="logoSevero" alt="Severo Ochoa" class="logo-severo">
         </div>
         <nav class="nav-menu">
           <a href="#" @click.prevent="cambiarVista('inicio')" class="nav-item" :class="{ activo: vistaActual === 'inicio' }">EL SIO</a>
           <a href="#" @click.prevent="cambiarVista('servicios')" class="nav-item" :class="{ activo: vistaActual === 'servicios' }">SERVICIOS</a>
           <a href="#" @click.prevent="cambiarVista('proyectos')" class="nav-item" :class="{ activo: vistaActual === 'proyectos' }">PROYECTOS</a>
           <a href="#" @click.prevent="cambiarVista('idi')" class="nav-item" :class="{ activo: vistaActual === 'idi' }">I+D+i</a>
-          <img :src="getImageUrl('csic.png')" alt="CSIC" class="logo-csic-nav">
+          <img :src="logoCsic" alt="CSIC" class="logo-csic-nav">
         </nav>
       </div>
     </header>
 
-    <main class="main-content">
-      <QuienesSomos v-if="vistaActual === 'inicio'" @cambiar-pagina="cambiarVista" />
-      <Proyectos v-else-if="vistaActual === 'proyectos'" @volver="volverAInicio" />
-      <Servicios v-else-if="vistaActual === 'servicios'" @volver="volverAInicio" />
-      <DesarrolloIdi v-else-if="vistaActual === 'idi'" @volver="volverAInicio" />
-      <IntranetPanel v-else-if="vistaActual === 'intranet'" @volver="volverAInicio" />
-    </main>
+<main class="main-content">
+  <QuienesSomos v-if="vistaActual === 'inicio'" @cambiar-pagina="cambiarVista" />
+  <Proyectos v-else-if="vistaActual === 'proyectos'" @volver="volverAInicio" />
+  <Servicios v-else-if="vistaActual === 'servicios'" @volver="volverAInicio" />
+  <DesarrolloIdi v-else-if="vistaActual === 'idi'" @volver="volverAInicio" />
+  <IntranetPanel v-else-if="vistaActual === 'intranet'" @volver="volverAInicio" />
+  
+  <div v-else-if="vistaActual === 'contacto'" class="pagina-contacto">
+    <div class="contenedor-ancho">
+      <h2 class="titulo-seccion">CONTACTO Y UBICACIÓN</h2>
+      
+      <div class="contacto-grid">
+        <div class="contacto-info">
+          <div class="tarjeta-dato">
+            <h3>📍 Dirección</h3>
+            <p>Passeig Marítim de la Barceloneta, 37-49<br>08003 Barcelona, España</p>
+          </div>
+          
+          <div class="tarjeta-dato">
+            <h3>📞 Teléfono</h3>
+            <p>+34 93 230 95 00</p>
+          </div>
+
+          <div class="tarjeta-dato">
+            <h3>✉️ Email</h3>
+            <p><a href="mailto:sio.icm@icm.csic.es">sio.icm@icm.csic.es</a></p>
+          </div>
+
+          <div class="mapa-contenedor">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2994.137817342686!2d2.1910600765874495!3d41.3820249712999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4a3f1bc40698d%3A0xc3f6a297921a2245!2sInstitut%20de%20Ci%C3%A8ncies%20del%20Mar%20(ICM-CSIC)!5e0!3m2!1ses!2ses!4v1715851234567!5m2!1ses!2ses" 
+              width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy">
+            </iframe>
+          </div>
+        </div>
+
+        <div class="contacto-formulario">
+          <h3>Formulario de Consulta</h3>
+          <p>Utilice este formulario para solicitar servicios técnicos o información general.</p>
+          <form @submit.prevent="enviarFormulario">
+            <div class="grupo-input">
+              <label>Nombre y Apellidos</label>
+              <input type="text" required>
+            </div>
+            <div class="grupo-input">
+              <label>Email de contacto</label>
+              <input type="email" required>
+            </div>
+            <div class="grupo-input">
+              <label>Asunto</label>
+              <select>
+                <option>Servicios de Ingeniería</option>
+                <option>Mantenimiento de Equipos</option>
+                <option>Proyectos I+D+i</option>
+                <option>Otros</option>
+              </select>
+            </div>
+            <div class="grupo-input">
+              <label>Mensaje</label>
+              <textarea rows="6" required></textarea>
+            </div>
+            <button type="submit" class="btn-enviar">ENVIAR SOLICITUD</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
 
     <footer class="footer-icm">
       <div class="contenedor-ancho">
-        <img :src="getImageUrl('icm.png')" alt="ICM" class="footer-logo-main">
+        <img :src="logoIcm" alt="ICM" class="footer-logo-main">
         <p>© 2026 Servicio de Ingeniería Oceanográfica - CSIC</p>
       </div>
     </footer>
@@ -148,4 +216,15 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
 
 .footer-icm { background: #f9f9f9; padding: 60px 0; text-align: center; color: #666; font-size: 12px; }
 .footer-logo-main { height: 50px; margin-bottom: 15px; }
+.pagina-contacto { padding: 80px 0; background: #fdfdfd; animation: fadeIn 0.5s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.tarjeta-dato { background: white; padding: 20px; border-left: 4px solid var(--icm-blue); margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+.tarjeta-dato h3 { margin: 0 0 10px 0; font-size: 16px; color: var(--icm-navy); }
+
+.grupo-input { display: flex; flex-direction: column; gap: 5px; margin-bottom: 15px; }
+.grupo-input label { font-size: 13px; font-weight: bold; color: #555; }
+.grupo-input input, .grupo-input select, .grupo-input textarea { padding: 12px; border: 1px solid #ddd; border-radius: 4px; }
+
+.btn-enviar { width: 100%; letter-spacing: 1px; }
 </style>
