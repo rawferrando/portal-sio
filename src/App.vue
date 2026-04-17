@@ -94,7 +94,7 @@ const volverAInicio = () => { cambiarVista('inicio') }
 
 <style>
 :root { 
-  --icm-navy: #002d4b;   
+  --icm-navy: #012169ff;   
   --icm-blue: #0086c0;
   --icm-gris-claro: #a8bacc; 
 }
@@ -132,7 +132,7 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
 .search-block:hover { background: #00a4eb; }
 .lupa-svg { height: 16px; width: 16px; fill: white; }
 
-.main-header { background: white; padding: 25px 0; border-bottom: 1px solid #eee; }
+.main-header { background: #012169ff; padding: 25px 0; border-bottom: 1px solid #eee; }
 .header-inner { display: flex; justify-content: space-between; align-items: center; }
 .logo-sio { height: 65px; cursor: pointer; }
 .divider { width: 1px; height: 40px; background: #ddd; margin: 0 15px; }
