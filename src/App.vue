@@ -159,16 +159,49 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
 
 /* ✨ JERARQUÍA DE LOGOS ✨ */
 .logo-principal { height: 75px; cursor: pointer; transition: transform 0.3s; }
+/* Añadimos el mismo hover para que vuestro logo también crezca */
+.logo-principal:hover { transform: scale(1.05); } 
+
 .divider { width: 1px; height: 45px; background: rgba(255,255,255,0.4); margin: 0 25px; }
 .logos-grupo { display: flex; align-items: center; gap: 15px; }
 .logo-pequeno { height: 35px; opacity: 0.9; transition: transform 0.3s; }
 .logo-pequeno:hover { transform: scale(1.05); opacity: 1; }
 .filter-white { filter: brightness(0) invert(1); }
 
-/* ✨ MENÚ BLANCO ✨ */
+/* ✨ MENÚ BLANCO CON EFECTO HOVER AZUL ✨ */
 .nav-menu { display: flex; align-items: center; gap: 25px; }
-.nav-item { color: white !important; text-decoration: none; font-weight: bold; font-size: 14px; text-shadow: 1px 1px 4px rgba(0,0,0,0.8); }
+.nav-item { 
+  color: white !important; 
+  text-decoration: none; 
+  font-weight: bold; 
+  font-size: 14px; 
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
+  position: relative; /* Necesario para la línea de subrayado */
+  padding-bottom: 5px; /* Espacio entre el texto y la línea */
+  transition: color 0.3s ease; /* Transición suave de color */
+}
 
+/* 1. Cambia el color del texto al azul del botón "Buscar" */
+.nav-item:hover {
+  color: var(--icm-blue) !important;
+}
+
+/* 2. Prepara la línea de subrayado oculta (width: 0) */
+.nav-item::after {
+  content: ''; 
+  position: absolute; 
+  width: 0; 
+  height: 3px; 
+  bottom: -2px; 
+  left: 0; 
+  background-color: var(--icm-blue); 
+  transition: width 0.3s ease; 
+}
+
+/* 3. Al pasar el ratón, la línea crece hasta el 100% de la palabra */
+.nav-item:hover::after {
+  width: 100%;
+}
 /* ✨ SIMULADOR DEL CARRUSEL ✨ */
 .main-content { margin-top: 0; }
 .hero-bg {
