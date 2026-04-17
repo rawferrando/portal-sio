@@ -6,11 +6,11 @@ import Servicios from './components/Servicios.vue'
 import DesarrolloIdi from './components/DesarrolloIdi.vue'
 import IntranetPanel from './components/IntranetPanel.vue'
 
-// --- IMPORTACIÓN CORRECTA DE LOGOS ---
-import logoSio from './assets/logovector.png'
-import logoCsic from './assets/logo-csic.png'
-import logoIcm from './assets/logo-icm.png'
-import logoSevero from './assets/logo-severo.png'
+// --- IMPORTACIÓN NUCLEAR (Engañando a Git) ---
+import logoSio from '@/assets/logo-sio-final.png'
+import logoCsic from '@/assets/logo-csic-final.png'
+import logoIcm from '@/assets/logo-icm-final.png'
+import logoSevero from '@/assets/logo-severo-final.png'
 
 const vistaActual = ref('inicio')
 const usuarioLogueadoSio = ref(false)
