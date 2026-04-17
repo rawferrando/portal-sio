@@ -114,7 +114,36 @@
 }
 
 /* GRID DE 3 FICHAS (Sigue igual) */
-.grid-servicios-tres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+/* Este es el que hace que las 3 tarjetas se ajusten solas */
+.grid-servicios-tres { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+  gap: 20px; 
+  margin-top: 30px;
+}
+  
+  <div class="tarjeta-sio bg-proyectos" @click="$emit('cambiar-pagina', 'proyectos')">
+    <div class="overlay-tarjeta">
+      <h3>Proyectos</h3>
+      <p>Soporte técnico y logístico para campañas.</p>
+    </div>
+  </div>
+
+  <div class="tarjeta-sio bg-instrumentacion-activa" @click="$emit('cambiar-pagina', 'instrumentacion')">
+    <div class="overlay-tarjeta">
+      <h3>Instrumentación-embarcación</h3>
+      <p>Catálogo de equipos y reserva de lancha.</p>
+    </div>
+  </div>
+
+  <div class="tarjeta-sio bg-idi" @click="$emit('cambiar-pagina', 'idi')">
+    <div class="overlay-tarjeta">
+      <h3>Desarrollo I+D+I</h3>
+      <p>Innovación y soluciones tecnológicas a medida.</p>
+    </div>
+  </div>
+
+</div>
 .tarjeta-sio { position: relative; border-radius: 12px; overflow: hidden; background-size: cover; background-position: center; aspect-ratio: 3 / 4; transition: transform 0.3s ease; border: 1px solid #ddd; }
 .tarjeta-sio:hover { transform: translateY(-8px); }
 .bg-proyectos { background-image: url('../assets/proyectos.jpg'); background-color: #e3f2fd; }

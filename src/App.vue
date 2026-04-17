@@ -57,10 +57,16 @@ const cerrarSesion = () => {
   vistaActual.value = 'inicio'
 }
 
-// Esta función ahora es inteligente: recibe el nombre de la página a la que quieres ir
 const cambiarVista = (nuevaVista) => { 
-  vistaActual.value = nuevaVista
-  window.scrollTo(0, 0)
+  console.log("Cambiando a:", nuevaVista); // Esto te ayudará a ver si el clic funciona
+  
+  if (nuevaVista === 'intranet' && !usuarioLogueadoSio.value) {
+    mostrarModalLogin.value = true;
+    return;
+  }
+  
+  vistaActual.value = nuevaVista;
+  window.scrollTo(0, 0);
 }
 
 const volverAInicio = () => { 
@@ -180,4 +186,4 @@ body { margin: 0; font-family: 'Segoe UI', sans-serif; background-color: #f4f7f9
 .btn-entrar:hover { background-color: #003d73; }
 .btn-cancelar { flex: 1; background-color: #e0e0e0; color: #333; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; }
 .btn-cancelar:hover { background-color: #ccc; }
-</style>
+</style>  
