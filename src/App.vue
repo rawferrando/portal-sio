@@ -6,9 +6,7 @@ import Servicios from './components/Servicios.vue'
 import DesarrolloIdi from './components/DesarrolloIdi.vue'
 import IntranetPanel from './components/IntranetPanel.vue'
 
-// ¡CERO IMPORTACIONES DE IMÁGENES AQUÍ! 
-// Así es imposible que Vite dé el error "ENOENT"
-
+// --- LÓGICA DE ESTADO ---
 const vistaActual = ref('inicio')
 const usuarioLogueadoSio = ref(false)
 const mostrarModalLogin = ref(false)
@@ -42,7 +40,6 @@ const volverAInicio = () => { cambiarVista('inicio') }
       <div class="contenedor-ancho top-bar-inner">
         <div class="spacer"></div>
         <div class="top-nav-group">
-          
           <a href="#" class="top-item border-left underline-item">CONTACTO</a>
           <button class="top-item border-left btn-reset underline-item" @click="manejarClicIntranet">INTRANET</button>
           
@@ -60,7 +57,6 @@ const volverAInicio = () => { cambiarVista('inicio') }
               <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
             </svg>
           </div>
-
         </div>
       </div>
     </div>
@@ -68,9 +64,9 @@ const volverAInicio = () => { cambiarVista('inicio') }
     <header class="main-header">
       <div class="contenedor-ancho header-inner">
         <div class="header-left">
-          <img src="/sio.png" alt="SIO" class="logo-sio" @click="volverAInicio">
+          <img src="sio.png" alt="SIO" class="logo-sio" @click="volverAInicio">
           <div class="divider"></div>
-          <img src="/severo.png" alt="Severo Ochoa" class="logo-severo">
+          <img src="severo.png" alt="Severo Ochoa" class="logo-severo">
         </div>
 
         <nav class="nav-menu">
@@ -78,7 +74,7 @@ const volverAInicio = () => { cambiarVista('inicio') }
           <a href="#" @click.prevent="cambiarVista('servicios')" class="nav-item" :class="{ activo: vistaActual === 'servicios' }">SERVICIOS</a>
           <a href="#" @click.prevent="cambiarVista('proyectos')" class="nav-item" :class="{ activo: vistaActual === 'proyectos' }">PROYECTOS</a>
           <a href="#" @click.prevent="cambiarVista('idi')" class="nav-item" :class="{ activo: vistaActual === 'idi' }">I+D+i</a>
-          <img src="/csic.png" alt="CSIC" class="logo-csic-nav">
+          <img src="csic.png" alt="CSIC" class="logo-csic-nav">
         </nav>
       </div>
     </header>
@@ -93,7 +89,7 @@ const volverAInicio = () => { cambiarVista('inicio') }
 
     <footer class="footer-icm">
       <div class="contenedor-ancho">
-        <img src="/icm.png" alt="ICM" class="footer-logo-main">
+        <img src="icm.png" alt="ICM" class="footer-logo-main">
         <p>© 2026 Servicio de Ingeniería Oceanográfica - CSIC</p>
       </div>
     </footer>
@@ -101,7 +97,6 @@ const volverAInicio = () => { cambiarVista('inicio') }
 </template>
 
 <style>
-/* --- VARIABLES CORPORATIVAS ICM --- */
 :root { 
   --icm-navy: #002d4b;   
   --icm-blue: #0086c0;
@@ -112,7 +107,6 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
 .contenedor-ancho { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
 .btn-reset { background: none; border: none; color: inherit; font: inherit; cursor: pointer; padding: 0; }
 
-/* --- TOP BAR BASE --- */
 .top-bar { background: var(--icm-navy); height: 40px; }
 .top-bar-inner { display: flex; justify-content: space-between; align-items: center; height: 100%; }
 .top-nav-group { display: flex; height: 100%; align-items: center; border-right: 1px solid rgba(255,255,255,0.2); }
@@ -124,40 +118,24 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
 }
 .border-left { border-left: 1px solid rgba(255,255,255,0.2); }
 
-/* --- SUBRAYADO CONTACTO E INTRANET --- */
 .underline-item::after {
-  content: ''; 
-  position: absolute; 
-  width: 0; 
-  height: 2px;
-  bottom: 12px;
-  left: 15px; 
-  background-color: white; 
-  transition: width 0.3s ease;
+  content: ''; position: absolute; width: 0; height: 2px;
+  bottom: 12px; left: 15px; background-color: white; transition: width 0.3s ease;
 }
 .underline-item:hover::after { width: calc(100% - 30px); }
 
-/* --- IDIOMAS --- */
 .idiomas-container { display: flex; gap: 8px; align-items: center; }
 .lang-separator { color: var(--icm-gris-claro); font-weight: normal; font-size: 10px; }
-
 .lang-link { color: var(--icm-gris-claro); position: relative; cursor: pointer; padding-bottom: 2px; transition: color 0.3s; }
-.lang-link::after {
-  content: ''; position: absolute; width: 0; height: 2px;
-  bottom: -4px; left: 0; background-color: var(--icm-gris-claro); transition: width 0.3s ease;
-}
+.lang-link::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0; background-color: var(--icm-gris-claro); transition: width 0.3s ease; }
 .lang-link:hover::after { width: 100%; }
 .lang-link.active { color: white; }
 .lang-link.active::after { width: 100%; background-color: white; }
 
-/* --- BLOQUE BUSCAR --- */
 .search-block { background: var(--icm-blue); padding: 0 15px; cursor: pointer; transition: background 0.3s; gap: 8px; }
 .search-block:hover { background: #00a4eb; }
-.search-block:hover .lupa-svg { transform: scale(1.1); transition: transform 0.2s; }
-.search-label { font-size: 11px; letter-spacing: 0.5px; }
-.lupa-svg { height: 16px; width: 16px; fill: white; transition: transform 0.2s; }
+.lupa-svg { height: 16px; width: 16px; fill: white; }
 
-/* --- HEADER --- */
 .main-header { background: white; padding: 25px 0; border-bottom: 1px solid #eee; }
 .header-inner { display: flex; justify-content: space-between; align-items: center; }
 .logo-sio { height: 65px; cursor: pointer; }
@@ -165,20 +143,13 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
 .logo-severo { height: 45px; }
 
 .nav-menu { display: flex; align-items: center; gap: 25px; }
-.nav-item { 
-  text-decoration: none; color: var(--icm-navy); 
-  font-weight: bold; font-size: 13px; position: relative; padding-bottom: 5px;
-}
-.nav-item::after {
-  content: ''; position: absolute; width: 0; height: 3px;
-  bottom: -2px; left: 0; background-color: var(--icm-blue); transition: width 0.3s;
-}
+.nav-item { text-decoration: none; color: var(--icm-navy); font-weight: bold; font-size: 13px; position: relative; padding-bottom: 5px; }
+.nav-item::after { content: ''; position: absolute; width: 0; height: 3px; bottom: -2px; left: 0; background-color: var(--icm-blue); transition: width 0.3s; }
 .nav-item:hover::after, .nav-item.activo::after { width: 100%; }
 .nav-item:hover, .nav-item.activo { color: var(--icm-blue); }
 
 .logo-csic-nav { height: 35px; margin-left: 10px; }
 
-/* --- FOOTER --- */
 .footer-icm { background: #f9f9f9; padding: 60px 0; text-align: center; color: #666; font-size: 12px; }
 .footer-logo-main { height: 50px; margin-bottom: 15px; }
 </style>
