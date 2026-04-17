@@ -6,11 +6,11 @@ import Servicios from './components/Servicios.vue'
 import DesarrolloIdi from './components/DesarrolloIdi.vue'
 import IntranetPanel from './components/IntranetPanel.vue'
 
-// --- IMPORTACIÓN NUCLEAR (Engañando a Git) ---
-import logoSio from '@/assets/logo-sio-final.png'
-import logoCsic from '@/assets/logo-csic-final.png'
-import logoIcm from '@/assets/logo-icm-final.png'
-import logoSevero from '@/assets/logo-severo-final.png'
+// --- IMPORTACIÓN MAESTRA (Con nombres nuevos) ---
+import logoSio from '@/assets/logovector.png'
+import logoCsic from '@/assets/sello-csic.png'
+import logoIcm from '@/assets/sello-icm.png'
+import logoSevero from '@/assets/sello-severo.png'
 
 const vistaActual = ref('inicio')
 const usuarioLogueadoSio = ref(false)
@@ -185,7 +185,7 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
 
 .footer-icm { background: #f9f9f9; padding: 60px 0; text-align: center; color: #666; font-size: 12px; }
 .footer-logo-main { height: 50px; margin-bottom: 15px; }
-.logo-sio, .logo-severo, .logo-csic-nav, .footer-logo-main {
+.logo-severo, .logo-csic-nav, .footer-logo-main {
   filter: brightness(0);
 }
 </style>
