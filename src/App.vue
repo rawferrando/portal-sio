@@ -185,4 +185,7 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
 
 .footer-icm { background: #f9f9f9; padding: 60px 0; text-align: center; color: #666; font-size: 12px; }
 .footer-logo-main { height: 50px; margin-bottom: 15px; }
+.logo-sio, .logo-severo, .logo-csic-nav, .footer-logo-main {
+  filter: brightness(0);
+}
 </style>
