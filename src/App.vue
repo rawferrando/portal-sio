@@ -6,7 +6,8 @@ import Servicios from './components/Servicios.vue'
 import DesarrolloIdi from './components/DesarrolloIdi.vue'
 import IntranetPanel from './components/IntranetPanel.vue'
 
-// --- IMPORTACIÓN LIMPIA Y CORTA ---
+// --- IMPORTACIÓN CORTA Y EXACTA ---
+// ¡Ojo! Ninguna se llama logovector.png
 import logoSio from '@/assets/sio.png'
 import logoCsic from '@/assets/csic.png'
 import logoIcm from '@/assets/icm.png'
