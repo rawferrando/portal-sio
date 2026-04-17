@@ -226,6 +226,7 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
   text-decoration: none; 
   font-weight: bold; 
   font-size: 14px; 
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.9); /* Sombra restaurada y oscurecida para máxima legibilidad */
   position: relative; /* Necesario para la línea de subrayado */
   padding-bottom: 5px; /* Espacio entre el texto y la línea */
   transition: color 0.3s ease; /* Transición suave de color */
