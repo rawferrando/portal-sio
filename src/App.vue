@@ -94,13 +94,47 @@ const manejarClicIntranet = () => {
       <div v-else-if="vistaActual === 'idi'"><DesarrolloIdi @volver="volverAInicio" /></div>
       <div v-else-if="vistaActual === 'intranet'"><IntranetPanel @volver="volverAInicio" /></div>
       
-      <div v-else-if="vistaActual === 'contacto'" class="pagina-contacto">
+<div v-else-if="vistaActual === 'contacto'" class="pagina-contacto">
         <div class="contenedor-ancho">
-          <h2 class="titulo-seccion">CONTACTO</h2>
-          <div class="tarjeta-dato" style="margin-top: 20px;">
-            <h3>✉️ Email</h3>
-            <p><a href="mailto:sio.icm@icm.csic.es">sio.icm@icm.csic.es</a></p>
+          <h2 class="titulo-seccion">CONTACTO Y UBICACIÓN</h2>
+          
+          <div class="contacto-grid">
+            <div class="contacto-info">
+              <div class="tarjeta-dato">
+                <h3>📍 Dirección</h3>
+                <p>Passeig Marítim de la Barceloneta, 37-49<br>08003 Barcelona</p>
+              </div>
+              <div class="tarjeta-dato">
+                <h3>📞 Teléfono</h3>
+                <p>+34 93 230 95 00</p>
+              </div>
+              <div class="tarjeta-dato">
+                <h3>✉️ Email</h3>
+                <p><a href="mailto:sio.icm@icm.csic.es">sio.icm@icm.csic.es</a></p>
+              </div>
+            </div>
+
+            <div class="contacto-formulario">
+              <div class="tarjeta-dato" style="border-left-color: var(--icm-navy);">
+                <form @submit.prevent>
+                  <div class="grupo-input">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" placeholder="Tu nombre" required>
+                  </div>
+                  <div class="grupo-input">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="tu@email.com" required>
+                  </div>
+                  <div class="grupo-input">
+                    <label for="mensaje">Mensaje</label>
+                    <textarea id="mensaje" rows="4" placeholder="Escribe tu consulta..." required></textarea>
+                  </div>
+                  <button type="submit" class="btn-enviar">ENVIAR CONSULTA</button>
+                </form>
+              </div>
+            </div>
           </div>
+
         </div>
       </div>
     </main>
@@ -218,4 +252,36 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
 .pagina-contacto { padding: 80px 0; background: #fdfdfd; }
 .tarjeta-dato { background: white; padding: 20px; border-left: 4px solid var(--icm-blue); margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
 .tarjeta-dato h3 { margin: 0 0 10px 0; font-size: 16px; color: var(--icm-navy); }
+/* --- LAYOUT DE CONTACTO --- */
+.contacto-grid { 
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  gap: 40px; 
+  margin-top: 30px; 
+}
+.titulo-seccion { 
+  color: var(--icm-navy); 
+  font-size: 28px; 
+  border-bottom: 2px solid var(--icm-blue); 
+  padding-bottom: 10px; 
+  margin-bottom: 30px; 
+}
+.btn-enviar {
+  background: var(--icm-blue);
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+.btn-enviar:hover {
+  background: var(--icm-navy);
+}
+
+/* Para que en móviles se vea una cosa debajo de otra */
+@media (max-width: 768px) { 
+  .contacto-grid { grid-template-columns: 1fr; } 
+}
 </style>
