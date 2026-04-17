@@ -1,10 +1,14 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 
-// Aquí puedes añadir las rutas de tus fotos. He puesto la de instrumentación por defecto.
+// ✨ AQUÍ ESTÁ EL CAMBIO: Ahora tenemos 3 fotos diferentes de ejemplo ✨
 const imagenes = ref([
+  // Imagen 1 (Vuestra): Instrumentación
   'https://raw.githubusercontent.com/rawferrando/portal-sio/main/src/assets/instrumentacion.jpg',
-  // Añade más URLs de imágenes aquí separadas por comas
+  // Imagen 2 (Ejemplo): Barco Oceanográfico
+  'https://images.unsplash.com/photo-1518107616985-bd48230d3b20?q=80&w=1600&auto=format&fit=crop',
+  // Imagen 3 (Ejemplo): Equipo de tecnología marina
+  'https://images.unsplash.com/photo-1582967702081-4bf917531776?q=80&w=1600&auto=format&fit=crop'
 ])
 
 const indiceActual = ref(0)
@@ -15,7 +19,7 @@ const siguiente = () => {
 }
 
 onMounted(() => {
-  // Cambia de foto cada 5 segundos (5000 milisegundos)
+  // Cambia de foto cada 5 segundos
   intervalo = setInterval(siguiente, 5000) 
 })
 
@@ -36,20 +40,25 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+/* Scoped asegura que este CSS no rompa tu App.vue */
 .carrusel-wrapper {
   position: absolute; 
-  top: 40px;
+  /* 🛑 CLAVE PARA LA TOP BAR: Empieza justo debajo de ella */
+  top: 40px; 
   left: 0;
   width: 100%;
-  height: 600px; /* Ajusta la altura si lo quieres más grande o pequeño */
+  /* 📏 ALTURA DEL CARRUSEL: He subido un poco la altura para que se vea más profesional */
+  height: 650px; 
   overflow: hidden;
-  z-index: 10; /* Lo pone por debajo de tu header (que tiene z-index 900) */
+  /* Layering: Se asegura de estar debajo del menú flotante */
+  z-index: 10; 
 }
 
 .carrusel-inner {
   display: flex;
   height: 100%;
-  transition: transform 1s ease-in-out;
+  /* Transición suave y elegante de 1 segundo al cambiar de foto */
+  transition: transform 1s ease-in-out; 
 }
 
 .carrusel-slide {
@@ -61,7 +70,8 @@ onUnmounted(() => {
 .carrusel-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  /* Importante: Ajusta la foto sin deformarla */
+  object-fit: cover; 
 }
 
 .carrusel-overlay {
@@ -70,7 +80,7 @@ onUnmounted(() => {
   left: 0;
   width: 100%;
   height: 100%;
-  /* Mantiene el tono azul corporativo para que todo se lea bien */
-  background: linear-gradient(rgba(1, 33, 105, 0.4), rgba(1, 33, 105, 0.8)); 
+  /* Degradado sutil con el azul SIO para unificar el diseño */
+  background: linear-gradient(rgba(1, 33, 105, 0.4), rgba(1, 33, 105, 0.7)); 
 }
 </style>
