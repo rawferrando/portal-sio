@@ -109,7 +109,7 @@ const manejarClicIntranet = () => {
 
             <div class="mapa-container">
               <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2993.8058223412355!2d2.1923055!3d41.38331!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4a304f41d93b3%3A0xcb1b51e9b25fb260!2sInstitut%20de%20Ci%C3%A8ncies%20del%20Mar%20(ICM-CSIC)!5e0!3m2!1ses!4v1680000000000!5m2!1ses" 
+                src="https://maps.google.com/maps?q=Institut+de+Ci%C3%A8ncies+del+Mar,+Passeig+Mar%C3%ADtim+de+la+Barceloneta,+37-49,+Barcelona&t=&z=16&ie=UTF8&iwloc=&output=embed" 
                 width="100%" 
                 height="400" 
                 style="border:0;" 
