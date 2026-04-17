@@ -56,7 +56,7 @@ const manejarClicIntranet = () => {
         </div>
       </div>
     </div>
-    <header class="main-header header-transparente">
+    <header class="main-header header-transparente" :class="{ 'header-solido-contacto': vistaActual === 'contacto' }">
       <div class="contenedor-ancho header-inner">
         
         <div class="header-left">
@@ -324,5 +324,16 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
   border-top: 4px solid var(--icm-blue); 
   border-left: none; /* Cambiamos la raya de la izquierda arriba para este cuadro grande */
   padding: 30px; 
+}
+/* --- HEADER ESPECIAL PARA CONTACTO --- */
+.header-solido-contacto {
+  background: var(--icm-navy) !important; 
+  position: relative !important; 
+  top: 0 !important; 
+  border-bottom: none !important;
+}
+
+.header-solido-contacto + .main-content .pagina-contacto {
+  padding-top: 40px;
 }
 </style>
