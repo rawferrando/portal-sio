@@ -5,7 +5,7 @@ import Proyectos from './components/Proyectos.vue'
 import Servicios from './components/Servicios.vue'
 import DesarrolloIdi from './components/DesarrolloIdi.vue'
 import IntranetPanel from './components/IntranetPanel.vue'
-
+import CarruselComponente from './components/CarruselComponente.vue'
 // ⚠️ El carrusel está comentado para que GitHub no dé error rojo.
 // import CarruselComponente from './components/CarruselComponente.vue'
 
@@ -84,7 +84,7 @@ const manejarClicIntranet = () => {
     <main class="main-content">
       <div v-if="vistaActual === 'inicio'" class="inicio-container">
         
-        <div class="hero-bg"></div>
+        <CarruselComponente />
         
         <QuienesSomos @cambiar-pagina="cambiarVista" />
       </div>
