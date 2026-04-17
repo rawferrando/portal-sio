@@ -98,40 +98,37 @@ const manejarClicIntranet = () => {
         <div class="contenedor-ancho">
           <h2 class="titulo-seccion">CONTACTO Y UBICACIÓN</h2>
           
-          <div class="contacto-grid">
-            <div class="contacto-info">
-              <div class="tarjeta-dato">
-                <h3>📍 Dirección</h3>
-                <p>Passeig Marítim de la Barceloneta, 37-49<br>08003 Barcelona</p>
-              </div>
-              <div class="tarjeta-dato">
-                <h3>📞 Teléfono</h3>
-                <p>+34 93 230 95 00</p>
-              </div>
-              <div class="tarjeta-dato">
-                <h3>✉️ Email</h3>
-                <p><a href="mailto:sio.icm@icm.csic.es">sio.icm@icm.csic.es</a></p>
-              </div>
+          <div class="contacto-unacolumna">
+            <div class="datos-contacto">
+              <p><strong>Dirección:</strong> Passeig Marítim de la Barceloneta, 37-49, 08003 Barcelona</p>
+              <p><strong>Teléfono:</strong> +34 93 230 95 00</p>
+              <p><strong>Email:</strong> <a href="mailto:sio.icm@icm.csic.es">sio.icm@icm.csic.es</a></p>
             </div>
 
-            <div class="contacto-formulario">
-              <div class="tarjeta-dato" style="border-left-color: var(--icm-navy);">
-                <form @submit.prevent>
-                  <div class="grupo-input">
-                    <label for="nombre">Nombre</label>
-                    <input type="text" id="nombre" placeholder="Tu nombre" required>
-                  </div>
-                  <div class="grupo-input">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" placeholder="tu@email.com" required>
-                  </div>
-                  <div class="grupo-input">
-                    <label for="mensaje">Mensaje</label>
-                    <textarea id="mensaje" rows="4" placeholder="Escribe tu consulta..." required></textarea>
-                  </div>
-                  <button type="submit" class="btn-enviar">ENVIAR CONSULTA</button>
-                </form>
-              </div>
+            <div class="mapa-container">
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2993.882194553258!2d2.193246715668748!3d41.3853110792644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4a3174b8ab45d%3A0x6b6a0ec60920a068!2sInstitut%20de%20Ci%C3%A8ncies%20del%20Mar%20(ICM-CSIC)!5e0!3m2!1ses!2ses!4v1680000000000!5m2!1ses!2ses" 
+                width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+              </iframe>
+            </div>
+
+            <div class="tarjeta-dato formulario-amplio">
+              <h3>Envíanos tu consulta</h3>
+              <form @submit.prevent>
+                <div class="grupo-input">
+                  <label for="nombre">Nombre</label>
+                  <input type="text" id="nombre" placeholder="Tu nombre" required>
+                </div>
+                <div class="grupo-input">
+                  <label for="email">Email</label>
+                  <input type="email" id="email" placeholder="tu@email.com" required>
+                </div>
+                <div class="grupo-input">
+                  <label for="mensaje">Mensaje</label>
+                  <textarea id="mensaje" rows="5" placeholder="Escribe tu consulta..." required></textarea>
+                </div>
+                <button type="submit" class="btn-enviar">ENVIAR CONSULTA</button>
+              </form>
             </div>
           </div>
 
@@ -209,7 +206,6 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
   text-decoration: none; 
   font-weight: bold; 
   font-size: 14px; 
-  text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
   position: relative; /* Necesario para la línea de subrayado */
   padding-bottom: 5px; /* Espacio entre el texto y la línea */
   transition: color 0.3s ease; /* Transición suave de color */
@@ -252,19 +248,36 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
 .pagina-contacto { padding: 80px 0; background: #fdfdfd; }
 .tarjeta-dato { background: white; padding: 20px; border-left: 4px solid var(--icm-blue); margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
 .tarjeta-dato h3 { margin: 0 0 10px 0; font-size: 16px; color: var(--icm-navy); }
-/* --- LAYOUT DE CONTACTO --- */
-.contacto-grid { 
-  display: grid; 
-  grid-template-columns: 1fr 1fr; 
-  gap: 40px; 
-  margin-top: 30px; 
-}
+
+/* --- LAYOUT DE CONTACTO: UNA COLUMNA --- */
 .titulo-seccion { 
   color: var(--icm-navy); 
   font-size: 28px; 
   border-bottom: 2px solid var(--icm-blue); 
   padding-bottom: 10px; 
   margin-bottom: 30px; 
+}
+.contacto-unacolumna {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  max-width: 800px; /* Limita el ancho para que el formulario no sea kilométrico */
+  margin: 0 auto; /* Lo centra perfectamente en la pantalla */
+}
+.datos-contacto p {
+  font-size: 16px;
+  color: var(--icm-navy);
+  margin: 8px 0;
+}
+.mapa-container {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Una sombra elegante para el mapa */
+}
+.formulario-amplio {
+  border-left: none; /* Quitamos la raya lateral */
+  border-top: 4px solid var(--icm-blue); /* La ponemos arriba para enmarcarlo */
 }
 .btn-enviar {
   background: var(--icm-blue);
@@ -278,10 +291,5 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
 }
 .btn-enviar:hover {
   background: var(--icm-navy);
-}
-
-/* Para que en móviles se vea una cosa debajo de otra */
-@media (max-width: 768px) { 
-  .contacto-grid { grid-template-columns: 1fr; } 
 }
 </style>
