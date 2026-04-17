@@ -6,12 +6,15 @@ import Servicios from './components/Servicios.vue'
 import DesarrolloIdi from './components/DesarrolloIdi.vue'
 import IntranetPanel from './components/IntranetPanel.vue'
 
-// --- ESTADO Y SEGURIDAD ---
+// IMPORTACIÓN SEGURA DE LOGOS (Esto evita errores de ruta)
+import logoSio from '@/assets/logovector.png'
+import logoCsic from '@/assets/logo-csic.png'
+import logoIcm from '@/assets/logo-icm.png'
+import logoSevero from '@/assets/logo-severo.png'
+
 const vistaActual = ref('inicio')
 const usuarioLogueadoSio = ref(false)
-const mostrarModalLogin = ref(false) 
-const inputUsuario = ref('')
-const inputPassword = ref('')
+const mostrarModalLogin = ref(false)
 
 onMounted(() => {
   if (sessionStorage.getItem('sio_auth') === 'true') {
@@ -27,35 +30,12 @@ const manejarClicIntranet = () => {
   }
 }
 
-const intentarLogin = () => {
-  if (inputUsuario.value === 'admin' && inputPassword.value === 'sio2026') {
-    sessionStorage.setItem('sio_auth', 'true')
-    usuarioLogueadoSio.value = true
-    mostrarModalLogin.value = false 
-    cambiarVista('intranet')
-  } else {
-    alert("Usuario o contraseña incorrectos")
-  }
-}
-
-const cerrarModalLogin = () => {
-  mostrarModalLogin.value = false
-  inputUsuario.value = ''
-  inputPassword.value = ''
-}
-
 const cambiarVista = (nuevaVista) => { 
-  if (nuevaVista === 'intranet' && !usuarioLogueadoSio.value) {
-    mostrarModalLogin.value = true
-    return
-  }
   vistaActual.value = nuevaVista
   window.scrollTo(0, 0)
 }
 
-const volverAInicio = () => { 
-  cambiarVista('inicio')
-}
+const volverAInicio = () => { cambiarVista('inicio') }
 </script>
 
 <template>
@@ -64,42 +44,35 @@ const volverAInicio = () => {
     <div class="top-bar">
       <div class="contenedor-ancho top-bar-inner">
         <div class="top-links-left">
-          <a href="#" class="top-link">Contacto</a>
+          <a href="#" class="top-link">CONTACTO</a>
         </div>
         <div class="top-links-right">
           <button class="btn-intranet-sio" @click="manejarClicIntranet">
-            {{ usuarioLogueadoSio ? '🔓 Intranet' : '🔒 Intranet' }}
+            {{ usuarioLogueadoSio ? 'INTRANET (Acceso)' : 'INTRANET' }}
           </button>
           <div class="idiomas">
-            <span class="active">ca</span> | <span>es</span> | <span>en</span>
+            <span>CA</span> | <span class="active">ES</span> | <span>EN</span>
           </div>
+          <button class="btn-search-top">🔍</button>
         </div>
       </div>
     </div>
 
     <header class="main-header">
       <div class="contenedor-ancho header-inner">
-        
-        <div class="sio-brand" @click="volverAInicio" style="cursor: pointer;">
-          <img src="./assets/logovector.png" alt="SIO" class="logo-sio-main">
+        <div class="brand-and-seals">
+          <img :src="logoSio" alt="SIO" class="logo-sio-header" @click="volverAInicio">
+          <div class="vertical-divider"></div>
+          <img :src="logoSevero" alt="Severo Ochoa" class="seal-header">
         </div>
 
-        <div class="nav-container">
-          <nav class="nav-menu">
-            <a href="#" @click.prevent="cambiarVista('inicio')" class="nav-item" :class="{ activo: vistaActual === 'inicio' }">Inicio</a>
-            <a href="#" @click.prevent="cambiarVista('servicios')" class="nav-item" :class="{ activo: vistaActual === 'servicios' }">Servicios</a>
-            <a href="#" @click.prevent="cambiarVista('proyectos')" class="nav-item" :class="{ activo: vistaActual === 'proyectos' }">Proyectos</a>
-            <a href="#" @click.prevent="cambiarVista('idi')" class="nav-item" :class="{ activo: vistaActual === 'idi' }">I+D+i</a>
-          </nav>
-          <button class="btn-search">🔍</button>
-        </div>
-
-        <div class="institutional-seals">
-          <img src="./assets/logo-csic.png" alt="" class="seal-img">
-          <img src="./assets/logo-icm.png" alt="" class="seal-img">
-          <img src="./assets/logo-severo.png" alt="" class="seal-img">
-        </div>
-
+        <nav class="nav-menu">
+          <a href="#" @click.prevent="cambiarVista('inicio')" class="nav-item" :class="{ activo: vistaActual === 'inicio' }">EL SIO</a>
+          <a href="#" @click.prevent="cambiarVista('servicios')" class="nav-item" :class="{ activo: vistaActual === 'servicios' }">SERVEIS</a>
+          <a href="#" @click.prevent="cambiarVista('proyectos')" class="nav-item" :class="{ activo: vistaActual === 'proyectos' }">PROJECTES</a>
+          <a href="#" @click.prevent="cambiarVista('idi')" class="nav-item" :class="{ activo: vistaActual === 'idi' }">RECERCA I+D+i</a>
+          <img :src="logoCsic" alt="CSIC" class="logo-csic-header">
+        </nav>
       </div>
     </header>
 
@@ -112,228 +85,51 @@ const volverAInicio = () => {
     </main>
 
     <footer class="footer-icm">
-      <div class="contenedor-ancho footer-content">
-        <div class="footer-logos">
-          <img src="./assets/logo-csic.png" alt="" class="logo-csic-footer">
-        </div>
+      <div class="contenedor-ancho">
+        <img :src="logoIcm" alt="ICM" class="logo-footer">
         <div class="footer-info">
-          <p><strong>Passeig Marítim de la Barceloneta, 37-49. 08003 Barcelona</strong></p>
-          <p>© 2026 Servicio de Ingeniería Oceanográfica (SIO) - ICM-CSIC</p>
+          <p>Passeig Marítim de la Barceloneta, 37-49. 08003 Barcelona (Spain)</p>
+          <p>© 2026 Servicio de Ingeniería Oceanográfica (SIO) - CSIC</p>
         </div>
       </div>
     </footer>
-
-    <div v-if="mostrarModalLogin" class="modal-overlay" @click.self="cerrarModalLogin">
-      <div class="modal-login">
-        <h3>Acceso Restringido SIO</h3>
-        <p>Introduce tus credenciales</p>
-        <input v-model="inputUsuario" type="text" placeholder="Usuario" @keyup.enter="intentarLogin" autofocus />
-        <input v-model="inputPassword" type="password" placeholder="Contraseña" @keyup.enter="intentarLogin" />
-        <div class="modal-actions">
-          <button @click="intentarLogin" class="btn-entrar">Acceder</button>
-          <button @click="cerrarModalLogin" class="btn-cancelar">Cancelar</button>
-        </div>
-      </div>
-    </div>
-
   </div>
 </template>
 
 <style>
-/* --- VARIABLES CORPORATIVAS ICM --- */
 :root {
-  --icm-azul-oscuro: #0a2540;
-  --icm-azul-claro: #0088cc;
-  --icm-gris-fondo: #f5f7fa;
-  --icm-blanco: #ffffff;
-  --icm-texto-gris: #666666;
-  --icm-texto-principal: #333333;
+  --icm-blue: #0a2540;
+  --icm-light-blue: #0088cc;
 }
 
-body {
-  margin: 0;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  background-color: var(--icm-blanco);
-  color: var(--icm-texto-principal);
-}
+body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; }
 
-.icm-layout {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
+/* BARRA SUPERIOR */
+.top-bar { background-color: var(--icm-blue); color: white; padding: 10px 0; font-size: 0.75rem; }
+.top-bar-inner { display: flex; justify-content: space-between; align-items: center; }
+.top-link { color: white; text-decoration: none; font-weight: bold; }
+.btn-intranet-sio { background: #2b4b6b; border: 1px solid #4a6a8a; color: white; padding: 4px 12px; font-weight: bold; cursor: pointer; border-radius: 2px; }
+.idiomas { font-weight: bold; }
+.idiomas .active { color: white; }
+.idiomas span { opacity: 0.6; cursor: pointer; }
+.btn-search-top { background: var(--icm-light-blue); border: none; color: white; padding: 5px 10px; cursor: pointer; }
 
-.contenedor-ancho {
-  max-width: 1300px;
-  margin: 0 auto;
-  padding: 0 20px;
-  width: 100%;
-  box-sizing: border-box;
-}
+/* HEADER */
+.main-header { background: white; border-bottom: 1px solid #eee; padding: 20px 0; }
+.header-inner { display: flex; justify-content: space-between; align-items: center; }
+.brand-and-seals { display: flex; align-items: center; gap: 20px; }
+.logo-sio-header { height: 65px; cursor: pointer; }
+.seal-header { height: 45px; }
+.vertical-divider { width: 1px; height: 40px; background: #ddd; }
 
-/* --- 1. BARRA SUPERIOR (TOP BAR) --- */
-.top-bar {
-  background-color: var(--icm-blanco);
-  border-bottom: 1px solid #e1e4e8;
-  font-size: 0.85rem;
-  padding: 10px 0;
-  color: var(--icm-texto-gris);
-}
-.top-bar-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.top-enlaces {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-}
-.top-link {
-  text-decoration: none;
-  color: var(--icm-texto-gris);
-  font-weight: bold;
-}
-.top-link:hover {
-  text-decoration: underline;
-}
-.btn-intranet-sio {
-  background: none;
-  border: none;
-  color: var(--icm-azul-claro);
-  font-weight: bold;
-  font-size: 0.85rem;
-  cursor: pointer;
-  margin-right: 15px;
-}
-.idiomas {
-  display: flex;
-  gap: 10px;
-  border-left: 1px solid #ccc;
-  padding-left: 15px;
-}
-.idiomas span { cursor: pointer; color: #999; }
-.idiomas span.active { color: var(--icm-texto-principal); font-weight: bold; }
+.nav-menu { display: flex; align-items: center; gap: 25px; }
+.nav-item { text-decoration: none; color: var(--icm-blue); font-weight: bold; font-size: 0.9rem; transition: 0.3s; }
+.nav-item.activo, .nav-item:hover { color: var(--icm-light-blue); }
+.logo-csic-header { height: 35px; margin-left: 10px; }
 
-/* --- 2. HEADER PRINCIPAL --- */
-.main-header {
-  background-color: var(--icm-blanco);
-  padding: 15px 0;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-.header-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.logo-sio-main {
-  height: 80px;
-  width: auto;
-}
-
-/* Navegación y Buscador (Centro) */
-.nav-container {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-.nav-menu {
-  display: flex;
-  gap: 25px;
-}
-.nav-item {
-  text-decoration: none;
-  color: var(--icm-azul-oscuro);
-  font-weight: bold;
-  font-size: 1.1rem;
-  padding-bottom: 5px;
-  border-bottom: 3px solid transparent;
-  transition: color 0.3s;
-}
-.nav-item:hover, .nav-item.activo {
-  color: var(--icm-azul-claro);
-  border-bottom-color: var(--icm-azul-claro);
-}
-.btn-search {
-  background: none;
-  border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
-  padding: 0;
-}
-
-/* Sellos (Derecha) */
-.institutional-seals {
-  display: flex;
-  gap: 15px;
-  align-items: center;
-}
-.seal-img {
-  height: 50px;
-  width: auto;
-}
-
-/* --- 3. CONTENIDO PRINCIPAL --- */
-.contenido-principal {
-  flex: 1;
-  background-color: var(--icm-blanco);
-}
-
-/* --- 4. FOOTER --- */
-.footer-icm {
-  background-color: var(--icm-azul-oscuro);
-  color: var(--icm-blanco);
-  padding: 40px 0;
-  font-size: 0.9rem;
-  margin-top: 40px;
-}
-.footer-logos {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-.logo-csic-footer {
-  height: 60px;
-  filter: brightness(0) invert(1); /* Pone el logo en blanco */
-}
-.footer-info {
-  text-align: center;
-}
-.footer-info p { margin: 5px 0; color: #a0aec0; }
-.footer-info strong { color: var(--icm-blanco); }
-
-/* --- 5. MODAL LOGIN (El "Blindaje") --- */
-.modal-overlay {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  display: flex; justify-content: center; align-items: center;
-  z-index: 2000; backdrop-filter: blur(3px);
-}
-.modal-login {
-  background-color: white; padding: 30px; border-radius: 8px;
-  width: 90%; max-width: 350px;
-  text-align: center;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-}
-.modal-login h3 { color: var(--icm-azul-oscuro); margin-top: 0; }
-.modal-login p { font-size: 0.9rem; color: #666; margin-bottom: 20px; }
-.modal-login input {
-  width: 100%; padding: 12px;
-  border: 1px solid #ccc; border-radius: 4px;
-  box-sizing: border-box; margin-bottom: 15px;
-}
-.modal-actions { display: flex; gap: 10px; }
-.btn-entrar {
-  flex: 1; background-color: var(--icm-azul-claro);
-  color: white; border: none; padding: 10px;
-  border-radius: 4px; font-weight: bold; cursor: pointer;
-}
-.btn-cancelar {
-  flex: 1; background-color: #eee;
-  color: #333; border: none; padding: 10px;
-  border-radius: 4px; cursor: pointer;
-}
+/* CONTENIDO Y FOOTER */
+.contenido-principal { min-height: 600px; }
+.footer-icm { background: #f8f9fa; padding: 40px 0; text-align: center; border-top: 1px solid #eee; }
+.logo-footer { height: 50px; margin-bottom: 20px; }
+.footer-info { font-size: 0.8rem; color: #666; }
 </style>
