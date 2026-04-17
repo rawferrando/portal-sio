@@ -6,11 +6,12 @@ import Servicios from './components/Servicios.vue'
 import DesarrolloIdi from './components/DesarrolloIdi.vue'
 import IntranetPanel from './components/IntranetPanel.vue'
 
-// Importación robusta: Esto asegura que Vite procese las imágenes al hacer el build
-import logoSio from '@/assets/logovector.png'
-import logoCsic from '@/assets/logo-csic.png'
-import logoIcm from '@/assets/logo-icm.png'
-import logoSevero from '@/assets/logo-severo.png'
+// --- CARGA DE IMÁGENES (Método infalible para GitHub) ---
+// Usamos URL para que Vite genere la ruta correcta sí o sí
+const imgSio = new URL('./assets/logovector.png', import.meta.url).href
+const imgCsic = new URL('./assets/logo-csic.png', import.meta.url).href
+const imgIcm = new URL('./assets/logo-icm.png', import.meta.url).href
+const imgSevero = new URL('./assets/logo-severo.png', import.meta.url).href
 
 const vistaActual = ref('inicio')
 const usuarioLogueadoSio = ref(false)
@@ -51,7 +52,7 @@ const volverAInicio = () => { cambiarVista('inicio') }
             <span>CA</span> | <span class="active">ES</span> | <span>EN</span>
           </div>
           <div class="top-item border-left search-block">
-            <img src="https://icm.csic.es/sites/all/themes/bootstrap_icm/icons/lupa.png" alt="Buscar" class="icon-lupa-img">
+            <img src="https://icm.csic.es/sites/all/themes/bootstrap_icm/icons/lupa.png" alt="" class="icon-lupa-img">
           </div>
         </div>
       </div>
@@ -60,9 +61,9 @@ const volverAInicio = () => { cambiarVista('inicio') }
     <header class="main-header">
       <div class="contenedor-ancho header-inner">
         <div class="header-left">
-          <img :src="logoSio" alt="SIO" class="logo-sio" @click="volverAInicio">
+          <img :src="imgSio" alt="SIO" class="logo-sio" @click="volverAInicio">
           <div class="divider"></div>
-          <img :src="logoSevero" alt="Severo Ochoa" class="logo-severo">
+          <img :src="imgSevero" alt="Severo Ochoa" class="logo-severo">
         </div>
 
         <nav class="nav-menu">
@@ -70,7 +71,7 @@ const volverAInicio = () => { cambiarVista('inicio') }
           <a href="#" @click.prevent="cambiarVista('servicios')" class="nav-item" :class="{ activo: vistaActual === 'servicios' }">SERVICIOS</a>
           <a href="#" @click.prevent="cambiarVista('proyectos')" class="nav-item" :class="{ activo: vistaActual === 'proyectos' }">PROYECTOS</a>
           <a href="#" @click.prevent="cambiarVista('idi')" class="nav-item" :class="{ activo: vistaActual === 'idi' }">I+D+i</a>
-          <img :src="logoCsic" alt="CSIC" class="logo-csic-nav">
+          <img :src="imgCsic" alt="CSIC" class="logo-csic-nav">
         </nav>
       </div>
     </header>
@@ -85,7 +86,7 @@ const volverAInicio = () => { cambiarVista('inicio') }
 
     <footer class="footer-icm">
       <div class="contenedor-ancho">
-        <img :src="logoIcm" alt="ICM" class="footer-logo-main">
+        <img :src="imgIcm" alt="ICM" class="footer-logo-main">
         <p>© 2026 Servicio de Ingeniería Oceanográfica - CSIC</p>
       </div>
     </footer>
@@ -93,23 +94,23 @@ const volverAInicio = () => { cambiarVista('inicio') }
 </template>
 
 <style>
-/* COLORES OFICIALES ICM ACTUALIZADOS */
+/* COLORES OFICIALES ICM */
 :root { 
-  --icm-navy: #002d4b;   /* Color exacto barra superior ICM */
-  --icm-blue: #0086c0;   /* Color exacto logos/lupa/hover */
+  --icm-navy: #002d4b;   /* Azul marino barra superior */
+  --icm-blue: #0086c0;   /* Azul cian para hover y lupa */
 }
 
-body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; }
+body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
 .contenedor-ancho { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
 .btn-reset { background: none; border: none; color: inherit; font: inherit; cursor: pointer; padding: 0; }
 
 /* TOP BAR */
-.top-bar { background: var(--icm-navy); color: white; height: 40px; }
+.top-bar { background: var(--icm-navy); height: 40px; }
 .top-bar-inner { display: flex; justify-content: space-between; align-items: center; height: 100%; }
 .top-nav-group { display: flex; height: 100%; align-items: center; border-right: 1px solid rgba(255,255,255,0.2); }
 .top-item { 
   display: flex; align-items: center; height: 100%; padding: 0 15px;
-  font-size: 11px; font-weight: bold; text-decoration: none; color: white;
+  font-size: 11px; font-weight: bold; color: white; text-decoration: none;
 }
 .border-left { border-left: 1px solid rgba(255,255,255,0.2); }
 .idiomas span { opacity: 0.6; margin: 0 2px; }
@@ -117,7 +118,7 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; }
 .search-block { background: var(--icm-blue); padding: 0 12px; cursor: pointer; }
 .icon-lupa-img { height: 16px; }
 
-/* HEADER Y MENÚ CON SUBRAYADO */
+/* HEADER Y NAVEGACIÓN CON SUBRAYADO */
 .main-header { background: white; padding: 25px 0; border-bottom: 1px solid #eee; }
 .header-inner { display: flex; justify-content: space-between; align-items: center; }
 .header-left { display: flex; align-items: center; gap: 20px; }
@@ -132,16 +133,16 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; }
   font-weight: bold; 
   font-size: 13px;
   position: relative;
-  padding: 5px 0;
+  padding-bottom: 5px;
 }
 
-/* Efecto subrayado al pasar el puntero (hover) */
+/* EFECTO SUBRAYADO */
 .nav-item::after {
   content: '';
   position: absolute;
   width: 0;
-  height: 2px;
-  bottom: 0;
+  height: 3px;
+  bottom: -2px;
   left: 0;
   background-color: var(--icm-blue);
   transition: width 0.3s ease;
