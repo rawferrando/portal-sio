@@ -6,7 +6,7 @@ import Servicios from './components/Servicios.vue'
 import DesarrolloIdi from './components/DesarrolloIdi.vue'
 import IntranetPanel from './components/IntranetPanel.vue'
 
-// --- LÓGICA DE ESTADO ---
+// --- ESTADO ---
 const vistaActual = ref('inicio')
 const usuarioLogueadoSio = ref(false)
 const mostrarModalLogin = ref(false)
@@ -16,6 +16,12 @@ onMounted(() => {
     usuarioLogueadoSio.value = true
   }
 })
+
+// --- FUNCIÓN MÁGICA PARA LOS LOGOS ---
+// Esta función le da la ruta a la web sin que Vite intente "importarla"
+const getImageUrl = (name) => {
+  return `./${name}`
+}
 
 const manejarClicIntranet = () => {
   if (usuarioLogueadoSio.value) {
@@ -35,27 +41,18 @@ const volverAInicio = () => { cambiarVista('inicio') }
 
 <template>
   <div class="icm-layout">
-    
     <div class="top-bar">
       <div class="contenedor-ancho top-bar-inner">
         <div class="spacer"></div>
         <div class="top-nav-group">
           <a href="#" class="top-item border-left underline-item">CONTACTO</a>
           <button class="top-item border-left btn-reset underline-item" @click="manejarClicIntranet">INTRANET</button>
-          
           <div class="top-item border-left idiomas-container">
-            <span class="lang-link">CA</span>
-            <span class="lang-separator">|</span>
-            <span class="lang-link active">CAS</span>
-            <span class="lang-separator">|</span>
-            <span class="lang-link">EN</span>
+            <span class="lang-link">CA</span> | <span class="lang-link active">CAS</span> | <span class="lang-link">EN</span>
           </div>
-
           <div class="top-item border-left search-block">
             <span class="search-label">BUSCAR</span>
-            <svg class="lupa-svg" viewBox="0 0 24 24">
-              <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-            </svg>
+            <svg class="lupa-svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
           </div>
         </div>
       </div>
@@ -64,17 +61,16 @@ const volverAInicio = () => { cambiarVista('inicio') }
     <header class="main-header">
       <div class="contenedor-ancho header-inner">
         <div class="header-left">
-          <img src="sio.png" alt="SIO" class="logo-sio" @click="volverAInicio">
+          <img :src="getImageUrl('sio.png')" alt="SIO" class="logo-sio" @click="volverAInicio">
           <div class="divider"></div>
-          <img src="severo.png" alt="Severo Ochoa" class="logo-severo">
+          <img :src="getImageUrl('severo.png')" alt="Severo Ochoa" class="logo-severo">
         </div>
-
         <nav class="nav-menu">
           <a href="#" @click.prevent="cambiarVista('inicio')" class="nav-item" :class="{ activo: vistaActual === 'inicio' }">EL SIO</a>
           <a href="#" @click.prevent="cambiarVista('servicios')" class="nav-item" :class="{ activo: vistaActual === 'servicios' }">SERVICIOS</a>
           <a href="#" @click.prevent="cambiarVista('proyectos')" class="nav-item" :class="{ activo: vistaActual === 'proyectos' }">PROYECTOS</a>
           <a href="#" @click.prevent="cambiarVista('idi')" class="nav-item" :class="{ activo: vistaActual === 'idi' }">I+D+i</a>
-          <img src="csic.png" alt="CSIC" class="logo-csic-nav">
+          <img :src="getImageUrl('csic.png')" alt="CSIC" class="logo-csic-nav">
         </nav>
       </div>
     </header>
@@ -89,7 +85,7 @@ const volverAInicio = () => { cambiarVista('inicio') }
 
     <footer class="footer-icm">
       <div class="contenedor-ancho">
-        <img src="icm.png" alt="ICM" class="footer-logo-main">
+        <img :src="getImageUrl('icm.png')" alt="ICM" class="footer-logo-main">
         <p>© 2026 Servicio de Ingeniería Oceanográfica - CSIC</p>
       </div>
     </footer>
