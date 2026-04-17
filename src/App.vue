@@ -39,68 +39,31 @@ const volverAInicio = () => { cambiarVista('inicio') }
 </script>
 
 <template>
-  <div class="icm-layout">
-    
-    <div class="top-bar">
-      <div class="contenedor-ancho top-bar-inner">
-        <div class="spacer"></div>
-        <div class="top-nav-group">
-          <a href="#" class="top-item border-left underline-item">CONTACTO</a>
-          <button class="top-item border-left btn-reset underline-item" @click="manejarClicIntranet">INTRANET</button>
-          
-          <div class="top-item border-left idiomas-container">
-            <span class="lang-link">CA</span>
-            <span class="lang-separator">|</span>
-            <span class="lang-link active">CAS</span>
-            <span class="lang-separator">|</span>
-            <span class="lang-link">EN</span>
-          </div>
-
-          <div class="top-item border-left search-block">
-            <span class="search-label">BUSCAR</span>
-            <svg class="lupa-svg" viewBox="0 0 24 24">
-              <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-            </svg>
-          </div>
-        </div>
+  <header class="main-header">
+    <div class="contenedor-ancho header-inner">
+      <div class="header-left">
+        <img src="/logovector.png" alt="SIO" class="logo-sio" @click="volverAInicio">
+        <div class="divider"></div>
+        <img src="/logo-severo.png" alt="Severo Ochoa" class="logo-severo">
       </div>
+
+      <nav class="nav-menu">
+        <a href="#" @click.prevent="cambiarVista('inicio')" class="nav-item" :class="{ activo: vistaActual === 'inicio' }">EL SIO</a>
+        <a href="#" @click.prevent="cambiarVista('servicios')" class="nav-item" :class="{ activo: vistaActual === 'servicios' }">SERVICIOS</a>
+        <a href="#" @click.prevent="cambiarVista('proyectos')" class="nav-item" :class="{ activo: vistaActual === 'proyectos' }">PROYECTOS</a>
+        <a href="#" @click.prevent="cambiarVista('idi')" class="nav-item" :class="{ activo: vistaActual === 'idi' }">I+D+i</a>
+        <img src="/logo-csic.png" alt="CSIC" class="logo-csic-nav">
+      </nav>
     </div>
+  </header>
 
-    <header class="main-header">
-      <div class="contenedor-ancho header-inner">
-        <div class="header-left">
-          <img :src="logoSio" alt="SIO" class="logo-sio" @click="volverAInicio">
-          <div class="divider"></div>
-          <img :src="logoSevero" alt="Severo Ochoa" class="logo-severo">
-        </div>
-
-        <nav class="nav-menu">
-          <a href="#" @click.prevent="cambiarVista('inicio')" class="nav-item" :class="{ activo: vistaActual === 'inicio' }">EL SIO</a>
-          <a href="#" @click.prevent="cambiarVista('servicios')" class="nav-item" :class="{ activo: vistaActual === 'servicios' }">SERVICIOS</a>
-          <a href="#" @click.prevent="cambiarVista('proyectos')" class="nav-item" :class="{ activo: vistaActual === 'proyectos' }">PROYECTOS</a>
-          <a href="#" @click.prevent="cambiarVista('idi')" class="nav-item" :class="{ activo: vistaActual === 'idi' }">I+D+i</a>
-          <img :src="logoCsic" alt="CSIC" class="logo-csic-nav">
-        </nav>
-      </div>
-    </header>
-
-    <main class="main-content">
-      <QuienesSomos v-if="vistaActual === 'inicio'" @cambiar-pagina="cambiarVista" />
-      <Proyectos v-else-if="vistaActual === 'proyectos'" @volver="volverAInicio" />
-      <Servicios v-else-if="vistaActual === 'servicios'" @volver="volverAInicio" />
-      <DesarrolloIdi v-else-if="vistaActual === 'idi'" @volver="volverAInicio" />
-      <IntranetPanel v-else-if="vistaActual === 'intranet'" @volver="volverAInicio" />
-    </main>
-
-    <footer class="footer-icm">
-      <div class="contenedor-ancho">
-        <img :src="logoIcm" alt="ICM" class="footer-logo-main">
-        <p>© 2026 Servicio de Ingeniería Oceanográfica - CSIC</p>
-      </div>
-    </footer>
-  </div>
+  <footer class="footer-icm">
+    <div class="contenedor-ancho">
+      <img src="/logo-icm.png" alt="ICM" class="footer-logo-main">
+      <p>© 2026 Servicio de Ingeniería Oceanográfica - CSIC</p>
+    </div>
+  </footer>
 </template>
-
 <style>
 /* COLORES OFICIALES ICM */
 :root { 
@@ -130,10 +93,18 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
   cursor: pointer;
 }
 .underline-item::after {
-  content: ''; position: absolute; width: 0; height: 2px;
-  bottom: -4px; left: 0; background-color: white; transition: width 0.3s ease;
+  content: ''; 
+  position: absolute; 
+  width: 0; 
+  height: 2px;
+  bottom: 12px; /* ¡Subimos la línea para que sea visible dentro de la barra! */
+  left: 15px;   /* La alineamos con el texto salvando el margen */
+  background-color: white; 
+  transition: width 0.3s ease;
 }
-.underline-item:hover::after { width: 100%; }
+.underline-item:hover::after { 
+  width: calc(100% - 30px); /* La línea medirá exactamente lo que mide la palabra */
+}
 
 /* --- LÓGICA DE IDIOMAS (GRIS Y BLANCO) --- */
 .idiomas-container { display: flex; gap: 8px; align-items: center; }
