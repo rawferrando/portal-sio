@@ -38,7 +38,7 @@ onUnmounted(() => {
 <style scoped>
 .carrusel-wrapper {
   position: absolute; 
-  top: 0;
+  top: 40px;
   left: 0;
   width: 100%;
   height: 600px; /* Ajusta la altura si lo quieres más grande o pequeño */
