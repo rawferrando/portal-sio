@@ -69,7 +69,7 @@ const manejarClicIntranet = () => {
               <img :src="logoIcm" alt="ICM" class="logo-pequeno">
             </a>
             
-            <a href="https://www.icm.csic.es/es/excelencia-severo-ochoa" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.aei.gob.es/ayudas-concedidas/centros-unidades-excelencia" target="_blank" rel="noopener noreferrer">
               <img :src="logoSevero" alt="Severo Ochoa" class="logo-pequeno">
             </a>
             
