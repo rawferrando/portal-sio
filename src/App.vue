@@ -6,11 +6,11 @@ import Servicios from './components/Servicios.vue'
 import DesarrolloIdi from './components/DesarrolloIdi.vue'
 import IntranetPanel from './components/IntranetPanel.vue'
 
-// --- IMPORTACIÓN MAESTRA (Con nombres nuevos) ---
-import logoSio from '@/assets/logovector.png'
-import logoCsic from '@/assets/sello-csic.png'
-import logoIcm from '@/assets/sello-icm.png'
-import logoSevero from '@/assets/sello-severo.png'
+// --- IMPORTACIÓN LIMPIA Y CORTA ---
+import logoSio from '@/assets/sio.png'
+import logoCsic from '@/assets/csic.png'
+import logoIcm from '@/assets/icm.png'
+import logoSevero from '@/assets/severo.png'
 
 const vistaActual = ref('inicio')
 const usuarioLogueadoSio = ref(false)
