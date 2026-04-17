@@ -9,157 +9,69 @@
           <p class="resumen-sio">
             <span class="highlight-white">Soporte tecnológico integral para la investigación marina:</span><br>
             Como equipo integrante del <span class="destacado-bold">Institut de Ciències del Mar (ICM-CSIC)</span>, el Servicio de Ingeniería Oceanográfica aporta experiencia técnica, soporte logístico e <span class="destacado-bold">I+D+I</span> en todas las fases de la investigación científica. 
-            Nos encargamos del diseño, preparación e instalación de fondeos instrumentados, la gestión de un catálogo avanzado de instrumentación oceanográfica y el soporte operativo con embarcación propia. 
-            Trabajamos de forma colaborativa para maximizar la calidad de los resultados y asegurar el éxito de cada proyecto en el medio marino.
           </p>
-        </div> </div> </div> <div class="grid-servicios-tres">
-      
- <div 
-    class="tarjeta-sio bg-proyectos" 
-    style="cursor: pointer;"
-    @click="$emit('cambiar-pagina', 'proyectos')" 
-  >
-    <div class="overlay-tarjeta">
-      <h3>Proyectos</h3>
-      <p>Soporte técnico y logístico para campañas de investigación en el medio marino.</p>
-      <span class="btn-ver-mas">Ver Campañas ➔</span>
-    </div>
-  </div>
-
-  <div 
-    class="tarjeta-sio bg-instrumentacion-activa" 
-    style="cursor: pointer;"
-    @click="$emit('cambiar-pagina', 'instrumentacion')" 
-  >
-    <div class="overlay-tarjeta">
-      <h3>Instrumentación-embarcación</h3>
-      <p>Accede al catálogo completo de equipos, consulta disponibilidad de la lancha y reserva.</p>
-      <span class="btn-ver-mas">Entrar al Catálogo ➔</span>
-    </div>
-  </div>
-
-  <div 
-    class="tarjeta-sio bg-idi" 
-    style="cursor: pointer;"
-    @click="$emit('cambiar-pagina', 'idi')" 
-  >
-    <div class="overlay-tarjeta">
-      <h3>Desarrollo I+D+I</h3>
-      <p>Innovación tecnológica, diseño de prototipos y soluciones de ingeniería a medida.</p>
-      <span class="btn-ver-mas">Conoce más ➔</span>
-    </div>
+        </div> 
+      </div> 
+    </div> 
+    
+    <div class="grid-servicios-tres">
+      <div class="tarjeta-sio bg-proyectos" style="cursor: pointer;" @click="$emit('cambiar-pagina', 'proyectos')">
+        <div class="overlay-tarjeta">
+          <h3>Proyectos</h3>
+          <p>Soporte técnico y logístico para campañas de investigación.</p>
+          <span class="btn-ver-mas">Ver Campañas ➔</span>
+        </div>
       </div>
 
-    </div> </div> </template>
+      <div class="tarjeta-sio bg-instrumentacion-activa" style="cursor: pointer;" @click="$emit('cambiar-pagina', 'instrumentacion')">
+        <div class="overlay-tarjeta">
+          <h3>Instrumentación-embarcación</h3>
+          <p>Accede al catálogo completo de equipos y reserva.</p>
+          <span class="btn-ver-mas">Entrar al Catálogo ➔</span>
+        </div>
+      </div>
+
+      <div class="tarjeta-sio bg-idi" style="cursor: pointer;" @click="$emit('cambiar-pagina', 'idi')">
+        <div class="overlay-tarjeta">
+          <h3>Desarrollo I+D+I</h3>
+          <p>Innovación tecnológica y prototipos a medida.</p>
+          <span class="btn-ver-mas">Conoce más ➔</span>
+        </div>
+      </div>
+    </div> 
+  </div> 
+</template>
 
 <style scoped>
-/* HERO SECTION: AJUSTE CEÑIDO AL CONTENIDO */
-.hero-section { 
-  background-color: #005596; 
-  padding: 15px 25px; /* Padding reducido para ajustar el azul */
-  border-radius: 8px; 
-  margin-bottom: 20px; 
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
+.portada-sio { display: flex; flex-direction: column; gap: 40px; }
+.hero-section { background-color: #005596; padding: 40px 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+.hero-container { display: flex; align-items: center; gap: 30px; max-width: 1000px; margin: 0 auto; }
+.hero-logo-box { flex: 0 0 auto; }
+.logo-hero { width: 150px; border-radius: 50%; box-shadow: 0 4px 8px rgba(0,0,0,0.2); border: 4px solid white; }
+.hero-text-box { flex: 1; }
+.resumen-sio { font-size: 1.1rem; line-height: 1.6; color: #e6f0fa; margin: 0; }
+.highlight-white { color: white; font-size: 1.3rem; font-weight: bold; display: block; margin-bottom: 10px; }
+.destacado-bold { font-weight: bold; color: #ffcc00; }
 
-.hero-container {
-  max-width: 1200px;
-  margin: 0; /* Logo y texto alineados a la izquierda del recuadro */
-  display: flex;
-  align-items: center;
-  gap: 0; /* Quitamos el gap para controlar el espacio con padding y bordes */
-}
-
-.hero-logo-box {
-  flex: 0 0 280px; /* Tamaño del logo compacto */
-  padding-right: 25px; /* Espacio entre el logo y la línea */
-}
-
-.logo-hero { 
-  width: 100%;
-  height: auto; 
-  border-radius: 2px;
-  display: block;
-}
-
-/* LA CLAVE: LA LÍNEA DIVISORIA BLANCA */
-.hero-text-box {
-  flex: 1;
-  padding-left: 25px; /* Espacio entre la línea y el texto */
-  border-left: 2px solid rgba(255, 255, 255, 0.4); /* Línea blanca fina y sutil */
-}
-
-.resumen-sio {
-  color: white;
-  font-size: 0.85rem; /* Texto un pelín más pequeño para elegancia */
-  line-height: 1.4;
-  text-align: justify; /* Texto justificado */
-  margin: 0;
-}
-
-/* Título en Negrita y Blanco */
-.highlight-white {
-  display: inline-block;
-  color: #ffffff;
-  font-weight: bold;
-  font-size: 1rem; /* Título secundario proporcionado al texto pequeño */
-  margin-bottom: 5px;
-  text-align: left;
-  width: 100%;
-}
-
-.destacado-bold {
-  font-weight: bold;
-  color: #ffffff;
-}
-
-/* GRID DE 3 FICHAS (Sigue igual) */
-/* Este es el que hace que las 3 tarjetas se ajusten solas */
 .grid-servicios-tres { 
   display: grid; 
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
   gap: 20px; 
   margin-top: 30px;
 }
-  
-  <div class="tarjeta-sio bg-proyectos" @click="$emit('cambiar-pagina', 'proyectos')">
-    <div class="overlay-tarjeta">
-      <h3>Proyectos</h3>
-      <p>Soporte técnico y logístico para campañas.</p>
-    </div>
-  </div>
 
-  <div class="tarjeta-sio bg-instrumentacion-activa" @click="$emit('cambiar-pagina', 'instrumentacion')">
-    <div class="overlay-tarjeta">
-      <h3>Instrumentación-embarcación</h3>
-      <p>Catálogo de equipos y reserva de lancha.</p>
-    </div>
-  </div>
+.tarjeta-sio { position: relative; height: 250px; border-radius: 10px; overflow: hidden; background-size: cover; background-position: center; box-shadow: 0 4px 8px rgba(0,0,0,0.15); transition: transform 0.3s; }
+.tarjeta-sio:hover { transform: translateY(-5px); }
+.bg-proyectos { background-color: #007bb5; } /* Color de fondo provisional si no hay imagen */
+.bg-instrumentacion-activa { background-color: #00aae4; }
+.bg-idi { background-color: #005596; }
 
-  <div class="tarjeta-sio bg-idi" @click="$emit('cambiar-pagina', 'idi')">
-    <div class="overlay-tarjeta">
-      <h3>Desarrollo I+D+I</h3>
-      <p>Innovación y soluciones tecnológicas a medida.</p>
-    </div>
-  </div>
+.overlay-tarjeta { position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px; background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0)); color: white; box-sizing: border-box; }
+.overlay-tarjeta h3 { margin: 0 0 10px 0; font-size: 1.4rem; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); }
+.overlay-tarjeta p { margin: 0 0 10px 0; font-size: 0.95rem; opacity: 0.9; }
+.btn-ver-mas { display: inline-block; font-size: 0.85rem; font-weight: bold; color: #ffcc00; text-transform: uppercase; }
 
-</div>
-.tarjeta-sio { position: relative; border-radius: 12px; overflow: hidden; background-size: cover; background-position: center; aspect-ratio: 3 / 4; transition: transform 0.3s ease; border: 1px solid #ddd; }
-.tarjeta-sio:hover { transform: translateY(-8px); }
-.bg-proyectos { background-image: url('../assets/proyectos.jpg'); background-color: #e3f2fd; }
-.bg-instrumentacion-activa { background-image: url('../assets/instrumentacion.jpg'); background-color: #bbdefb; cursor: pointer; border: 2px solid #005596; }
-.bg-idi { background-image: url('../assets/idi.jpg'); background-color: #e1f5fe; }
-.overlay-tarjeta { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,85,150,0.95)); padding: 25px 15px; color: white; }
-.overlay-tarjeta h3 { margin: 0 0 8px 0; font-size: 1.4rem; }
-.overlay-tarjeta p { margin: 0; font-size: 0.95rem; line-height: 1.4; }
-.btn-ver-mas { display: inline-block; margin-top: 10px; font-weight: bold; font-size: 0.8rem; }
-
-/* Responsive para tablets y móviles: La línea debe desaparecer */
-@media (max-width: 950px) {
-  .hero-container { flex-direction: column; text-align: center; margin: 0 auto; gap: 20px; }
-  .resumen-sio { text-align: center; }
-  .hero-logo-box { flex: 0 0 auto; max-width: 250px; padding-right: 0; }
-  .hero-text-box { border-left: none; padding-left: 0; } /* Quitamos la línea en móvil */
-  .grid-servicios-tres { grid-template-columns: 1fr; }
+@media (max-width: 768px) {
+  .hero-container { flex-direction: column; text-align: center; }
 }
 </style>
