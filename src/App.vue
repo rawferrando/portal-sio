@@ -68,9 +68,9 @@ const volverAInicio = () => { cambiarVista('inicio') }
     <header class="main-header">
       <div class="contenedor-ancho header-inner">
         <div class="header-left">
-          <img src="/portal-sio/sio.png" alt="SIO" class="logo-sio" @click="volverAInicio">
+          <img src="/sio.png" alt="SIO" class="logo-sio" @click="volverAInicio">
           <div class="divider"></div>
-          <img src="/portal-sio/severo.png" alt="Severo Ochoa" class="logo-severo">
+          <img src="/severo.png" alt="Severo Ochoa" class="logo-severo">
         </div>
 
         <nav class="nav-menu">
@@ -78,7 +78,7 @@ const volverAInicio = () => { cambiarVista('inicio') }
           <a href="#" @click.prevent="cambiarVista('servicios')" class="nav-item" :class="{ activo: vistaActual === 'servicios' }">SERVICIOS</a>
           <a href="#" @click.prevent="cambiarVista('proyectos')" class="nav-item" :class="{ activo: vistaActual === 'proyectos' }">PROYECTOS</a>
           <a href="#" @click.prevent="cambiarVista('idi')" class="nav-item" :class="{ activo: vistaActual === 'idi' }">I+D+i</a>
-          <img src="/portal-sio/csic.png" alt="CSIC" class="logo-csic-nav">
+          <img src="/csic.png" alt="CSIC" class="logo-csic-nav">
         </nav>
       </div>
     </header>
@@ -93,7 +93,7 @@ const volverAInicio = () => { cambiarVista('inicio') }
 
     <footer class="footer-icm">
       <div class="contenedor-ancho">
-        <img src="/portal-sio/icm.png" alt="ICM" class="footer-logo-main">
+        <img src="/icm.png" alt="ICM" class="footer-logo-main">
         <p>© 2026 Servicio de Ingeniería Oceanográfica - CSIC</p>
       </div>
     </footer>
