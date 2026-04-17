@@ -6,11 +6,11 @@ import Servicios from './components/Servicios.vue'
 import DesarrolloIdi from './components/DesarrolloIdi.vue'
 import IntranetPanel from './components/IntranetPanel.vue'
 
-// --- CARGA DE IMÁGENES ROBUSTA ---
-const imgSio = new URL('./assets/logovector.png', import.meta.url).href
-const imgCsic = new URL('./assets/logo-csic.png', import.meta.url).href
-const imgIcm = new URL('./assets/logo-icm.png', import.meta.url).href
-const imgSevero = new URL('./assets/logo-severo.png', import.meta.url).href
+// --- CARGA DE IMÁGENES BLINDADA ---
+import logoSio from './assets/logovector.png'
+import logoCsic from './assets/logo-csic.png'
+import logoIcm from './assets/logo-icm.png'
+import logoSevero from './assets/logo-severo.png'
 
 const vistaActual = ref('inicio')
 const usuarioLogueadoSio = ref(false)
@@ -45,18 +45,22 @@ const volverAInicio = () => { cambiarVista('inicio') }
       <div class="contenedor-ancho top-bar-inner">
         <div class="spacer"></div>
         <div class="top-nav-group">
-          <a href="#" class="top-item border-left underline-white">CONTACTO</a>
+          <a href="#" class="top-item border-left underline-item">CONTACTO</a>
+          <button class="top-item border-left btn-reset underline-item" @click="manejarClicIntranet">INTRANET</button>
           
-          <button class="top-item border-left btn-reset underline-white" @click="manejarClicIntranet">
-            {{ usuarioLogueadoSio ? 'INTRANET' : 'INTRANET' }}
-          </button>
-
-          <div class="top-item border-left idiomas underline-white">
-            <span>CA</span> | <span class="active">ES</span> | <span>EN</span>
+          <div class="top-item border-left idiomas-container">
+            <span class="lang-link">CA</span>
+            <span class="lang-separator">|</span>
+            <span class="lang-link active">CAS</span>
+            <span class="lang-separator">|</span>
+            <span class="lang-link">EN</span>
           </div>
 
           <div class="top-item border-left search-block">
-            <img src="https://icm.csic.es/sites/all/themes/bootstrap_icm/icons/lupa.png" alt="" class="icon-lupa-img">
+            <span class="search-label">BUSCAR</span>
+            <svg class="lupa-svg" viewBox="0 0 24 24">
+              <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
           </div>
         </div>
       </div>
@@ -65,9 +69,9 @@ const volverAInicio = () => { cambiarVista('inicio') }
     <header class="main-header">
       <div class="contenedor-ancho header-inner">
         <div class="header-left">
-          <img :src="imgSio" alt="SIO" class="logo-sio" @click="volverAInicio">
+          <img :src="logoSio" alt="SIO" class="logo-sio" @click="volverAInicio">
           <div class="divider"></div>
-          <img :src="imgSevero" alt="Severo Ochoa" class="logo-severo">
+          <img :src="logoSevero" alt="Severo Ochoa" class="logo-severo">
         </div>
 
         <nav class="nav-menu">
@@ -75,7 +79,7 @@ const volverAInicio = () => { cambiarVista('inicio') }
           <a href="#" @click.prevent="cambiarVista('servicios')" class="nav-item" :class="{ activo: vistaActual === 'servicios' }">SERVICIOS</a>
           <a href="#" @click.prevent="cambiarVista('proyectos')" class="nav-item" :class="{ activo: vistaActual === 'proyectos' }">PROYECTOS</a>
           <a href="#" @click.prevent="cambiarVista('idi')" class="nav-item" :class="{ activo: vistaActual === 'idi' }">I+D+i</a>
-          <img :src="imgCsic" alt="CSIC" class="logo-csic-nav">
+          <img :src="logoCsic" alt="CSIC" class="logo-csic-nav">
         </nav>
       </div>
     </header>
@@ -90,7 +94,7 @@ const volverAInicio = () => { cambiarVista('inicio') }
 
     <footer class="footer-icm">
       <div class="contenedor-ancho">
-        <img :src="imgIcm" alt="ICM" class="footer-logo-main">
+        <img :src="logoIcm" alt="ICM" class="footer-logo-main">
         <p>© 2026 Servicio de Ingeniería Oceanográfica - CSIC</p>
       </div>
     </footer>
@@ -101,7 +105,8 @@ const volverAInicio = () => { cambiarVista('inicio') }
 /* COLORES OFICIALES ICM */
 :root { 
   --icm-navy: #002d4b;   
-  --icm-blue: #0086c0;   
+  --icm-blue: #0086c0;
+  --icm-gris-claro: #a8bacc; /* Gris azulado para los idiomas inactivos */
 }
 
 body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
@@ -116,71 +121,74 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
 .top-item { 
   display: flex; align-items: center; height: 100%; padding: 0 15px;
   font-size: 11px; font-weight: bold; color: white; text-decoration: none;
-  position: relative;
 }
-
 .border-left { border-left: 1px solid rgba(255,255,255,0.2); }
 
-/* SUBRAYADO BLANCO EN BARRA SUPERIOR */
-.underline-white::after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 2px;
-  bottom: 8px;
-  left: 15px;
-  background-color: white;
+/* SUBRAYADO BLANCO PARA CONTACTO E INTRANET */
+.underline-item {
+  position: relative;
+  cursor: pointer;
+}
+.underline-item::after {
+  content: ''; position: absolute; width: 0; height: 2px;
+  bottom: -4px; left: 0; background-color: white; transition: width 0.3s ease;
+}
+.underline-item:hover::after { width: 100%; }
+
+/* --- LÓGICA DE IDIOMAS (GRIS Y BLANCO) --- */
+.idiomas-container { display: flex; gap: 8px; align-items: center; }
+.lang-separator { color: var(--icm-gris-claro); font-weight: normal; font-size: 10px; }
+
+/* Inactivos por defecto: Texto gris y línea gris invisible */
+.lang-link { 
+  color: var(--icm-gris-claro); 
+  position: relative; 
+  cursor: pointer; 
+  padding-bottom: 2px;
+  transition: color 0.3s; 
+}
+.lang-link::after {
+  content: ''; position: absolute; width: 0; height: 2px;
+  bottom: -4px; left: 0; 
+  background-color: var(--icm-gris-claro); /* Subrayado en gris */
   transition: width 0.3s ease;
 }
-.underline-white:hover::after {
-  width: calc(100% - 30px);
+
+/* Al pasar el ratón por los inactivos: se subraya en gris */
+.lang-link:hover::after { width: 100%; }
+
+/* El idioma activo: Texto blanco y línea blanca siempre visible */
+.lang-link.active { 
+  color: white; 
+}
+.lang-link.active::after { 
+  width: 100%; 
+  background-color: white; 
 }
 
-/* BLOQUE LUPA Y CAMBIO DE COLOR */
+/* BLOQUE BUSCAR */
 .search-block { 
-  background: var(--icm-blue); 
-  padding: 0 12px; 
-  cursor: pointer;
-  transition: background 0.3s ease;
+  background: var(--icm-blue); padding: 0 15px; cursor: pointer; transition: background 0.3s; gap: 8px;
 }
-.search-block:hover {
-  background: #00a4eb; /* Un azul un poco más claro al pasar el ratón */
-}
-.icon-lupa-img { 
-  height: 16px; 
-  transition: transform 0.2s ease;
-}
-.search-block:hover .icon-lupa-img {
-  transform: scale(1.1); /* La lupa crece un poquito al pasar el ratón */
-}
+.search-block:hover { background: #00a4eb; }
+.search-label { font-size: 11px; letter-spacing: 0.5px; }
+.lupa-svg { height: 16px; width: 16px; fill: white; }
 
-/* HEADER Y NAVEGACIÓN (SUBRAYADO AZUL) */
+/* HEADER */
 .main-header { background: white; padding: 25px 0; border-bottom: 1px solid #eee; }
 .header-inner { display: flex; justify-content: space-between; align-items: center; }
-.header-left { display: flex; align-items: center; gap: 20px; }
 .logo-sio { height: 65px; cursor: pointer; }
-.divider { width: 1px; height: 40px; background: #ddd; }
+.divider { width: 1px; height: 40px; background: #ddd; margin: 0 15px; }
 .logo-severo { height: 45px; }
 
 .nav-menu { display: flex; align-items: center; gap: 25px; }
 .nav-item { 
-  text-decoration: none; 
-  color: var(--icm-navy); 
-  font-weight: bold; 
-  font-size: 13px;
-  position: relative;
-  padding-bottom: 5px;
+  text-decoration: none; color: var(--icm-navy); 
+  font-weight: bold; font-size: 13px; position: relative; padding-bottom: 5px;
 }
-
 .nav-item::after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 3px;
-  bottom: -2px;
-  left: 0;
-  background-color: var(--icm-blue);
-  transition: width 0.3s ease;
+  content: ''; position: absolute; width: 0; height: 3px;
+  bottom: -2px; left: 0; background-color: var(--icm-blue); transition: width 0.3s;
 }
 .nav-item:hover::after, .nav-item.activo::after { width: 100%; }
 .nav-item:hover, .nav-item.activo { color: var(--icm-blue); }
