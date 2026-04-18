@@ -204,7 +204,7 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
 .header-left { display: flex; align-items: center; }
 
 /* ✨ JERARQUÍA DE LOGOS ✨ */
-.logo-principal { height: 75px; cursor: pointer; transition: transform 0.3s; }
+.logo-principal { height: 60px; cursor: pointer; transition: transform 0.3s; }
 /* Añadimos el mismo hover para que vuestro logo también crezca */
 .logo-principal:hover { transform: scale(1.05); } 
 
