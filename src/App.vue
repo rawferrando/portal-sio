@@ -357,39 +357,52 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
 
   /* 2. Centramos los logos y ocultamos la línea separadora */
   .header-left {
-    flex-direction: column; /* Apila tu logo y los demás */
+    flex-direction: column; 
     gap: 10px;
     justify-content: center;
   }
   .divider {
-    display: none; /* Quitamos la línea vertical en móviles */
+    display: none; 
   }
 
   /* 3. Hacemos los logos más pequeños para que quepan bien */
   .logo-principal {
-    height: 45px; /* Tu logo un poco más pequeño */
+    height: 45px; 
   }
   .logos-grupo {
     gap: 10px;
     justify-content: center;
   }
   .logo-pequeno {
-    height: 22px; /* Los logos secundarios más pequeños */
+    height: 22px; 
   }
 
   /* 4. Ajustamos el menú para que se adapte si hay poco espacio */
   .nav-menu {
     flex-wrap: wrap;
     justify-content: center;
-    gap: 12px; /* Juntamos un poco más las palabras */
+    gap: 12px; 
   }
   .nav-item {
-    font-size: 12px; /* Letra un pelín más pequeña */
+    font-size: 12px; 
   }
 
   /* 5. Si la página de contacto quedaba estrecha, le damos margen */
   .contacto-unacolumna {
     padding: 0 10px;
   }
-}
+
+  /* 6. Adaptar la Barra Superior para que no rompa la pantalla */
+  .top-item { 
+    padding: 0 8px; 
+    font-size: 10px; 
+  }
+  .search-label { 
+    display: none; 
+  }
+  .idiomas-container {
+    gap: 4px; 
+  }
+
+} /* <--- ¡ESTA ES LA LLAVE DE CIERRE FINAL! Todo debe ir antes de ella */
 </style>

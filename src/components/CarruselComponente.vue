@@ -83,4 +83,10 @@ onUnmounted(() => {
   /* Degradado sutil con el azul SIO para unificar el diseño */
   background: linear-gradient(rgba(1, 33, 105, 0.4), rgba(1, 33, 105, 0.7)); 
 }
+/* --- ADAPTACIÓN DEL CARRUSEL PARA MÓVILES --- */
+@media (max-width: 768px) {
+  .carrusel-wrapper {
+    height: 350px; /* En lugar de 650px, lo hacemos más manejable en móvil */
+  }
+}
 </style>
