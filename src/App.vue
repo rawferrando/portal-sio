@@ -344,4 +344,52 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
 .header-solido-contacto + .main-content .pagina-contacto {
   padding-top: 40px;
 }
+/* ========================================================= */
+/* 📱 ADAPTACIÓN PARA MÓVILES (RESPONSIVE) 📱                */
+/* ========================================================= */
+@media (max-width: 768px) {
+  
+  /* 1. Cambiamos la estructura a columna (Logos arriba, Menú abajo) */
+  .header-inner {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  /* 2. Centramos los logos y ocultamos la línea separadora */
+  .header-left {
+    flex-direction: column; /* Apila tu logo y los demás */
+    gap: 10px;
+    justify-content: center;
+  }
+  .divider {
+    display: none; /* Quitamos la línea vertical en móviles */
+  }
+
+  /* 3. Hacemos los logos más pequeños para que quepan bien */
+  .logo-principal {
+    height: 45px; /* Tu logo un poco más pequeño */
+  }
+  .logos-grupo {
+    gap: 10px;
+    justify-content: center;
+  }
+  .logo-pequeno {
+    height: 22px; /* Los logos secundarios más pequeños */
+  }
+
+  /* 4. Ajustamos el menú para que se adapte si hay poco espacio */
+  .nav-menu {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px; /* Juntamos un poco más las palabras */
+  }
+  .nav-item {
+    font-size: 12px; /* Letra un pelín más pequeña */
+  }
+
+  /* 5. Si la página de contacto quedaba estrecha, le damos margen */
+  .contacto-unacolumna {
+    padding: 0 10px;
+  }
+}
 </style>
