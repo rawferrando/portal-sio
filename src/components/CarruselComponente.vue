@@ -68,7 +68,7 @@ onUnmounted(() => {
   overflow: hidden;
   
   /* Layering: Capa baja (1) para quedarse por detrás del menú y los logos */
-  z-index: 1 !important; 
+  z-index: 0 !important; 
 }
 
 .carrusel-inner {
