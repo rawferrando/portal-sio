@@ -30,12 +30,24 @@ onUnmounted(() => {
 
 <template>
   <div class="carrusel-wrapper">
+    
     <div class="carrusel-inner" :style="{ transform: `translateX(-${indiceActual * 100}%)` }">
       <div class="carrusel-slide" v-for="(img, index) in imagenes" :key="index">
         <img :src="img" alt="Slide del SIO" class="carrusel-img">
         <div class="carrusel-overlay"></div>
       </div>
     </div>
+
+    <div class="contenedor-puntos">
+      <span 
+        v-for="(img, index) in imagenes" 
+        :key="'punto-' + index"
+        class="punto" 
+        :class="{ activo: indiceActual === index }"
+        @click="indiceActual = index"
+      ></span>
+    </div>
+
   </div>
 </template>
 
@@ -88,5 +100,34 @@ onUnmounted(() => {
   .carrusel-wrapper {
     height: 350px; /* En lugar de 650px, lo hacemos más manejable en móvil */
   }
+}
+/* ESTILOS DE LOS PUNTITOS */
+.contenedor-puntos {
+  position: absolute;
+  bottom: 30px; /* Separación desde abajo */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 15px;
+  z-index: 100;
+}
+
+.punto {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid white;
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.punto.activo {
+  background-color: white;
+  transform: scale(1.2);
+}
+
+.punto:hover {
+  background-color: rgba(255, 255, 255, 0.5);
 }
 </style>

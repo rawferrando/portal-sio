@@ -1,9 +1,7 @@
 <script setup>
-// ¡ATENCIÓN! Asegúrate de que el nombre de este archivo en la carpeta src/assets/ 
-// sea EXACTAMENTE "faviconsio.png" (todo en minúsculas) para que GitHub no te dé error.
+// Asegúrate de que siga siendo faviconsio.png (en minúsculas)
 import logoTrozo from '../assets/faviconsio.png'
 
-// Imágenes de fondo para el efecto al pasar el ratón
 const imgMemoria = 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=600'
 const imgNoticias = 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=600'
 const imgEquipo  = 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600'
@@ -38,12 +36,13 @@ const imgEquipo  = 'https://images.unsplash.com/photo-1522071820081-009f0129c71c
 </template>
 
 <style scoped>
-/* Posicionamiento: las subimos un poco para que solapen el carrusel (si es lo que te gustaba) */
 .seccion-fichas-sio {
-  margin-top: -60px; /* Esto hace que "muerdan" la parte de arriba. Cámbialo a 0 si las quieres abajo del todo */
+  /* ¡ESTO ES LO QUE LAS BAJA! */
+  margin-top: 550px; /* Si se quedan cortas, súbelo a 600px. Si se pasan, bájalo a 450px */
   position: relative;
   z-index: 20;
   width: 100%;
+  padding-bottom: 40px;
 }
 
 .fichas-grid {
@@ -64,26 +63,24 @@ const imgEquipo  = 'https://images.unsplash.com/photo-1522071820081-009f0129c71c
   transition: all 0.4s ease;
 }
 
-/* 🎨 3 COLORES DISTINTOS DE LA GAMA DEL SIO */
+/* Colores */
 .c-navy  { background-color: #012169; }
 .c-azul  { background-color: #005a87; }
 .c-icm   { background-color: #0086c0; }
 
-/* 🧩 TEXTURA DEL LOGO */
+/* Logo de fondo */
 .capa-logo {
   position: absolute;
   inset: 0;
-  background-size: 250%; /* Hacemos zoom para que sea un patrón */
+  background-size: 250%; 
   opacity: 0.15;
   transition: 0.3s;
 }
-
-/* ✂️ TROZOS DISTINTOS DEL LOGO PARA CADA FICHA */
 .pos-1 { background-position: left top; }
 .pos-2 { background-position: center; }
 .pos-3 { background-position: right bottom; }
 
-/* 📸 IMAGEN QUE APARECE AL HACER HOVER */
+/* Foto hover */
 .capa-foto {
   position: absolute;
   inset: 0;
@@ -94,7 +91,7 @@ const imgEquipo  = 'https://images.unsplash.com/photo-1522071820081-009f0129c71c
   transition: all 0.5s ease;
 }
 
-/* TEXTO */
+/* Texto */
 .contenido {
   position: absolute;
   inset: 0;
@@ -103,24 +100,22 @@ const imgEquipo  = 'https://images.unsplash.com/photo-1522071820081-009f0129c71c
   justify-content: center;
   z-index: 10;
 }
-
 .contenido h3 {
   color: white;
   margin: 0;
   font-size: 1.1rem;
   letter-spacing: 1px;
   font-weight: bold;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.5); /* Sombra para que se lea siempre */
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
 }
 
-/* ✨ EFECTOS AL PASAR EL RATÓN */
+/* Hover */
 .ficha-sio:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.25); }
 .ficha-sio:hover .capa-foto { opacity: 1; transform: scale(1); }
 .ficha-sio:hover .capa-logo { opacity: 0; }
 
-/* ADAPTACIÓN A MÓVILES */
 @media (max-width: 768px) {
   .ficha-sio { width: 90%; height: 100px; }
-  .seccion-fichas-sio { margin-top: 20px; }
+  .seccion-fichas-sio { margin-top: 300px; } /* En móvil el carrusel es más corto */
 }
 </style>
