@@ -14,6 +14,9 @@ import logoCsic from './assets/csic.png'
 import logoIcm from './assets/icm.png'
 import logoSevero from './assets/severo.png'
 
+const goToSlide = (index) => {
+  currentSlide.value = index;
+}
 const vistaActual = ref('inicio')
 const usuarioLogueadoSio = ref(false)
 
@@ -157,6 +160,15 @@ const manejarClicIntranet = () => {
       </div>
     </footer>
   </div>
+  <div class="carousel-dots">
+  <span 
+    v-for="(slide, index) in slides" 
+    :key="index"
+    class="dot"
+    :class="{ active: currentSlide === index }"
+    @click="goToSlide(index)"
+  ></span>
+</div>
 </template>
 
 <style>
@@ -405,4 +417,32 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
   }
 
 } /* <--- ¡ESTA ES LA LLAVE DE CIERRE FINAL! Todo debe ir antes de ella */
+.carousel-dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid white;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dot.active {
+  background: white;
+  transform: scale(1.2);
+}
+
+.dot:hover {
+  background: rgba(255, 255, 255, 0.5);
+} 
 </style>
