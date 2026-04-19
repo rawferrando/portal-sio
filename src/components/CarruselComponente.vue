@@ -53,17 +53,22 @@ onUnmounted(() => {
 
 <style scoped>
 /* Scoped asegura que este CSS no rompa tu App.vue */
+
 .carrusel-wrapper {
   position: relative; 
-  /* 🛑 CLAVE PARA LA TOP BAR: Empieza justo debajo de ella */
-  top: 40px; 
+  
+  /* 🔥 LA MAGIA PARA QUITAR LA FRANJA BLANCA EN TODAS LAS PANTALLAS */
+  margin-top: -140px !important; /* Tira de la foto hacia arriba para tapar el hueco */
+  top: 0; /* Sustituimos tu top: 40px por 0 para que no lo empuje hacia abajo */
   left: 0;
   width: 100%;
-  /* 📏 ALTURA DEL CARRUSEL: He subido un poco la altura para que se vea más profesional */
+  
+  /* 📏 ALTURA DEL CARRUSEL */
   height: 650px; 
   overflow: hidden;
-  /* Layering: Se asegura de estar debajo del menú flotante */
-  z-index: 10; 
+  
+  /* Layering: Capa baja (1) para quedarse por detrás del menú y los logos */
+  z-index: 1 !important; 
 }
 
 .carrusel-inner {
@@ -95,20 +100,8 @@ onUnmounted(() => {
   /* Degradado sutil con el azul SIO para unificar el diseño */
   background: linear-gradient(rgba(1, 33, 105, 0.4), rgba(1, 33, 105, 0.7)); 
 }
-/* --- ADAPTACIÓN DEL CARRUSEL PARA MÓVILES --- */
-@media (max-width: 768px) {
-.carrusel-wrapper {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  
-  /* ¡ESTA ES LA MAGIA QUE QUITA LA FRANJA BLANCA! */
-  margin-top: -120px; /* Tira de la foto hacia arriba para meterla bajo los logos */
-  
-  z-index: 0; /* Asegura que la foto se quede por DETRÁS de los logos */
-}
-}
-/* ESTILOS DE LOS PUNTITOS */
+
+/* --- ESTILOS DE LOS PUNTITOS --- */
 .contenedor-puntos {
   position: absolute;
   bottom: 120px; /* Separación desde abajo */
@@ -116,7 +109,7 @@ onUnmounted(() => {
   transform: translateX(-50%);
   display: flex;
   gap: 15px;
-  z-index: 999;
+  z-index: 999; /* Por encima de la foto y el degradado */
 }
 
 .punto {
@@ -127,7 +120,7 @@ onUnmounted(() => {
   background-color: transparent;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Sombrita para que se vean siempre */
 }
 
 .punto.activo {
@@ -137,5 +130,15 @@ onUnmounted(() => {
 
 .punto:hover {
   background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* --- ADAPTACIÓN DEL CARRUSEL PARA MÓVILES --- */
+@media (max-width: 768px) {
+  .carrusel-wrapper {
+    height: 400px; /* En móviles el carrusel queda mejor si es más bajito */
+  }
+  .contenedor-puntos {
+    bottom: 60px; /* Bajamos los puntos porque la foto es más pequeña */
+  }
 }
 </style>
