@@ -97,9 +97,16 @@ onUnmounted(() => {
 }
 /* --- ADAPTACIÓN DEL CARRUSEL PARA MÓVILES --- */
 @media (max-width: 768px) {
-  .carrusel-wrapper {
-    height: 350px; /* En lugar de 650px, lo hacemos más manejable en móvil */
-  }
+.carrusel-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  
+  /* ¡ESTA ES LA MAGIA QUE QUITA LA FRANJA BLANCA! */
+  margin-top: -120px; /* Tira de la foto hacia arriba para meterla bajo los logos */
+  
+  z-index: 0; /* Asegura que la foto se quede por DETRÁS de los logos */
+}
 }
 /* ESTILOS DE LOS PUNTITOS */
 .contenedor-puntos {
