@@ -54,7 +54,7 @@ onUnmounted(() => {
 <style scoped>
 /* Scoped asegura que este CSS no rompa tu App.vue */
 .carrusel-wrapper {
-  position: absolute; 
+  position: relative; 
   /* 🛑 CLAVE PARA LA TOP BAR: Empieza justo debajo de ella */
   top: 40px; 
   left: 0;
@@ -104,12 +104,12 @@ onUnmounted(() => {
 /* ESTILOS DE LOS PUNTITOS */
 .contenedor-puntos {
   position: absolute;
-  bottom: 30px; /* Separación desde abajo */
+  bottom: 120px; /* Separación desde abajo */
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   gap: 15px;
-  z-index: 100;
+  z-index: 999;
 }
 
 .punto {
@@ -120,6 +120,7 @@ onUnmounted(() => {
   background-color: transparent;
   cursor: pointer;
   transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
 .punto.activo {
@@ -128,6 +129,6 @@ onUnmounted(() => {
 }
 
 .punto:hover {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.8);
 }
 </style>
