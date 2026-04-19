@@ -38,9 +38,9 @@ const imgEquipo  = 'https://images.unsplash.com/photo-1522071820081-009f0129c71c
 <style scoped>
 .seccion-fichas-sio {
   /* ¡ESTO ES LO QUE LAS BAJA! */
-  margin-top: 550px; /* Si se quedan cortas, súbelo a 600px. Si se pasan, bájalo a 450px */
+  margin-top: -80px; /* Si se quedan cortas, súbelo a 600px. Si se pasan, bájalo a 450px */
   position: relative;
-  z-index: 20;
+  z-index: 50;
   width: 100%;
   padding-bottom: 40px;
 }
