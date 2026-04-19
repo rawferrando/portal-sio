@@ -183,7 +183,12 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
 .btn-reset { background: none; border: none; color: inherit; font: inherit; cursor: pointer; padding: 0; }
 
 /* 🛑 TU BARRA SUPERIOR ORIGINAL (INTOCABLE) 🛑 */
-.top-bar { background: var(--icm-navy); height: 40px; }
+.top-bar { 
+  background: var(--icm-navy); 
+  height: 40px; 
+  position: relative; /* Le da el poder de usar z-index */
+  z-index: 9999;      /* La pone por encima de absolutamente todo */
+}
 .top-bar-inner { display: flex; justify-content: space-between; align-items: center; height: 100%; }
 .top-nav-group { display: flex; height: 100%; align-items: center; border-right: 1px solid rgba(255,255,255,0.2); }
 .top-item { display: flex; align-items: center; height: 100%; padding: 0 15px; font-size: 11px; font-weight: bold; color: white; text-decoration: none; position: relative; }
