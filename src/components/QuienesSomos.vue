@@ -28,7 +28,7 @@ const imgBlueLab = 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158
           <div class="contenido"><h3>Noticias</h3></div>
         </div>
 
-        <div class="ficha-sio text-dark-navy" :style="{ backgroundImage: `url(${bgGroc})` }" @click="$emit('cambiar-pagina', 'equipo')">
+        <div class="ficha-sio text-white" :style="{ backgroundImage: `url(${bgGroc})` }" @click="$emit('cambiar-pagina', 'equipo')">
           <div class="capa-foto" :style="{ backgroundImage: `url(${imgEquipo})` }"></div>
           <div class="contenido"><h3>Equipo SIO</h3></div>
         </div>
