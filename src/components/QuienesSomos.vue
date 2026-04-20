@@ -136,7 +136,7 @@ const imgBlueLab = 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158
   /* Añadimos una capa de color azul marino muy sutil (opacity 0.4) 
      que se superpone a la imagen de fondo */
   background-blend-mode: overlay; /* O 'multiply' para un efecto más oscuro */
-  background-color: rgba(1, 33, 105, 0.4); 
+  background-color: rgba(1, 33, 105, 0.2); 
 }
 /* Al hacer hover, mostramos la foto y ocultamos el color PNG */
 .ficha-sio:hover .capa-foto { opacity: 1; transform: scale(1); }
