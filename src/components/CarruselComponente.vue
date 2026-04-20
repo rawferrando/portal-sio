@@ -135,7 +135,7 @@ onUnmounted(() => {
 /* --- ADAPTACIÓN DEL CARRUSEL PARA MÓVILES --- */
 @media (max-width: 768px) {
   .carrusel-wrapper {
-    height: 600px; /* En móviles el carrusel queda mejor si es más bajito */
+    height: 650px; /* En móviles el carrusel queda mejor si es más bajito */
   }
   .contenedor-puntos {
     bottom: 90px; /* Bajamos los puntos porque la foto es más pequeña */

@@ -50,7 +50,7 @@ const manejarClicIntranet = () => {
           <a href="#" class="top-item border-left underline-item" @click.prevent="irAContacto">CONTACTO</a>
           <button class="top-item border-left btn-reset underline-item" @click="manejarClicIntranet">INTRANET</button>
           <div class="top-item border-left idiomas-container">
-            <span class="lang-link">CA</span> | <span class="lang-link active">ES</span> | <span class="lang-link">EN</span>
+            <span class="lang-link">CAT</span> | <span class="lang-link active">ES</span> | <span class="lang-link">EN</span>
           </div>
           <div class="top-item border-left search-block">
             <span class="search-label">BUSCAR</span>
@@ -366,33 +366,43 @@ body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; -webkit-font
 /* ========================================================= */
 @media (max-width: 768px) {
   
-  /* 1. Cambiamos la estructura a columna (Logos arriba, Menú abajo) */
+  /* 1. Menú abajo, Logos arriba */
   .header-inner {
     flex-direction: column;
     gap: 15px;
   }
 
-  /* 2. Centramos los logos y ocultamos la línea separadora */
+  /* 👇 AQUÍ ESTÁ LA MAGIA NUEVA: LOGOS EN FILA 👇 */
   .header-left {
-    flex-direction: column; 
-    gap: 10px;
+    display: flex;
+    flex-direction: row; /* Fuerzo a que estén en horizontal */
+    align-items: center;
     justify-content: center;
+    gap: 12px; /* Espacio entre tu logo y los demás */
+    width: 100%;
   }
+  
   .divider {
-    display: none; 
+    display: none; /* Seguimos ocultando la raya vertical */
   }
 
-  /* 3. Hacemos los logos más pequeños para que quepan bien */
   .logo-principal {
-    height: 45px; 
+    height: 38px; /* Tu logo más grande */
+    flex-shrink: 0; /* Evita que se aplaste */
   }
+  
   .logos-grupo {
-    gap: 10px;
-    justify-content: center;
+    display: flex;
+    flex-direction: row; /* Los logos pequeños también en horizontal */
+    align-items: center;
+    gap: 6px;
   }
+  
   .logo-pequeno {
-    height: 22px; 
+    height: 18px; /* Logos del CSIC/ICM más pequeñitos para que quepan */
+    flex-shrink: 0;
   }
+  /* 👆 FIN DE LA MAGIA DE LOGOS 👆 */
 
   /* 4. Ajustamos el menú para que se adapte si hay poco espacio */
   .nav-menu {
