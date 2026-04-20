@@ -1,10 +1,10 @@
 <script setup>
-// Asegúrate de que siga siendo faviconsio.png (en minúsculas)
 import logoTrozo from '../assets/faviconsio.png'
 
 const imgMemoria = 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=600'
 const imgNoticias = 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=600'
 const imgEquipo  = 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600'
+const imgIntranet = 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=600' // Foto para la intranet
 </script>
 
 <template>
@@ -30,6 +30,12 @@ const imgEquipo  = 'https://images.unsplash.com/photo-1522071820081-009f0129c71c
           <div class="contenido"><h3>Equipo SIO</h3></div>
         </div>
 
+        <div class="ficha-sio c-navy" @click="$emit('cambiar-pagina', 'intranet')">
+          <div class="capa-logo pos-4" :style="{ backgroundImage: `url(${logoTrozo})` }"></div>
+          <div class="capa-foto" :style="{ backgroundImage: `url(${imgIntranet})` }"></div>
+          <div class="contenido"><h3>Acceso Intranet</h3></div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -37,8 +43,8 @@ const imgEquipo  = 'https://images.unsplash.com/photo-1522071820081-009f0129c71c
 
 <style scoped>
 .seccion-fichas-sio {
-  /* ¡ESTO ES LO QUE LAS BAJA! */
-  margin-top: -50px; /* Si se quedan cortas, súbelo a 600px. Si se pasan, bájalo a 450px */
+  /* Solape en ordenador */
+  margin-top: -50px; 
   position: relative;
   z-index: 50;
   width: 100%;
@@ -53,7 +59,7 @@ const imgEquipo  = 'https://images.unsplash.com/photo-1522071820081-009f0129c71c
 }
 
 .ficha-sio {
-  width: 260px;
+  width: 250px; /* Un pelín más finas para que quepan 4 bien */
   height: 120px;
   border-radius: 8px;
   position: relative;
@@ -69,53 +75,29 @@ const imgEquipo  = 'https://images.unsplash.com/photo-1522071820081-009f0129c71c
 .c-icm   { background-color: #0086c0; }
 
 /* Logo de fondo */
-.capa-logo {
-  position: absolute;
-  inset: 0;
-  background-size: 250%; 
-  opacity: 0.15;
-  transition: 0.3s;
-}
+.capa-logo { position: absolute; inset: 0; background-size: 250%; opacity: 0.15; transition: 0.3s; }
 .pos-1 { background-position: left top; }
 .pos-2 { background-position: center; }
 .pos-3 { background-position: right bottom; }
+.pos-4 { background-position: left bottom; }
 
 /* Foto hover */
-.capa-foto {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  opacity: 0;
-  transform: scale(1.1);
-  transition: all 0.5s ease;
-}
+.capa-foto { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transform: scale(1.1); transition: all 0.5s ease; }
 
 /* Texto */
-.contenido {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-}
-.contenido h3 {
-  color: white;
-  margin: 0;
-  font-size: 1.1rem;
-  letter-spacing: 1px;
-  font-weight: bold;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-}
+.contenido { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 10; }
+.contenido h3 { color: white; margin: 0; font-size: 1.1rem; letter-spacing: 1px; font-weight: bold; text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
 
 /* Hover */
 .ficha-sio:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.25); }
 .ficha-sio:hover .capa-foto { opacity: 1; transform: scale(1); }
 .ficha-sio:hover .capa-logo { opacity: 0; }
 
+/* 📱 ADAPTACIÓN A MÓVILES (¡AQUÍ ESTABA EL FALLO!) */
 @media (max-width: 768px) {
-  .ficha-sio { width: 90%; height: 100px; }
-  .seccion-fichas-sio { margin-top: 300px; } /* En móvil el carrusel es más corto */
+  .ficha-sio { width: 45%; height: 100px; } /* 45% para que salgan de dos en dos */
+  .seccion-fichas-sio { 
+    margin-top: -30px; /* ¡ADIÓS AL 300px! Ahora solapan un poquito la foto hacia arriba */
+  } 
 }
 </style>

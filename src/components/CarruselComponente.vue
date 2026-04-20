@@ -104,28 +104,28 @@ onUnmounted(() => {
 /* --- ESTILOS DE LOS PUNTITOS --- */
 .contenedor-puntos {
   position: absolute;
-  bottom: 120px; /* Separación desde abajo */
+  bottom: 90px; /* Separación desde abajo */
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 15px;
+  gap: 10px;
   z-index: 999; /* Por encima de la foto y el degradado */
 }
 
 .punto {
-  width: 14px;
-  height: 14px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  border: 2px solid white;
+  border: 1.5px solid white;
   background-color: transparent;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Sombrita para que se vean siempre */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.4); /* Sombrita para que se vean siempre */
 }
 
 .punto.activo {
   background-color: white;
-  transform: scale(1.2);
+  transform: scale(1.3);
 }
 
 .punto:hover {
