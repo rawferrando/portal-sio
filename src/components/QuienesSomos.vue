@@ -117,8 +117,27 @@ const imgBlueLab = 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158
   text-shadow: none; /* No necesita sombra */
 }
 
-/* ✨ EFECTOS HOVER */
-.ficha-sio:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.25); }
+.ficha-sio {
+  width: 250px; 
+  height: 120px;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  transition: all 0.4s ease;
+  
+  /* 🖼️ AJUSTES PARA TUS FONDOS PNG */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  /* 👇 LA CLAVE PARA ATENUAR 👇 */
+  /* Añadimos una capa de color azul marino muy sutil (opacity 0.4) 
+     que se superpone a la imagen de fondo */
+  background-blend-mode: overlay; /* O 'multiply' para un efecto más oscuro */
+  background-color: rgba(1, 33, 105, 0.4); 
+}
 /* Al hacer hover, mostramos la foto y ocultamos el color PNG */
 .ficha-sio:hover .capa-foto { opacity: 1; transform: scale(1); }
 
