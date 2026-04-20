@@ -4,7 +4,8 @@ import logoTrozo from '../assets/faviconsio.png'
 const imgMemoria = 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=600'
 const imgNoticias = 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=600'
 const imgEquipo  = 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600'
-const imgIntranet = 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=600' // Foto para la intranet
+// He puesto una foto de laboratorio/tecnología para el BLUE Lab, ¡espero que te guste!
+const imgBlueLab = 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600' 
 </script>
 
 <template>
@@ -30,17 +31,16 @@ const imgIntranet = 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?a
           <div class="contenido"><h3>Equipo SIO</h3></div>
         </div>
 
-        <div class="ficha-sio c-navy" @click="$emit('cambiar-pagina', 'intranet')">
+        <div class="ficha-sio c-navy" @click="$emit('cambiar-pagina', 'bluelab')">
           <div class="capa-logo pos-4" :style="{ backgroundImage: `url(${logoTrozo})` }"></div>
-          <div class="capa-foto" :style="{ backgroundImage: `url(${imgIntranet})` }"></div>
-          <div class="contenido"><h3>Acceso Intranet</h3></div>
+          <div class="capa-foto" :style="{ backgroundImage: `url(${imgBlueLab})` }"></div>
+          <div class="contenido"><h3>BLUE Lab</h3></div>
         </div>
 
       </div>
     </div>
   </section>
 </template>
-
 <style scoped>
 .seccion-fichas-sio {
   /* Solape en ordenador */
