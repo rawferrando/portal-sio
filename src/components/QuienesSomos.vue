@@ -21,7 +21,7 @@ import bgGroc from '../assets/groc.png'
           <div class="contenido"><h3>Noticias</h3></div>
         </div>
 
-        <div class="ficha-sio text-dark-navy" :style="{ backgroundImage: `url(${bgGroc})` }" @click="$emit('cambiar-pagina', 'equipo')">
+        <div class="ficha-sio text-white" :style="{ backgroundImage: `url(${bgGroc})` }" @click="$emit('cambiar-pagina', 'equipo')">
           <div class="contenido"><h3>Equipo SIO</h3></div>
         </div>
 
@@ -67,7 +67,7 @@ import bgGroc from '../assets/groc.png'
   
   /* 🔵 ESTADO NORMAL: Atenuado con el azul del SIO para legibilidad */
   background-blend-mode: overlay; 
-  background-color: rgba(1, 33, 105, 0.5); 
+  background-color: rgba(1, 33, 105, 0.3); 
 }
 
 /* ✨ ESTADO HOVER: ¡A todo color! ✨ */
