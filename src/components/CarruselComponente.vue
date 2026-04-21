@@ -175,7 +175,9 @@ onMounted(() => {
     /* Centrado real en móvil */
     padding-bottom: 0px; 
     padding-top: 65px; 
-    text-align: center; 
+    text-align: justify; 
+    hyphens: auto; 
+    -webkit-hyphens: auto;
   }
 }
 </style>
