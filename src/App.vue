@@ -92,25 +92,26 @@ const manejarClicIntranet = () => {
       </div>
     </header>
 
-    <main class="main-content">
+<main class="main-content">
+      
       <div v-if="vistaActual === 'inicio'" class="inicio-container">
-        
         <CarruselComponente />
-        
         <QuienesSomos @cambiar-pagina="cambiarVista" />
       </div>
       
+      <Servicios v-else-if="vistaActual === 'servicios'" @cambiar-pagina="cambiarVista" />
+      <Instrumentacion v-else-if="vistaActual === 'instrumentacion'" @cambiar-pagina="cambiarVista" />
+      <EmbarcacionPelagia v-else-if="vistaActual === 'pelagia'" @cambiar-pagina="cambiarVista" />
+
       <div v-else-if="vistaActual === 'proyectos'"><Proyectos @volver="volverAInicio" /></div>
-      <div v-else-if="vistaActual === 'servicios'"><Servicios @volver="volverAInicio" /></div>
       <div v-else-if="vistaActual === 'idi'"><DesarrolloIdi @volver="volverAInicio" /></div>
       <div v-else-if="vistaActual === 'intranet'"><IntranetPanel @volver="volverAInicio" /></div>
       
-<div v-else-if="vistaActual === 'contacto'" class="pagina-contacto">
+      <div v-else-if="vistaActual === 'contacto'" class="pagina-contacto">
         <div class="contenedor-ancho">
           <h2 class="titulo-seccion">CONTACTO Y UBICACIÓN</h2>
           
           <div class="contacto-unacolumna">
-            
             <div class="tarjeta-dato datos-unificados">
               <h3>Información del SIO</h3>
               <p><strong>Dirección:</strong> Passeig Marítim de la Barceloneta, 37-49, 08003 Barcelona</p>
@@ -120,7 +121,7 @@ const manejarClicIntranet = () => {
 
             <div class="mapa-container">
               <iframe 
-                src="https://maps.google.com/maps?q=Institut+de+Ci%C3%A8ncies+del+Mar,+Passeig+Mar%C3%ADtim+de+la+Barceloneta,+37-49,+Barcelona&t=&z=16&ie=UTF8&iwloc=&output=embed" 
+                src="https://maps.google.com/maps?q=Passeig%20Mar%C3%ADtim%20de%20la%20Barceloneta,%2037-49,%2008003%20Barcelona&t=&z=15&ie=UTF8&iwloc=&output=embed" 
                 width="100%" 
                 height="400" 
                 style="border:0;" 
@@ -148,10 +149,10 @@ const manejarClicIntranet = () => {
                 <button type="submit" class="btn-enviar">ENVIAR CONSULTA</button>
               </form>
             </div>
-            
           </div>
         </div>
       </div>
+      
     </main>
 
     <footer class="footer-icm">
@@ -159,18 +160,9 @@ const manejarClicIntranet = () => {
         <p>© 2026 Servicio de Ingeniería Oceanográfica - CSIC</p>
       </div>
     </footer>
-  </div>
-  <div class="carousel-dots">
-  <span 
-    v-for="(slide, index) in slides" 
-    :key="index"
-    class="dot"
-    :class="{ active: currentSlide === index }"
-    @click="goToSlide(index)"
-  ></span>
-</div>
-</template>
-
+    
+  </div> </template>
+  
 <style>
 :root { 
   --icm-navy: #012169ff;   

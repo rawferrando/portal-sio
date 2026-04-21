@@ -26,7 +26,7 @@ const iniciarSesion = () => {
     errorLogin.value = true
   }
 }
-
+<button @click="$emit('volver')" class="btn-ver-web">🌍 Ver Web Pública</button>
 // Función para salir
 const cerrarSesion = () => {
   sessionStorage.removeItem('sio_auth')
@@ -198,7 +198,18 @@ const cerrarSesion = () => {
 
 .btn-volver-login { width: 100%; background: none; border: none; color: #666; margin-top: 20px; font-size: 14px; cursor: pointer; }
 .btn-volver-login:hover { color: #012169; text-decoration: underline; }
-
+.btn-ver-web {
+  width: 100%;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid #0086c0;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: all 0.3s;
+} 
+.btn-ver-web:hover { background: #0086c0; }
 
 /* --- ESTILOS DEL DASHBOARD --- */
 .dashboard-container {
