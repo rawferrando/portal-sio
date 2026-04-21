@@ -158,7 +158,7 @@ const buscarYNavegar = () => {
   height: 550px; 
   z-index: 0; 
   /* Imagen de Wikimedia Commons (estable y sin bloqueos) */
-  background-image: linear-gradient(rgba(1, 33, 105, 0.65), rgba(1, 33, 105, 0.85)), url('https://upload.wikimedia.org/wikipedia/commons/1/16/Appearance_of_sky_under_water.jpg');
+  background-image: linear-gradient(rgba(1, 33, 105, 0.65), rgba(1, 33, 105, 0.85)), url('https://media.istockphoto.com/id/469858644/es/foto/medusa-3.webp?s=2048x2048&w=is&k=20&c=n-TiX4QiiZ4C9R7AVMEFcY73vbFoNQFFudQK8R3MMdU=');
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
