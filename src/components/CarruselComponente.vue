@@ -1,36 +1,29 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted } from 'vue'
 
-// ✨ AQUÍ ESTÁ EL CAMBIO: Ahora tenemos 3 fotos diferentes de ejemplo ✨
+const indiceActual = ref(0)
+
+// AQUÍ ESTÁN TUS IMÁGENES Y TUS TEXTOS
 const slides = [
   {
     imagen: 'https://raw.githubusercontent.com/rawferrando/portal-sio/main/src/assets/instrumentacion.jpg', 
-    texto: 'Apoyo técnico especializado a grupos de investigación y proyectos en el ámbito de las ciencias del mar...'
+    texto: 'Apoyo técnico especializado a grupos de investigación y proyectos en el ámbito de las ciencias del mar. Proporcionamos soluciones técnicas adaptadas a las necesidades específicas de cada cliente, así como asesoramiento experto basado en años de experiencia en el sector.'
   },
   {
-    imagen: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1200', // <-- Opción A
-    texto: 'Equipo altamente cualificado y con una amplia gama de instrumentación y recursos...'
+    imagen: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1200', 
+    texto: 'Equipo altamente cualificado y con una amplia gama de instrumentación y recursos, lo que nos permite innovar, desarrollar y personalizar equipos, así como diseñar, desplegar e implementar sistemas avanzados de adquisición de datos, tanto fijos como móviles.'
   },
   {
-    imagen: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200', // <-- Opción C
-    texto: 'Herramientas y técnicas específicas de verificación para garantizar la calidad de los datos...'
+    imagen: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200', 
+    texto: 'Herramientas y técnicas específicas de verificación para garantizar la calidad de los datos obtenidos en los estudios oceanográficos.'
   }
 ]
 
-const indiceActual = ref(0)
-let intervalo = null
-
-const siguiente = () => {
-  indiceActual.value = (indiceActual.value + 1) % imagenes.value.length
-}
-
+// Esto hace que el carrusel se mueva solo cada 6 segundos
 onMounted(() => {
-  // Cambia de foto cada 5 segundos
-  intervalo = setInterval(siguiente, 5000) 
-})
-
-onUnmounted(() => {
-  clearInterval(intervalo)
+  setInterval(() => {
+    indiceActual.value = (indiceActual.value + 1) % slides.length
+  }, 6000)
 })
 </script>
 
@@ -38,15 +31,23 @@ onUnmounted(() => {
   <div class="carrusel-wrapper">
     
     <div class="carrusel-inner" :style="{ transform: `translateX(-${indiceActual * 100}%)` }">
-      <div class="carrusel-slide" v-for="(img, index) in imagenes" :key="index">
-        <img :src="img" alt="Slide del SIO" class="carrusel-img">
+      <div class="carrusel-slide" v-for="(slide, index) in slides" :key="index">
+        
+        <img :src="slide.imagen" alt="Slide del SIO" class="carrusel-img">
         <div class="carrusel-overlay"></div>
+        
+        <div class="carrusel-contenido">
+          <div class="contenedor-ancho">
+            <p class="texto-slide">{{ slide.texto }}</p>
+          </div>
+        </div>
+
       </div>
     </div>
 
     <div class="contenedor-puntos">
       <span 
-        v-for="(img, index) in imagenes" 
+        v-for="(slide, index) in slides" 
         :key="'punto-' + index"
         class="punto" 
         :class="{ activo: indiceActual === index }"
@@ -58,29 +59,21 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-/* Scoped asegura que este CSS no rompa tu App.vue */
-
+/* --- ESTRUCTURA PRINCIPAL DEL CARRUSEL --- */
 .carrusel-wrapper {
-  position: relative; 
-  
-  /* 🔥 LA MAGIA PARA QUITAR LA FRANJA BLANCA EN TODAS LAS PANTALLAS */
-  margin-top: -140px !important; /* Tira de la foto hacia arriba para tapar el hueco */
-  top: 0; /* Sustituimos tu top: 40px por 0 para que no lo empuje hacia abajo */
-  left: 0;
+  position: relative !important;
   width: 100%;
-  
-  /* 📏 ALTURA DEL CARRUSEL */
-  height: 650px; 
   overflow: hidden;
-  
-  /* Layering: Capa baja (1) para quedarse por detrás del menú y los logos */
-  z-index: 0 !important; 
+  margin-top: -140px !important; 
+  top: 0;
+  left: 0;
+  height: 650px; 
+  z-index: 1 !important; 
 }
 
 .carrusel-inner {
   display: flex;
   height: 100%;
-  /* Transición suave y elegante de 1 segundo al cambiar de foto */
   transition: transform 1s ease-in-out; 
 }
 
@@ -93,61 +86,20 @@ onUnmounted(() => {
 .carrusel-img {
   width: 100%;
   height: 100%;
-  /* Importante: Ajusta la foto sin deformarla */
   object-fit: cover; 
 }
 
+/* El degradado oscuro para que se vea el menú y los textos */
 .carrusel-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  /* Degradado sutil con el azul SIO para unificar el diseño */
-  background: linear-gradient(rgba(1, 33, 105, 0.4), rgba(1, 33, 105, 0.7)); 
+  background: linear-gradient(rgba(1, 33, 105, 0.4), rgba(1, 33, 105, 0.8)); 
 }
 
-/* --- ESTILOS DE LOS PUNTITOS --- */
-.contenedor-puntos {
-  position: absolute;
-  bottom: 90px; /* Separación desde abajo */
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 10px;
-  z-index: 999; /* Por encima de la foto y el degradado */
-}
-
-.punto {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  border: 1.5px solid white;
-  background-color: transparent;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.4); /* Sombrita para que se vean siempre */
-}
-
-.punto.activo {
-  background-color: white;
-  transform: scale(1.3);
-}
-
-.punto:hover {
-  background-color: rgba(255, 255, 255, 0.8);
-}
-
-/* --- ADAPTACIÓN DEL CARRUSEL PARA MÓVILES --- */
-@media (max-width: 768px) {
-  .carrusel-wrapper {
-    height: 650px; /* En móviles el carrusel queda mejor si es más bajito */
-  }
-  .contenedor-puntos {
-    bottom: 90px; /* Bajamos los puntos porque la foto es más pequeña */
-  }
-}
-/* --- ESTILOS DEL TEXTO DEL CARRUSEL --- */
+/* --- ESTILOS DEL TEXTO --- */
 .carrusel-contenido {
   position: absolute;
   top: 0;
@@ -155,29 +107,66 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center; /* Centra el texto verticalmente */
-  z-index: 5; /* Por encima del degradado, pero por debajo de la barra superior */
+  align-items: center; 
+  z-index: 5; 
 }
 
 .texto-slide {
   color: white;
-  font-size: 1.4rem; /* Tamaño grande y legible */
+  font-size: 1.4rem; 
   line-height: 1.6;
-  max-width: 800px; /* Evita que el texto cruce la pantalla de lado a lado */
+  max-width: 800px; 
   margin: 0;
-  padding-bottom: 50px; /* Lo sube un poco para no chocar con las fichas azules */
-  text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Sombrita para mayor contraste */
-  font-weight: 300;
+  padding-bottom: 50px; 
+  text-shadow: 0 2px 6px rgba(0,0,0,0.8); /* Sombra fuerte para asegurar lectura */
+  font-weight: 400;
   letter-spacing: 0.5px;
 }
 
-/* Adaptación del texto para móviles */
+/* --- ESTILOS DE LOS PUNTITOS --- */
+.contenedor-puntos {
+  position: absolute;
+  bottom: 120px; 
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 15px;
+  z-index: 999; 
+}
+
+.punto {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid white;
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5); 
+}
+
+.punto.activo {
+  background-color: white;
+  transform: scale(1.2);
+}
+
+.punto:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* --- ADAPTACIÓN PARA MÓVILES --- */
 @media (max-width: 768px) {
+  .carrusel-wrapper {
+    height: 550px !important; 
+  }
+  .contenedor-puntos {
+    bottom: 90px; 
+  }
   .texto-slide {
     font-size: 1rem; /* Texto más pequeño en móvil */
     padding: 0 20px;
-    padding-bottom: 80px; /* Subimos un poco más el texto para que no tape los puntitos */
-    text-align: center; /* En móvil queda mejor centrado */
+    padding-bottom: 80px; 
+    text-align: center; /* Centrado en móviles */
   }
 }
 </style>
