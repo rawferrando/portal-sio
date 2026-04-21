@@ -78,7 +78,7 @@ const buscarYNavegar = () => {
   height: 550px; /* Un poco más alto para un efecto más inmersivo */
   /* Capa de color azul semitransparente + NUEVA imagen de fondo de aguas profundas */
   background: linear-gradient(rgba(1, 33, 105, 0.65), rgba(1, 33, 105, 0.85)), 
-              url('https://images.unsplash.com/photo-1544321720-6d048d88ba8a?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;
+              url('https://media.istockphoto.com/id/469858644/es/foto/medusa-3.webp?s=2048x2048&w=is&k=20&c=n-TiX4QiiZ4C9R7AVMEFcY73vbFoNQFFudQK8R3MMdU=') center/cover no-repeat;
   z-index: 0; 
 }
 
