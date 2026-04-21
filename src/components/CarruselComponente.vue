@@ -60,6 +60,7 @@ onMounted(() => {
 
 <style scoped>
 /* --- ESTRUCTURA PRINCIPAL DEL CARRUSEL --- */
+/* 1. MÁS ALTURA AL CARRUSEL */
 .carrusel-wrapper {
   position: relative !important;
   width: 100%;
@@ -67,7 +68,8 @@ onMounted(() => {
   margin-top: -140px !important; 
   top: 0;
   left: 0;
-  height: 650px; 
+  /* ¡PASAMOS DE 650px A 850px! (Si lo quieres más grande pon 900px) */
+  height: 850px; 
   z-index: 1 !important; 
 }
 
@@ -111,14 +113,18 @@ onMounted(() => {
   z-index: 5; 
 }
 
+/* 2. CENTRAR EL TEXTO */
 .texto-slide {
   color: white;
   font-size: 1.4rem; 
   line-height: 1.6;
   max-width: 800px; 
   margin: 0;
-  padding-bottom: 50px; 
-  text-shadow: 0 2px 6px rgba(0,0,0,0.8); /* Sombra fuerte para asegurar lectura */
+  /* Quitamos el padding-bottom de antes para que se centre perfectamente */
+  padding-bottom: 0px; 
+  /* Le damos un poco de margen arriba para compensar la barra del menú */
+  padding-top: 80px; 
+  text-shadow: 0 2px 6px rgba(0,0,0,0.8); 
   font-weight: 400;
   letter-spacing: 0.5px;
 }
@@ -135,14 +141,14 @@ onMounted(() => {
 }
 
 .punto {
-  width: 14px;
-  height: 14px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  border: 2px solid white;
+  border: 1px solid white;
   background-color: transparent;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.5); 
+  box-shadow: 0 1px 2px rgba(0,0,0,0.5); 
 }
 
 .punto.activo {
@@ -156,17 +162,20 @@ onMounted(() => {
 
 /* --- ADAPTACIÓN PARA MÓVILES --- */
 @media (max-width: 768px) {
-  .carrusel-wrapper {
-    height: 550px !important; 
+.carrusel-wrapper {
+    /* También lo hacemos bastante más alto en el móvil */
+    height: 700px !important; 
   }
   .contenedor-puntos {
-    bottom: 90px; 
+    bottom: 130px; 
   }
-  .texto-slide {
-    font-size: 1rem; /* Texto más pequeño en móvil */
+.texto-slide {
+    font-size: 1rem; 
     padding: 0 20px;
-    padding-bottom: 80px; 
-    text-align: center; /* Centrado en móviles */
+    /* Centrado real en móvil */
+    padding-bottom: 0px; 
+    padding-top: 50px; 
+    text-align: center; 
   }
 }
 </style>
