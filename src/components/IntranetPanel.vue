@@ -2,174 +2,267 @@
 import { ref, onMounted } from 'vue'
 
 const emit = defineEmits(['volver'])
+
 const estaLogueado = ref(false)
-const seccionActiva = ref('dashboard')
+const usuario = ref('')
+const password = ref('')
+const errorLogin = ref(false)
 
-// --- BASE DE DATOS MAESTRA (Sustituye a la Wiki) ---
-const instrumentos = ref([
-  { 
-    id: 1, 
-    nombre: 'CTD Sea-Bird 911plus', 
-    categoria: 'Sensores', 
-    estado: 'Operativo', 
-    calibrado: true,
-    ultimaCalibracion: '2026-01-10',
-    descripcion: 'Perfilador de precisión para conductividad y temperatura.',
-    reservas: [{ inicio: '2026-05-01', fin: '2026-05-10', usuario: 'Lab. Biología' }]
-  },
-  { 
-    id: 2, 
-    nombre: 'Glider SeaExplorer', 
-    categoria: 'Plataformas', 
-    estado: 'Mantenimiento', 
-    calibrado: false,
-    ultimaCalibracion: '2025-06-15',
-    descripcion: 'Vehículo autónomo para misiones de larga duración.',
-    reservas: []
+// Comprobamos si ya habíamos iniciado sesión antes
+onMounted(() => {
+  if (sessionStorage.getItem('sio_auth') === 'true') {
+    estaLogueado.value = true
   }
-])
+})
 
-// --- GESTIÓN DE NUEVOS EQUIPOS ---
-const editando = ref(null)
-const mostrarForm = ref(false)
-const formulario = ref({ nombre: '', categoria: 'Sensores', descripcion: '', calibrado: true, estado: 'Operativo' })
-
-const guardarEquipo = () => {
-  if (editando.value) {
-    const idx = instrumentos.value.findIndex(i => i.id === editando.value)
-    instrumentos.value[idx] = { ...formulario.value, id: editando.value }
+// Función para entrar
+const iniciarSesion = () => {
+  // 💡 CREDENCIALES DE PRUEBA: usuario "sio" y contraseña "admin"
+  if (usuario.value === 'sio' && password.value === 'admin') {
+    sessionStorage.setItem('sio_auth', 'true')
+    estaLogueado.value = true
+    errorLogin.value = false
   } else {
-    instrumentos.value.push({ ...formulario.value, id: Date.now(), reservas: [] })
+    errorLogin.value = true
   }
-  cerrarForm()
 }
 
-const editar = (item) => {
-  editando.value = item.id
-  formulario.value = { ...item }
-  mostrarForm.value = true
+// Función para salir
+const cerrarSesion = () => {
+  sessionStorage.removeItem('sio_auth')
+  estaLogueado.value = false
+  emit('volver') // Nos devuelve a la portada automáticamente
 }
-
-const cerrarForm = () => {
-  mostrarForm.value = false
-  editando.value = null
-  formulario.value = { nombre: '', categoria: 'Sensores', descripcion: '', calibrado: true, estado: 'Operativo' }
-}
-
-// --- LOGIN ---
-const user = ref(''); const pass = ref('');
-const login = () => { if(user.value==='sio' && pass.value==='admin') { estaLogueado.value=true; sessionStorage.setItem('sio_auth','true'); } }
-onMounted(() => { if(sessionStorage.getItem('sio_auth')==='true') estaLogueado.value=true })
 </script>
 
 <template>
-  <div class="cms-wrapper">
-    <div v-if="!estaLogueado" class="login-screen">
-      <div class="login-card">
-        <h1>SIO Admin</h1>
-        <p>Control central de la Plataforma Web</p>
-        <input v-model="user" placeholder="Usuario">
-        <input v-model="pass" type="password" placeholder="Contraseña">
-        <button @click="login">ENTRAR AL SISTEMA</button>
+  <div class="intranet-wrapper">
+    
+    <div v-if="!estaLogueado" class="login-container">
+      <div class="login-box">
+        <div class="login-header">
+          <h2>SIO Intranet</h2>
+          <p>Acceso restringido a personal</p>
+        </div>
+        
+        <form @submit.prevent="iniciarSesion" class="login-form">
+          <div class="input-group">
+            <label>Usuario</label>
+            <input type="text" v-model="usuario" placeholder="Introduce tu usuario" required>
+          </div>
+          <div class="input-group">
+            <label>Contraseña</label>
+            <input type="password" v-model="password" placeholder="••••••••" required>
+          </div>
+          
+          <div v-if="errorLogin" class="error-msg">
+            Credenciales incorrectas. Inténtalo de nuevo.
+          </div>
+          
+          <button type="submit" class="btn-login">ACCEDER</button>
+        </form>
+        <button class="btn-volver-login" @click="$emit('volver')">← Volver a la web pública</button>
       </div>
     </div>
 
-    <div v-else class="admin-layout">
-      <aside class="admin-sidebar">
-        <div class="brand">SIO WEB CMS</div>
-        <nav>
-          <button @click="seccionActiva='dashboard'" :class="{active: seccionActiva==='dashboard'}">Resumen</button>
-          <button @click="seccionActiva='instrumentos'" :class="{active: seccionActiva==='instrumentos'}">Instrumentación</button>
-          <button @click="seccionActiva='reservas'" :class="{active: seccionActiva==='reservas'}">Validar Reservas</button>
+    <div v-else class="dashboard-container">
+      
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h3>Panel SIO</h3>
+          <span class="badge">Admin</span>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="#" class="nav-active">📊 Visión General</a>
+          <a href="#">🌊 Estado de Boyas</a>
+          <a href="#">🛠️ Equipamiento</a>
+          <a href="#">📁 Informes Técnicos</a>
+          <a href="#">⚙️ Configuración</a>
         </nav>
-        <button class="logout" @click="() => { sessionStorage.clear(); estaLogueado=false; }">Cerrar Sesión</button>
+        <div class="sidebar-footer">
+          <button @click="cerrarSesion" class="btn-logout">Cerrar Sesión</button>
+        </div>
       </aside>
 
-      <main class="admin-content">
-        <header class="content-header">
-          <h2>{{ seccionActiva === 'instrumentos' ? 'Gestor de Equipos (Sustituye a Wiki)' : 'Panel de Control' }}</h2>
-          <button v-if="seccionActiva==='instrumentos'" class="btn-add" @click="mostrarForm = true">+ Nuevo Equipo</button>
+      <main class="dashboard-main">
+        <header class="dashboard-topbar">
+          <h2>Visión General de Sistemas</h2>
+          <div class="user-profile">Hola, Equipo SIO</div>
         </header>
 
-        <section v-if="seccionActiva==='instrumentos'">
-          <div v-if="mostrarForm" class="modal-form">
-            <div class="form-card">
-              <h3>{{ editando ? 'Editar Equipo' : 'Traer contenido de Wiki' }}</h3>
-              <div class="form-grid">
-                <input v-model="formulario.nombre" placeholder="Nombre del equipo">
-                <select v-model="formulario.categoria">
-                  <option>Sensores</option><option>Plataformas</option><option>Boyas</option>
-                </select>
-                <textarea v-model="formulario.descripcion" placeholder="Descripción técnica completa..."></textarea>
-                <div class="check-box">
-                  <label><input type="checkbox" v-model="formulario.calibrado"> ¿Está Calibrado?</label>
-                </div>
-              </div>
-              <div class="form-btns">
-                <button @click="guardarEquipo" class="save">GUARDAR EN WEB</button>
-                <button @click="cerrarForm" class="cancel">Cancelar</button>
-              </div>
+        <div class="dashboard-content">
+          
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-title">Instrumentos Activos</div>
+              <div class="stat-value">24</div>
+              <div class="stat-status text-green">● Operativos</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-title">Mantenimientos Pendientes</div>
+              <div class="stat-value">3</div>
+              <div class="stat-status text-orange">● Esta semana</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-title">Datos Recopilados (Hoy)</div>
+              <div class="stat-value">12.4 GB</div>
+              <div class="stat-status text-blue">● Sincronizado</div>
             </div>
           </div>
 
-          <table class="cms-table">
-            <thead>
-              <tr><th>Equipo</th><th>Categoría</th><th>Estado Calibración</th><th>Reservas Activas</th><th>Acciones</th></tr>
-            </thead>
-            <tbody>
-              <tr v-for="item in instrumentos" :key="item.id">
-                <td><strong>{{ item.nombre }}</strong></td>
-                <td>{{ item.categoria }}</td>
-                <td>
-                  <span :class="['dot', item.calibrado ? 'green' : 'red']"></span>
-                  {{ item.calibrado ? 'OK' : 'Pendiente' }}
-                </td>
-                <td>{{ item.reservas.length }}</td>
-                <td>
-                  <button @click="editar(item)" class="edit">Editar</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
+          <div class="data-section">
+            <h3>Monitorización en Tiempo Real</h3>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Estación / Equipo</th>
+                  <th>Tipo</th>
+                  <th>Última Conexión</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Boya Oceanográfica Costera</td>
+                  <td>CTD / Fluorímetro</td>
+                  <td>Hace 2 min</td>
+                  <td><span class="tag tag-green">En línea</span></td>
+                </tr>
+                <tr>
+                  <td>Glider Submarino (Misión 4)</td>
+                  <td>Perfilador</td>
+                  <td>Hace 15 min</td>
+                  <td><span class="tag tag-green">En línea</span></td>
+                </tr>
+                <tr>
+                  <td>Estación Meteorológica Port</td>
+                  <td>Viento / Temp</td>
+                  <td>Hace 4 horas</td>
+                  <td><span class="tag tag-orange">Revisión req.</span></td>
+                </tr>
+                <tr>
+                  <td>ROV Explorador (BLUE Lab)</td>
+                  <td>Cámara / Brazos</td>
+                  <td>Apagado</td>
+                  <td><span class="tag tag-gray">En taller</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-        <section v-else class="empty-state">
-          <h3>Selecciona una sección para gestionar el contenido.</h3>
-          <p>Toda la información introducida aquí se sincroniza automáticamente con el catálogo público.</p>
-        </section>
+        </div>
       </main>
     </div>
+    
   </div>
 </template>
 
 <style scoped>
-.cms-wrapper { min-height: 100vh; background: #f0f4f8; font-family: 'Segoe UI', sans-serif; display: flex; width: 100%; }
-.admin-layout { display: flex; width: 100%; }
-.admin-sidebar { width: 260px; background: #012169; color: white; padding: 20px; display: flex; flex-direction: column; }
-.admin-sidebar nav { flex-grow: 1; margin-top: 30px; display: flex; flex-direction: column; gap: 10px; }
-.admin-sidebar button { background: none; border: none; color: #a8bacc; text-align: left; padding: 12px; cursor: pointer; border-radius: 6px; }
-.admin-sidebar button.active { background: #0086c0; color: white; }
+/* Estilos Generales de la Intranet */
+.intranet-wrapper {
+  min-height: 80vh;
+  background-color: #f0f2f5;
+  display: flex;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
 
-.admin-content { flex-grow: 1; padding: 40px; }
-.content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-.btn-add { background: #0086c0; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+/* --- ESTILOS DEL LOGIN --- */
+.login-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 20px;
+}
+.login-box {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
+  border-top: 5px solid #012169;
+}
+.login-header h2 { margin: 0; color: #012169; font-size: 24px; }
+.login-header p { color: #666; margin-top: 5px; font-size: 14px; margin-bottom: 30px; }
 
-.cms-table { width: 100%; background: white; border-radius: 12px; border-collapse: collapse; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-.cms-table th { padding: 15px; text-align: left; background: #f8f9fa; border-bottom: 2px solid #edf2f7; }
-.cms-table td { padding: 15px; border-bottom: 1px solid #edf2f7; }
+.input-group { display: flex; flex-direction: column; margin-bottom: 20px; }
+.input-group label { font-size: 12px; font-weight: bold; color: #333; margin-bottom: 5px; text-transform: uppercase; }
+.input-group input { padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; transition: border 0.3s; }
+.input-group input:focus { border-color: #0086c0; outline: none; }
 
-.dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; margin-right: 5px; }
-.green { background: #48bb78; }
-.red { background: #f56565; }
+.error-msg { color: #d32f2f; background: #ffebee; padding: 10px; border-radius: 6px; font-size: 13px; margin-bottom: 20px; text-align: center; }
 
-.modal-form { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; }
-.form-card { background: white; padding: 30px; border-radius: 12px; width: 500px; }
-.form-grid { display: flex; flex-direction: column; gap: 15px; margin: 20px 0; }
-.form-grid input, .form-grid textarea, .form-grid select { padding: 12px; border: 1px solid #ddd; border-radius: 6px; }
-.form-btns { display: flex; gap: 10px; }
-.save { flex: 1; background: #2f855a; color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; }
+.btn-login { width: 100%; padding: 14px; background: #0086c0; color: white; border: none; border-radius: 6px; font-weight: bold; font-size: 16px; cursor: pointer; transition: background 0.3s; }
+.btn-login:hover { background: #012169; }
 
-/* Login */
-.login-screen { width: 100%; display: flex; justify-content: center; align-items: center; }
-.login-card { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 350px; display: flex; flex-direction: column; gap: 15px; border-top: 6px solid #012169; }
+.btn-volver-login { width: 100%; background: none; border: none; color: #666; margin-top: 20px; font-size: 14px; cursor: pointer; }
+.btn-volver-login:hover { color: #012169; text-decoration: underline; }
+
+
+/* --- ESTILOS DEL DASHBOARD --- */
+.dashboard-container {
+  display: flex;
+  width: 100%;
+  min-height: 80vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background: #012169;
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar-header { padding: 30px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: space-between; }
+.sidebar-header h3 { margin: 0; font-size: 18px; }
+.badge { background: #0086c0; font-size: 11px; padding: 3px 8px; border-radius: 20px; font-weight: bold; }
+
+.sidebar-nav { display: flex; flex-direction: column; padding: 20px 0; flex-grow: 1; }
+.sidebar-nav a { color: #a8bacc; text-decoration: none; padding: 15px 20px; font-size: 15px; transition: all 0.3s; }
+.sidebar-nav a:hover, .sidebar-nav a.nav-active { background: rgba(255,255,255,0.1); color: white; border-left: 4px solid #0086c0; }
+
+.sidebar-footer { padding: 20px; border-top: 1px solid rgba(255,255,255,0.1); }
+.btn-logout { width: 100%; padding: 10px; background: transparent; border: 1px solid rgba(255,255,255,0.3); color: white; border-radius: 6px; cursor: pointer; transition: all 0.3s; }
+.btn-logout:hover { background: rgba(255,255,255,0.1); border-color: white; }
+
+/* Main Content */
+.dashboard-main { flex-grow: 1; padding: 30px; overflow-y: auto; }
+.dashboard-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+.dashboard-topbar h2 { margin: 0; color: #333; }
+.user-profile { font-weight: bold; color: #012169; }
+
+/* Tarjetas de estadísticas */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
+.stat-card { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 4px solid #012169; }
+.stat-title { font-size: 14px; color: #666; margin-bottom: 10px; }
+.stat-value { font-size: 32px; font-weight: bold; color: #333; margin-bottom: 10px; }
+.stat-status { font-size: 13px; font-weight: bold; }
+
+.text-green { color: #2e7d32; }
+.text-orange { color: #f57c00; }
+.text-blue { color: #0086c0; }
+
+/* Tabla de datos */
+.data-section { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+.data-section h3 { margin-top: 0; margin-bottom: 20px; color: #012169; }
+.data-table { width: 100%; border-collapse: collapse; text-align: left; }
+.data-table th { background: #f8f9fa; padding: 12px 15px; color: #555; font-size: 13px; text-transform: uppercase; border-bottom: 2px solid #eee; }
+.data-table td { padding: 15px; border-bottom: 1px solid #eee; font-size: 14px; color: #333; }
+
+.tag { padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+.tag-green { background: #e8f5e9; color: #2e7d32; }
+.tag-orange { background: #fff3e0; color: #f57c00; }
+.tag-gray { background: #f5f5f5; color: #757575; }
+
+/* Responsive Dashboard */
+@media (max-width: 768px) {
+  .dashboard-container { flex-direction: column; }
+  .sidebar { width: 100%; }
+  .sidebar-nav { flex-direction: row; flex-wrap: wrap; justify-content: center; padding: 10px 0; }
+  .sidebar-nav a { padding: 10px; font-size: 13px; border-left: none; border-bottom: 2px solid transparent; }
+  .sidebar-nav a:hover, .sidebar-nav a.nav-active { border-left: none; border-bottom: 2px solid #0086c0; }
+  .data-section { overflow-x: auto; }
+}
 </style>
