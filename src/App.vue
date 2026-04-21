@@ -59,7 +59,7 @@ const manejarClicIntranet = () => {
         </div>
       </div>
     </div>
-    <header class="main-header header-transparente" :class="{ 'header-solido-contacto': vistaActual === 'contacto' }">
+    <header v-if="vistaActual !== 'intranet'" class="main-header header-transparente" :class="{ 'header-solido-contacto': vistaActual === 'contacto' }">
       <div class="contenedor-ancho header-inner">
         
 <div class="header-left">
