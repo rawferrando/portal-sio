@@ -2,14 +2,20 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 // ✨ AQUÍ ESTÁ EL CAMBIO: Ahora tenemos 3 fotos diferentes de ejemplo ✨
-const imagenes = ref([
-  // Imagen 1 (Vuestra): Instrumentación
-  'https://raw.githubusercontent.com/rawferrando/portal-sio/main/src/assets/instrumentacion.jpg',
-  // Imagen 2 (Ejemplo): Barco Oceanográfico
-  'https://images.unsplash.com/photo-1518107616985-bd48230d3b20?q=80&w=1600&auto=format&fit=crop',
-  // Imagen 3 (Ejemplo): Equipo de tecnología marina
-  'https://images.unsplash.com/photo-1582967702081-4bf917531776?q=80&w=1600&auto=format&fit=crop'
-])
+const slides = [
+  {
+    imagen: 'https://raw.githubusercontent.com/rawferrando/portal-sio/main/src/assets/instrumentacion.jpg', 
+    texto: 'Apoyo técnico especializado a grupos de investigación y proyectos en el ámbito de las ciencias del mar...'
+  },
+  {
+    imagen: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1200', // <-- Opción A
+    texto: 'Equipo altamente cualificado y con una amplia gama de instrumentación y recursos...'
+  },
+  {
+    imagen: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200', // <-- Opción C
+    texto: 'Herramientas y técnicas específicas de verificación para garantizar la calidad de los datos...'
+  }
+]
 
 const indiceActual = ref(0)
 let intervalo = null
@@ -139,6 +145,39 @@ onUnmounted(() => {
   }
   .contenedor-puntos {
     bottom: 90px; /* Bajamos los puntos porque la foto es más pequeña */
+  }
+}
+/* --- ESTILOS DEL TEXTO DEL CARRUSEL --- */
+.carrusel-contenido {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center; /* Centra el texto verticalmente */
+  z-index: 5; /* Por encima del degradado, pero por debajo de la barra superior */
+}
+
+.texto-slide {
+  color: white;
+  font-size: 1.4rem; /* Tamaño grande y legible */
+  line-height: 1.6;
+  max-width: 800px; /* Evita que el texto cruce la pantalla de lado a lado */
+  margin: 0;
+  padding-bottom: 50px; /* Lo sube un poco para no chocar con las fichas azules */
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Sombrita para mayor contraste */
+  font-weight: 300;
+  letter-spacing: 0.5px;
+}
+
+/* Adaptación del texto para móviles */
+@media (max-width: 768px) {
+  .texto-slide {
+    font-size: 1rem; /* Texto más pequeño en móvil */
+    padding: 0 20px;
+    padding-bottom: 80px; /* Subimos un poco más el texto para que no tape los puntitos */
+    text-align: center; /* En móvil queda mejor centrado */
   }
 }
 </style>
