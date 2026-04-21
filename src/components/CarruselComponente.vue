@@ -111,7 +111,7 @@ onMounted(() => {
   display: flex;
   align-items: center; 
   hyphens: auto; 
-    -webkit-hyphens: auto;
+  -webkit-hyphens: auto;
   z-index: 5; 
 }
 
