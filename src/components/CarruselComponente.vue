@@ -169,14 +169,14 @@ onMounted(() => {
     height: 650px !important; 
   }
   .contenedor-puntos {
-    bottom: 80px; 
+    bottom: 70px; 
   }
 .texto-slide {
     font-size: 1rem; 
     padding: 0 20px;
     /* Centrado real en móvil */
     padding-bottom: 0px; 
-    padding-top: 65px; 
+    padding-top: 40px; 
     text-align: justify; 
     hyphens: auto; 
     -webkit-hyphens: auto;
