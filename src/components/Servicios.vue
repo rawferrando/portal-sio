@@ -150,6 +150,18 @@ const buscarYNavegar = () => {
 
 @media (max-width: 992px) {
   .grid-horizontal { grid-template-columns: 1fr; }
-  .fondo-servicios { height: 400px; }
+.fondo-servicios { 
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 550px; 
+  z-index: 0; 
+  /* Imagen de Wikimedia Commons (estable y sin bloqueos) */
+  background-image: linear-gradient(rgba(1, 33, 105, 0.65), rgba(1, 33, 105, 0.85)), url('https://upload.wikimedia.org/wikipedia/commons/1/16/Appearance_of_sky_under_water.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
 }
 </style>
