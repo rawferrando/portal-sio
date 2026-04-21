@@ -132,7 +132,7 @@ onMounted(() => {
 /* --- ESTILOS DE LOS PUNTITOS --- */
 .contenedor-puntos {
   position: absolute;
-  bottom: 220px; 
+  bottom: 100px; 
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -167,7 +167,7 @@ onMounted(() => {
     height: 650px !important; 
   }
   .contenedor-puntos {
-    bottom: 160px; 
+    bottom: 80px; 
   }
 .texto-slide {
     font-size: 1rem; 
