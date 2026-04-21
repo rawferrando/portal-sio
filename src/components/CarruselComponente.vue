@@ -123,7 +123,7 @@ onMounted(() => {
   /* Quitamos el padding-bottom de antes para que se centre perfectamente */
   padding-bottom: 0px; 
   /* Le damos un poco de margen arriba para compensar la barra del menú */
-  padding-top: 130px; 
+  padding-top: 140px; 
   text-shadow: 0 2px 6px rgba(0,0,0,0.8); 
   font-weight: 400;
   letter-spacing: 0.5px;
@@ -132,7 +132,7 @@ onMounted(() => {
 /* --- ESTILOS DE LOS PUNTITOS --- */
 .contenedor-puntos {
   position: absolute;
-  bottom: 150px; 
+  bottom: 180px; 
   left: 50%;
   transform: translateX(-50%);
   display: flex;
