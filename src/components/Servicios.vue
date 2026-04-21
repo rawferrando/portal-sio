@@ -62,14 +62,11 @@ const buscarYNavegar = () => {
           </div>
         </div>
 
-      </div> </div>
-  </div>
-</template>
+      </div> </div> </div> </template>
 
 <style scoped>
 .servicios-hub { position: relative; min-height: 100vh; padding-bottom: 80px; background-color: #f4f7f9; }
 
-/* Fondo oscuro superior */
 .fondo-servicios { position: absolute; top: 0; left: 0; width: 100%; height: 350px; background: #012169; z-index: 0; }
 
 .contenido-hub { position: relative; z-index: 10; padding-top: 80px; }
@@ -77,10 +74,9 @@ const buscarYNavegar = () => {
 .titulo-seccion { color: white; font-size: 2.5rem; margin-bottom: 10px; font-weight: bold; }
 .subtitulo { color: #a8bacc; font-size: 1.2rem; margin-bottom: 40px; max-width: 800px; }
 
-/* ✨ ESTILOS DEL HORIZONTAL ✨ */
 .grid-horizontal {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Dos columnas idénticas */
+  grid-template-columns: 1fr 1fr; 
   gap: 30px; 
 }
 
@@ -93,4 +89,27 @@ const buscarYNavegar = () => {
   flex-direction: column; 
 }
 
-.titulo-clicable { color: #012169; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; transition: color 0.3s; margin-top: 0
+.titulo-clicable { color: #012169; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; transition: color 0.3s; margin-top: 0; }
+.titulo-clicable:hover { color: #0086c0; }
+.flecha { font-size: 0.8em; transition: transform 0.3s; }
+.titulo-clicable:hover .flecha { transform: translateX(5px); }
+
+.cabecera-bloque p { color: #555; line-height: 1.6; font-size: 1.05rem; }
+
+.buscador-rapido { margin-top: auto; padding-top: 20px; } 
+.buscador-rapido label { display: block; font-weight: bold; color: #333; margin-bottom: 10px; }
+.input-grupo { display: flex; gap: 10px; }
+.input-grupo select { flex-grow: 1; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.95rem; }
+.btn-buscar { background: #0086c0; color: white; border: none; padding: 0 20px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: background 0.3s; }
+.btn-buscar:hover { background: #012169; }
+
+.tarjetas-preview { display: flex; flex-direction: column; gap: 15px; margin-top: auto; padding-top: 20px; }
+.tarjeta-info { padding: 15px 20px; border: 1px solid #e0e6ed; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
+.tarjeta-info:hover { border-color: #0086c0; background: #f0f7ff; transform: translateX(5px); } 
+.tarjeta-info h3 { margin-top: 0; color: #012169; font-size: 1.1rem; margin-bottom: 5px; }
+.tarjeta-info p { color: #666; margin: 0; font-size: 0.9rem; }
+
+@media (max-width: 992px) {
+  .grid-horizontal { grid-template-columns: 1fr; }
+}
+</style>
