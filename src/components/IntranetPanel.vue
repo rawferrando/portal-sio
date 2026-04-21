@@ -26,7 +26,7 @@ const iniciarSesion = () => {
     errorLogin.value = true
   }
 }
-<button @click="$emit('volver')" class="btn-ver-web">🌍 Ver Web Pública</button>
+
 // Función para salir
 const cerrarSesion = () => {
   sessionStorage.removeItem('sio_auth')
@@ -80,6 +80,7 @@ const cerrarSesion = () => {
           <a href="#">⚙️ Configuración</a>
         </nav>
         <div class="sidebar-footer">
+          <button @click="$emit('volver')" class="btn-ver-web">🌍 Ver Web Pública</button>
           <button @click="cerrarSesion" class="btn-logout">Cerrar Sesión</button>
         </div>
       </aside>
