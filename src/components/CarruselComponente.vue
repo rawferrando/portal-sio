@@ -69,7 +69,7 @@ onMounted(() => {
   top: 0;
   left: 0;
   /* ¡PASAMOS DE 650px A 850px! (Si lo quieres más grande pon 900px) */
-  height: 700px; 
+  height: 750px; 
   z-index: 1 !important; 
 }
 
@@ -123,7 +123,7 @@ onMounted(() => {
   /* Quitamos el padding-bottom de antes para que se centre perfectamente */
   padding-bottom: 0px; 
   /* Le damos un poco de margen arriba para compensar la barra del menú */
-  padding-top: 100px; 
+  padding-top: 130px; 
   text-shadow: 0 2px 6px rgba(0,0,0,0.8); 
   font-weight: 400;
   letter-spacing: 0.5px;
@@ -132,7 +132,7 @@ onMounted(() => {
 /* --- ESTILOS DE LOS PUNTITOS --- */
 .contenedor-puntos {
   position: absolute;
-  bottom: 120px; 
+  bottom: 150px; 
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -164,7 +164,7 @@ onMounted(() => {
 @media (max-width: 768px) {
 .carrusel-wrapper {
     /* También lo hacemos bastante más alto en el móvil */
-    height: 700px !important; 
+    height: 650px !important; 
   }
   .contenedor-puntos {
     bottom: 130px; 
@@ -174,7 +174,7 @@ onMounted(() => {
     padding: 0 20px;
     /* Centrado real en móvil */
     padding-bottom: 0px; 
-    padding-top: 50px; 
+    padding-top: 65px; 
     text-align: center; 
   }
 }
