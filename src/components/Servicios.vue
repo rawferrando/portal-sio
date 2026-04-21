@@ -14,7 +14,7 @@ const buscarYNavegar = () => {
     <div class="fondo-servicios"></div>
 
     <div class="contenedor-ancho contenido-hub">
-      <h1 class="titulo-seccion">Servicios e Instalaciones SIO</h1>
+      <h2 class="titulo-seccion">Servicios e instalaciones</h2>
       <p class="subtitulo">Apoyo técnico, plataformas marinas y equipamiento oceanográfico de vanguardia.</p>
 
       <div class="grid-horizontal">
@@ -71,7 +71,7 @@ const buscarYNavegar = () => {
 
 .contenido-hub { position: relative; z-index: 10; padding-top: 80px; }
 
-.titulo-seccion { color: white; font-size: 2.5rem; margin-bottom: 10px; font-weight: bold; }
+.titulo-seccion { color: white; font-size: 1.8rem; margin-bottom: 10px; font-weight: bold; }
 .subtitulo { color: #a8bacc; font-size: 1.2rem; margin-bottom: 40px; max-width: 800px; }
 
 .grid-horizontal {
