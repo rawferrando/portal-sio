@@ -14,7 +14,7 @@ const buscarYNavegar = () => {
     <div class="fondo-servicios"></div>
 
     <div class="contenedor-ancho contenido-hub">
-      <h2 class="titulo-seccion">Servicios e Instalaciones</h2>
+      <h3 class="titulo-seccion">Servicios e Instalaciones</h>
       <p class="subtitulo">Apoyo técnico, plataformas marinas y equipamiento oceanográfico</p>
 
       <div class="grid-horizontal">
