@@ -176,7 +176,7 @@ onMounted(() => {
     padding: 0 20px;
     /* Centrado real en móvil */
     padding-bottom: 0px; 
-    padding-top: 145px; 
+    padding-top: 155px; 
     text-align: justify; 
     hyphens: auto; 
     -webkit-hyphens: auto;

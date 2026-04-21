@@ -35,8 +35,8 @@ const irAContacto = () => { cambiarVista('contacto') }
 const volverAInicio = () => { cambiarVista('inicio') }
 
 const manejarClicIntranet = () => {
-  if (usuarioLogueadoSio.value) { cambiarVista('intranet') } 
-  else { alert('Acceso restringido a personal autorizado') }
+  // Ahora dejamos que pase a la vista 'intranet' para que vea la pantalla de Login
+  cambiarVista('intranet') 
 }
 </script>
 

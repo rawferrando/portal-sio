@@ -1,103 +1,268 @@
+<script setup>
+import { ref, onMounted } from 'vue'
+
+const emit = defineEmits(['volver'])
+
+const estaLogueado = ref(false)
+const usuario = ref('')
+const password = ref('')
+const errorLogin = ref(false)
+
+// Comprobamos si ya habíamos iniciado sesión antes
+onMounted(() => {
+  if (sessionStorage.getItem('sio_auth') === 'true') {
+    estaLogueado.value = true
+  }
+})
+
+// Función para entrar
+const iniciarSesion = () => {
+  // 💡 CREDENCIALES DE PRUEBA: usuario "sio" y contraseña "admin"
+  if (usuario.value === 'sio' && password.value === 'admin') {
+    sessionStorage.setItem('sio_auth', 'true')
+    estaLogueado.value = true
+    errorLogin.value = false
+  } else {
+    errorLogin.value = true
+  }
+}
+
+// Función para salir
+const cerrarSesion = () => {
+  sessionStorage.removeItem('sio_auth')
+  estaLogueado.value = false
+  emit('volver') // Nos devuelve a la portada automáticamente
+}
+</script>
+
 <template>
-  <div class="panel-wrapper">
-    <button class="btn-volver" @click="$emit('volver')">
-      ⬅ Volver al Inicio
-    </button>
-
-    <div class="intranet-container">
-      <div class="header-intranet">
-        <h2>Panel Central de Administración SIO</h2>
-        <p>Selecciona el módulo de gestión al que deseas acceder.</p>
-      </div>
-
-      <div class="selector-formularios">
-        <label for="tipo-formulario" class="label-destacado">¿Qué deseas gestionar?</label>
-        <select id="tipo-formulario" v-model="formularioActivo" class="dropdown-intranet">
-          <option value="">-- Selecciona un módulo --</option>
-          <option value="proyectos">📂 Alta y Edición de Proyectos</option>
-          <option value="instrumentacion">⚙️ Alta de Instrumentación General</option>
-          <option value="fondeos">⚓ Gestión de Fondeos</option>
-          <option value="sensores">📡 Gestión de Sensores</option>
-        </select>
-      </div>
-
-      <div v-if="formularioActivo === 'fondeos' || formularioActivo === 'sensores'" class="formulario-box fade-in text-center">
-        <h3>Redirigiendo al módulo específico...</h3>
-        <p>Aquí cargaremos tu componente <strong>Intranet{{ formularioActivo === 'fondeos' ? 'Fondeos' : 'Sensores' }}.vue</strong>.</p>
-      </div>
-
-      <div v-if="formularioActivo === 'instrumentacion'" class="formulario-box fade-in">
-        <h3>Ficha Técnica de Instrumentación General</h3>
-        <form @submit.prevent="guardarInstrumento">
-          <div class="grid-form">
-            <div class="form-group"><label>Nombre del Equipo</label><input type="text" placeholder="Ej: Roseta CTD" required></div>
-            <div class="form-group"><label>Marca / Fabricante</label><input type="text" placeholder="Ej: Sea-Bird"></div>
-            <div class="form-group"><label>Modelo</label><input type="text" placeholder="Ej: SBE 911plus"></div>
-            <div class="form-group"><label>S/N</label><input type="text"></div>
-            <div class="form-group"><label>Categoría</label><select><option>Perfiladores</option><option>Acústica</option><option>Óptica</option><option>Otros</option></select></div>
-            <div class="form-group"><label>Estado</label><select><option>🟢 Operativo</option><option>🟡 Mantenimiento</option><option>🔴 Baja</option></select></div>
-            <div class="form-group full-width"><label>Observaciones</label><textarea rows="3"></textarea></div>
+  <div class="intranet-wrapper">
+    
+    <div v-if="!estaLogueado" class="login-container">
+      <div class="login-box">
+        <div class="login-header">
+          <h2>SIO Intranet</h2>
+          <p>Acceso restringido a personal</p>
+        </div>
+        
+        <form @submit.prevent="iniciarSesion" class="login-form">
+          <div class="input-group">
+            <label>Usuario</label>
+            <input type="text" v-model="usuario" placeholder="Introduce tu usuario" required>
           </div>
-          <div class="form-actions"><button type="submit" class="btn-guardar">Guardar Instrumento</button></div>
-        </form>
-      </div>
-
-      <div v-if="formularioActivo === 'proyectos'" class="formulario-box fade-in">
-        <h3>Alta de Proyecto (Plantilla Wiki SIO)</h3>
-        <form @submit.prevent="guardarProyecto">
-          <div class="grid-form">
-            <div class="form-group full-width"><label>Título del Proyecto</label><input type="text" required></div>
-            <div class="form-group full-width"><label>Descripción General</label><textarea rows="3"></textarea></div>
-            <div class="form-group full-width"><label>Objetivos</label><textarea rows="3"></textarea></div>
-            <div class="form-group full-width"><label>Nuestro Rol</label><textarea rows="3"></textarea></div>
-            <div class="form-group"><label>Estado</label><select><option>En Curso</option><option>Finalizado</option></select></div>
-            <div class="form-group"><label>Responsable</label><input type="text"></div>
+          <div class="input-group">
+            <label>Contraseña</label>
+            <input type="password" v-model="password" placeholder="••••••••" required>
           </div>
-          <div class="form-actions"><button type="submit" class="btn-guardar">Guardar Proyecto</button></div>
+          
+          <div v-if="errorLogin" class="error-msg">
+            Credenciales incorrectas. Inténtalo de nuevo.
+          </div>
+          
+          <button type="submit" class="btn-login">ACCEDER</button>
         </form>
+        <button class="btn-volver-login" @click="$emit('volver')">← Volver a la web pública</button>
       </div>
-
     </div>
+
+    <div v-else class="dashboard-container">
+      
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h3>Panel SIO</h3>
+          <span class="badge">Admin</span>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="#" class="nav-active">📊 Visión General</a>
+          <a href="#">🌊 Estado de Boyas</a>
+          <a href="#">🛠️ Equipamiento</a>
+          <a href="#">📁 Informes Técnicos</a>
+          <a href="#">⚙️ Configuración</a>
+        </nav>
+        <div class="sidebar-footer">
+          <button @click="cerrarSesion" class="btn-logout">Cerrar Sesión</button>
+        </div>
+      </aside>
+
+      <main class="dashboard-main">
+        <header class="dashboard-topbar">
+          <h2>Visión General de Sistemas</h2>
+          <div class="user-profile">Hola, Equipo SIO</div>
+        </header>
+
+        <div class="dashboard-content">
+          
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-title">Instrumentos Activos</div>
+              <div class="stat-value">24</div>
+              <div class="stat-status text-green">● Operativos</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-title">Mantenimientos Pendientes</div>
+              <div class="stat-value">3</div>
+              <div class="stat-status text-orange">● Esta semana</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-title">Datos Recopilados (Hoy)</div>
+              <div class="stat-value">12.4 GB</div>
+              <div class="stat-status text-blue">● Sincronizado</div>
+            </div>
+          </div>
+
+          <div class="data-section">
+            <h3>Monitorización en Tiempo Real</h3>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Estación / Equipo</th>
+                  <th>Tipo</th>
+                  <th>Última Conexión</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Boya Oceanográfica Costera</td>
+                  <td>CTD / Fluorímetro</td>
+                  <td>Hace 2 min</td>
+                  <td><span class="tag tag-green">En línea</span></td>
+                </tr>
+                <tr>
+                  <td>Glider Submarino (Misión 4)</td>
+                  <td>Perfilador</td>
+                  <td>Hace 15 min</td>
+                  <td><span class="tag tag-green">En línea</span></td>
+                </tr>
+                <tr>
+                  <td>Estación Meteorológica Port</td>
+                  <td>Viento / Temp</td>
+                  <td>Hace 4 horas</td>
+                  <td><span class="tag tag-orange">Revisión req.</span></td>
+                </tr>
+                <tr>
+                  <td>ROV Explorador (BLUE Lab)</td>
+                  <td>Cámara / Brazos</td>
+                  <td>Apagado</td>
+                  <td><span class="tag tag-gray">En taller</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </main>
+    </div>
+    
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-
-const formularioActivo = ref('')
-
-const guardarInstrumento = () => alert("Instrumento guardado.")
-const guardarProyecto = () => alert("Proyecto guardado.")
-</script>
-
 <style scoped>
-.panel-wrapper { padding: 20px; }
-.btn-volver { background-color: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-bottom: 20px; font-weight: bold; }
-.btn-volver:hover { background-color: #5a6268; }
+/* Estilos Generales de la Intranet */
+.intranet-wrapper {
+  min-height: 80vh;
+  background-color: #f0f2f5;
+  display: flex;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
 
-/* Estilos de la intranet */
-.intranet-container { max-width: 1000px; margin: 0 auto; padding: 30px; background-color: #f8f9fa; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-.header-intranet { text-align: center; margin-bottom: 30px; }
-.header-intranet h2 { color: #005596; margin-bottom: 5px; }
+/* --- ESTILOS DEL LOGIN --- */
+.login-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 20px;
+}
+.login-box {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
+  border-top: 5px solid #012169;
+}
+.login-header h2 { margin: 0; color: #012169; font-size: 24px; }
+.login-header p { color: #666; margin-top: 5px; font-size: 14px; margin-bottom: 30px; }
 
-.selector-formularios { background-color: #ffffff; padding: 20px; border-radius: 8px; border-left: 5px solid #005596; margin-bottom: 30px; display: flex; flex-direction: column; gap: 10px; border: 1px solid #eee; }
-.label-destacado { font-weight: bold; color: #333; font-size: 1.1rem; }
-.dropdown-intranet { padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; cursor: pointer; background-color: #f1f8ff; color: #005596; font-weight: bold; }
+.input-group { display: flex; flex-direction: column; margin-bottom: 20px; }
+.input-group label { font-size: 12px; font-weight: bold; color: #333; margin-bottom: 5px; text-transform: uppercase; }
+.input-group input { padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; transition: border 0.3s; }
+.input-group input:focus { border-color: #0086c0; outline: none; }
 
-.formulario-box { background-color: white; padding: 30px; border-radius: 8px; border: 1px solid #e0e0e0; }
-.formulario-box h3 { color: #005596; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; margin-bottom: 25px; margin-top: 0;}
-.text-center { text-align: center; }
+.error-msg { color: #d32f2f; background: #ffebee; padding: 10px; border-radius: 6px; font-size: 13px; margin-bottom: 20px; text-align: center; }
 
-.grid-form { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.form-group { display: flex; flex-direction: column; gap: 5px; }
-.full-width { grid-column: span 2; }
-.form-group label { font-size: 0.9rem; font-weight: bold; color: #555; }
-.form-group input, .form-group select, .form-group textarea { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; }
+.btn-login { width: 100%; padding: 14px; background: #0086c0; color: white; border: none; border-radius: 6px; font-weight: bold; font-size: 16px; cursor: pointer; transition: background 0.3s; }
+.btn-login:hover { background: #012169; }
 
-.form-actions { margin-top: 30px; display: flex; justify-content: flex-end; }
-.btn-guardar { background-color: #005596; color: white; padding: 12px 25px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
-.btn-guardar:hover { background-color: #003d73; }
-.fade-in { animation: fadeIn 0.4s ease-in-out; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-@media (max-width: 768px) { .grid-form { grid-template-columns: 1fr; } .full-width { grid-column: span 1; } }
+.btn-volver-login { width: 100%; background: none; border: none; color: #666; margin-top: 20px; font-size: 14px; cursor: pointer; }
+.btn-volver-login:hover { color: #012169; text-decoration: underline; }
+
+
+/* --- ESTILOS DEL DASHBOARD --- */
+.dashboard-container {
+  display: flex;
+  width: 100%;
+  min-height: 80vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background: #012169;
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar-header { padding: 30px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: space-between; }
+.sidebar-header h3 { margin: 0; font-size: 18px; }
+.badge { background: #0086c0; font-size: 11px; padding: 3px 8px; border-radius: 20px; font-weight: bold; }
+
+.sidebar-nav { display: flex; flex-direction: column; padding: 20px 0; flex-grow: 1; }
+.sidebar-nav a { color: #a8bacc; text-decoration: none; padding: 15px 20px; font-size: 15px; transition: all 0.3s; }
+.sidebar-nav a:hover, .sidebar-nav a.nav-active { background: rgba(255,255,255,0.1); color: white; border-left: 4px solid #0086c0; }
+
+.sidebar-footer { padding: 20px; border-top: 1px solid rgba(255,255,255,0.1); }
+.btn-logout { width: 100%; padding: 10px; background: transparent; border: 1px solid rgba(255,255,255,0.3); color: white; border-radius: 6px; cursor: pointer; transition: all 0.3s; }
+.btn-logout:hover { background: rgba(255,255,255,0.1); border-color: white; }
+
+/* Main Content */
+.dashboard-main { flex-grow: 1; padding: 30px; overflow-y: auto; }
+.dashboard-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+.dashboard-topbar h2 { margin: 0; color: #333; }
+.user-profile { font-weight: bold; color: #012169; }
+
+/* Tarjetas de estadísticas */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
+.stat-card { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 4px solid #012169; }
+.stat-title { font-size: 14px; color: #666; margin-bottom: 10px; }
+.stat-value { font-size: 32px; font-weight: bold; color: #333; margin-bottom: 10px; }
+.stat-status { font-size: 13px; font-weight: bold; }
+
+.text-green { color: #2e7d32; }
+.text-orange { color: #f57c00; }
+.text-blue { color: #0086c0; }
+
+/* Tabla de datos */
+.data-section { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+.data-section h3 { margin-top: 0; margin-bottom: 20px; color: #012169; }
+.data-table { width: 100%; border-collapse: collapse; text-align: left; }
+.data-table th { background: #f8f9fa; padding: 12px 15px; color: #555; font-size: 13px; text-transform: uppercase; border-bottom: 2px solid #eee; }
+.data-table td { padding: 15px; border-bottom: 1px solid #eee; font-size: 14px; color: #333; }
+
+.tag { padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+.tag-green { background: #e8f5e9; color: #2e7d32; }
+.tag-orange { background: #fff3e0; color: #f57c00; }
+.tag-gray { background: #f5f5f5; color: #757575; }
+
+/* Responsive Dashboard */
+@media (max-width: 768px) {
+  .dashboard-container { flex-direction: column; }
+  .sidebar { width: 100%; }
+  .sidebar-nav { flex-direction: row; flex-wrap: wrap; justify-content: center; padding: 10px 0; }
+  .sidebar-nav a { padding: 10px; font-size: 13px; border-left: none; border-bottom: 2px solid transparent; }
+  .sidebar-nav a:hover, .sidebar-nav a.nav-active { border-left: none; border-bottom: 2px solid #0086c0; }
+  .data-section { overflow-x: auto; }
+}
 </style>
