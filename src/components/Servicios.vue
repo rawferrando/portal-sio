@@ -14,7 +14,7 @@ const buscarYNavegar = () => {
     <div class="fondo-servicios"></div>
 
     <div class="contenedor-ancho contenido-hub">
-      <h2 class="titulo-seccion">Servicios e instalaciones</h2>
+      <h1 class="titulo-seccion">Servicios e instalaciones</h1>
       <p class="subtitulo">Apoyo técnico, plataformas marinas y equipamiento oceanográfico de vanguardia.</p>
 
       <div class="grid-horizontal">
@@ -62,17 +62,56 @@ const buscarYNavegar = () => {
           </div>
         </div>
 
-      </div> </div> </div> </template>
+      </div> </div>
+  </div>
+</template>
 
 <style scoped>
 .servicios-hub { position: relative; min-height: 100vh; padding-bottom: 80px; background-color: #f4f7f9; }
 
-.fondo-servicios { position: absolute; top: 0; left: 0; width: 100%; height: 350px; background: #012169; z-index: 0; }
+/* 🌊 FONDO MARINO ESTILO ICM 🌊 */
+.fondo-servicios { 
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 500px; /* Más alto para que quepa todo bien */
+  /* Capa de color azul semitransparente + imagen de fondo */
+  background: linear-gradient(rgba(1, 33, 105, 0.6), rgba(1, 33, 105, 0.8)), 
+              url('https://images.unsplash.com/photo-1544552866-d3ed42536fc6?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;
+  z-index: 0; 
+}
 
-.contenido-hub { position: relative; z-index: 10; padding-top: 80px; }
+/* Bajamos el contenido para que no quede tan arriba */
+.contenido-hub { 
+  position: relative; 
+  z-index: 10; 
+  padding-top: 150px; /* Antes estaba en 80px, lo bajamos a 150px */
+}
 
-.titulo-seccion { color: white; font-size: 1.8rem; margin-bottom: 10px; font-weight: bold; }
-.subtitulo { color: #a8bacc; font-size: 1.2rem; margin-bottom: 40px; max-width: 800px; }
+/* Título con línea verde inferior */
+.titulo-seccion { 
+  color: white; 
+  font-size: 1.8rem; 
+  margin-bottom: 25px; 
+  font-weight: bold; 
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+}
+
+/* La línea verde del ICM */
+.titulo-seccion::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: #8cc63f; /* Verde corporativo ICM */
+}
+
+.subtitulo { color: #e0e6ed; font-size: 1.1rem; margin-bottom: 60px; max-width: 800px; }
 
 .grid-horizontal {
   display: grid;
@@ -84,7 +123,7 @@ const buscarYNavegar = () => {
   background: white; 
   border-radius: 12px; 
   padding: 40px; 
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15); /* Sombra un poco más fuerte para destacar sobre el fondo */
   display: flex;
   flex-direction: column; 
 }
@@ -111,5 +150,6 @@ const buscarYNavegar = () => {
 
 @media (max-width: 992px) {
   .grid-horizontal { grid-template-columns: 1fr; }
+  .fondo-servicios { height: 400px; }
 }
 </style>
