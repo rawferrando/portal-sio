@@ -24,20 +24,18 @@ const buscarYNavegar = () => {
             <h2 @click="$emit('cambiar-pagina', 'instrumentacion')" class="titulo-clicable">
               Instrumentación Oceanográfica <span class="flecha">➔</span>
             </h2>
-            <p>Catálogo completo de sensores, plataformas y perfiladores del Servicio de Ingeniería Oceanográfica. Accede a manuales, características técnicas de la WikiSIO y gestiona tus reservas.</p>
+            <p>Catálogo completo de sensores, plataformas y perfiladores. Accede a manuales, características técnicas y reservas.</p>
           </div>
 
           <div class="buscador-rapido">
-            <label>Búsqueda rápida por tipo:</label>
+            <label>Búsqueda rápida:</label>
             <div class="input-grupo">
               <select v-model="tipoBuscado">
                 <option value="Todos">Todos los equipos</option>
                 <option value="Sensores">Sensores y Perfiladores</option>
                 <option value="Plataformas">Plataformas Autónomas</option>
-                <option value="Boyas">Boyas y Estaciones Fijas</option>
-                <option value="Acustica">Acústica Submarina</option>
               </select>
-              <button @click="buscarYNavegar" class="btn-buscar">Ver Catálogo</button>
+              <button @click="buscarYNavegar" class="btn-buscar">Ver</button>
             </div>
           </div>
         </div>
@@ -47,60 +45,57 @@ const buscarYNavegar = () => {
             <h2 @click="$emit('cambiar-pagina', 'pelagia')" class="titulo-clicable">
               Embarcación Pelagia <span class="flecha">➔</span>
             </h2>
-            <p>Embarcación de apoyo para trabajos oceanográficos costeros, despliegue de instrumentación y muestreo continuo. Consulta sus características y disponibilidad.</p>
+            <p>Embarcación de apoyo para trabajos costeros y despliegue de instrumentación. Consulta características y disponibilidad.</p>
           </div>
 
           <div class="tarjetas-preview">
             <div class="tarjeta-info" @click="$emit('cambiar-pagina', 'pelagia')">
-              <h3>Detalles Técnicos</h3>
-              <p>Conoce las especificaciones, motores y capacidad de carga para tus campañas.</p>
-            </div>
-            <div class="tarjeta-info" @click="$emit('cambiar-pagina', 'pelagia')">
-              <h3>Disponibilidad y Reservas</h3>
-              <p>Consulta el calendario mensual y el protocolo de uso de la embarcación.</p>
+              <h3>Detalles Técnicos y Reservas</h3>
+              <p>Capacidad, motores y calendario de disponibilidad.</p>
             </div>
           </div>
         </div>
 
-      </div> </div>
+      </div> 
+    </div>
   </div>
 </template>
 
 <style scoped>
-.servicios-hub { position: relative; min-height: 100vh; padding-bottom: 80px; background-color: #f4f7f9; }
+.servicios-hub { position: relative; min-height: 100vh; padding-bottom: 40px; background-color: #f4f7f9; }
 
-/* 🌊 ACTUALIZACIÓN DEL FONDO MARINO 🌊 */
+/* 🌊 CONFIGURACIÓN DEL FONDO 🌊 */
 .fondo-servicios { 
   position: absolute; 
   top: 0; 
   left: 0; 
   width: 100%; 
-  height: 550px; /* Un poco más alto para un efecto más inmersivo */
-  /* Capa de color azul semitransparente + NUEVA imagen de fondo de aguas profundas */
-  background: linear-gradient(rgba(1, 33, 105, 0.65), rgba(1, 33, 105, 0.85)), 
-              url('https://media.istockphoto.com/id/469858644/es/foto/medusa-3.webp?s=2048x2048&w=is&k=20&c=n-TiX4QiiZ4C9R7AVMEFcY73vbFoNQFFudQK8R3MMdU=') center/cover no-repeat;
+  height: 480px; /* Reducido para que no ocupe tanto espacio vertical */
   z-index: 0; 
+  /* IMPORTANTE: Cambia 'medusa.png' por el nombre de tu foto en la carpeta public */
+  background-image: linear-gradient(rgba(1, 33, 105, 0.6), rgba(1, 33, 105, 0.8)), url('/medusa.png');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
-/* El contenido se mantiene bajado */
+/* Reducimos el padding-top para que el título suba (antes 150px) */
 .contenido-hub { 
   position: relative; 
   z-index: 10; 
-  padding-top: 150px; 
+  padding-top: 80px; 
 }
 
-/* Título con línea verde inferior y letra reducida a 2rem */
 .titulo-seccion { 
   color: white; 
   font-size: 2rem; 
-  margin-bottom: 25px; 
+  margin-bottom: 15px; 
   font-weight: bold; 
   position: relative;
   display: inline-block;
-  padding-bottom: 10px;
+  padding-bottom: 8px;
 }
 
-/* La línea verde del ICM se mantiene */
 .titulo-seccion::after {
   content: '';
   position: absolute;
@@ -111,57 +106,45 @@ const buscarYNavegar = () => {
   background-color: #8cc63f; 
 }
 
-.subtitulo { color: #e0e6ed; font-size: 1.1rem; margin-bottom: 60px; max-width: 800px; }
+/* Reducimos el margen inferior del subtítulo para que las fichas suban (antes 60px) */
+.subtitulo { color: #e0e6ed; font-size: 1rem; margin-bottom: 30px; max-width: 800px; }
 
 .grid-horizontal {
   display: grid;
   grid-template-columns: 1fr 1fr; 
-  gap: 30px; 
+  gap: 20px; 
 }
 
 .seccion-bloque { 
   background: white; 
   border-radius: 12px; 
-  padding: 40px; 
+  padding: 30px; 
   box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
+  min-height: 280px; /* Altura controlada */
 }
 
-.titulo-clicable { color: #012169; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; transition: color 0.3s; margin-top: 0; }
+.titulo-clicable { color: #012169; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; transition: color 0.3s; margin-top: 0; font-size: 1.4rem; }
 .titulo-clicable:hover { color: #0086c0; }
-.flecha { font-size: 0.8em; transition: transform 0.3s; }
-.titulo-clicable:hover .flecha { transform: translateX(5px); }
+.flecha { font-size: 0.8em; }
 
-.cabecera-bloque p { color: #555; line-height: 1.6; font-size: 1.05rem; }
+.cabecera-bloque p { color: #555; line-height: 1.5; font-size: 0.95rem; }
 
-.buscador-rapido { margin-top: auto; padding-top: 20px; } 
-.buscador-rapido label { display: block; font-weight: bold; color: #333; margin-bottom: 10px; }
-.input-grupo { display: flex; gap: 10px; }
-.input-grupo select { flex-grow: 1; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.95rem; }
-.btn-buscar { background: #0086c0; color: white; border: none; padding: 0 20px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: background 0.3s; }
-.btn-buscar:hover { background: #012169; }
+.buscador-rapido { margin-top: auto; padding-top: 15px; } 
+.buscador-rapido label { display: block; font-weight: bold; color: #333; margin-bottom: 8px; font-size: 0.9rem; }
+.input-grupo { display: flex; gap: 8px; }
+.input-grupo select { flex-grow: 1; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.9rem; }
+.btn-buscar { background: #0086c0; color: white; border: none; padding: 0 15px; border-radius: 6px; font-weight: bold; cursor: pointer; }
 
-.tarjetas-preview { display: flex; flex-direction: column; gap: 15px; margin-top: auto; padding-top: 20px; }
-.tarjeta-info { padding: 15px 20px; border: 1px solid #e0e6ed; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
-.tarjeta-info:hover { border-color: #0086c0; background: #f0f7ff; transform: translateX(5px); } 
-.tarjeta-info h3 { margin-top: 0; color: #012169; font-size: 1.1rem; margin-bottom: 5px; }
-.tarjeta-info p { color: #666; margin: 0; font-size: 0.9rem; }
+.tarjetas-preview { display: flex; flex-direction: column; gap: 10px; margin-top: auto; padding-top: 15px; }
+.tarjeta-info { padding: 12px 15px; border: 1px solid #e0e6ed; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
+.tarjeta-info:hover { border-color: #0086c0; background: #f0f7ff; } 
+.tarjeta-info h3 { margin-top: 0; color: #012169; font-size: 1rem; margin-bottom: 3px; }
+.tarjeta-info p { color: #666; margin: 0; font-size: 0.85rem; }
 
 @media (max-width: 992px) {
   .grid-horizontal { grid-template-columns: 1fr; }
-.fondo-servicios { 
-  position: absolute; 
-  top: 0; 
-  left: 0; 
-  width: 100%; 
-  height: 550px; 
-  z-index: 0; 
-  /* Imagen de Wikimedia Commons (estable y sin bloqueos) */
-  background-image: linear-gradient(rgba(1, 33, 105, 0.65), rgba(1, 33, 105, 0.85)), url('https://media.istockphoto.com/id/469858644/es/foto/medusa-3.webp?s=2048x2048&w=is&k=20&c=n-TiX4QiiZ4C9R7AVMEFcY73vbFoNQFFudQK8R3MMdU=');
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-}
+  .fondo-servicios { height: 400px; }
 }
 </style>
