@@ -7,24 +7,27 @@ const indiceActual = ref(0)
 const slides = [
   {
     imagen: 'peces.png', 
-    texto: 'Apoyo técnico especializado a grupos de investigación y proyectos en el ámbito de las ciencias del mar. Proporcionamos asesoramiento y soluciones técnicas adaptadas a las necesidades específicas de cada cliente, basado en años de experiencia.'
+    texto: 'Apoyo técnico especializado en el ámbito de las ciencias del mar'
   },
   {
     imagen: 'niskin.png', 
-    texto: 'Equipo altamente cualificado y con una amplia gama de instrumentación y recursos, lo que nos permite innovar, desarrollar y personalizar equipos, así como diseñar, desplegar e implementar sistemas avanzados de adquisición de datos, tanto fijos como móviles.'
+    texto: 'Equipo cualificado, con una amplia gama de instrumentación y recursos'
   },
   {
     imagen: 'oficinatecnica.jpeg', 
     texto: 'Herramientas y técnicas específicas de verificación para garantizar la calidad de los datos obtenidos en los estudios oceanográficos.'
   },
   {
-  imagen: 'robotmari.jpg' 
+  imagen: 'robotmari.jpg'
+    texto: 'Asesoramiento y soluciones técnicas adaptadas a las necesidades específicas'
   },
   {
     imagen: 'marmarejada.jpg' 
+    texto: 'Asesoramiento y soluciones técnicas adaptadas a las necesidades específicas'
   },
   {
     imagen: 'reflexesmar.jpg' 
+    texto: 'Innovar, Desarrollar, Diseñar, Desplegar, Iplementar i Personalizar equipos '
   }
 ]
 
