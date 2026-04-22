@@ -14,7 +14,7 @@ const slides = [
     texto: 'Equipo altamente cualificado y con una amplia gama de instrumentación y recursos, lo que nos permite innovar, desarrollar y personalizar equipos, así como diseñar, desplegar e implementar sistemas avanzados de adquisición de datos, tanto fijos como móviles.'
   },
   {
-    imagen: 'oficinatecnica.png', 
+    imagen: 'oficinatecnica.jpeg', 
     texto: 'Herramientas y técnicas específicas de verificación para garantizar la calidad de los datos obtenidos en los estudios oceanográficos.'
   },
   {
@@ -124,20 +124,23 @@ onMounted(() => {
   z-index: 5; 
 }
 
-/* 2. CENTRAR EL TEXTO */
-.texto-slide {
-  color: white;
-  font-size: 1.4rem; 
-  line-height: 1.6;
-  max-width: 800px; 
-  margin: 0;
-  /* Quitamos el padding-bottom de antes para que se centre perfectamente */
-  padding-bottom: 0px; 
-  /* Le damos un poco de margen arriba para compensar la barra del menú */
-  padding-top: 140px; 
-  text-shadow: 0 2px 6px rgba(0,0,0,0.8); 
-  font-weight: 400;
-  letter-spacing: 0.5px;
+.texto-carrusel {
+  /* 1. Hacemos el color un poco transparente (85% de opacidad) en lugar de blanco puro */
+  color: rgba(255, 255, 255, 0.85); 
+  
+  /* 2. Le quitamos la negrita si la tenía (400 es normal, 300 es más finito) */
+  font-weight: 300; 
+  
+  /* 3. Reducimos un poco el tamaño */
+  font-size: 1.1rem; 
+  line-height: 1.4;
+  
+  /* 4. Suavizamos la sombra para que no sea tan dura y negra */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4); 
+  
+  /* 5. (Opcional) Limitamos el ancho para que el texto no cruce toda la pantalla */
+  max-width: 700px; 
+  margin: 0 auto; /* Para centrarlo si lo has hecho más estrecho */
 }
 
 /* --- ESTILOS DE LOS PUNTITOS --- */
