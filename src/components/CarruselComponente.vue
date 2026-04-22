@@ -126,7 +126,7 @@ onMounted(() => {
 .texto-slide {
   position: absolute;
   /* MAGIA: Esto clava la base del texto a 160px del fondo (los puntos están a 100px) */
-  bottom: 170px; 
+  bottom: 140px; 
   left: 50%;
   transform: translateX(-50%); /* Lo centra de forma perfecta */
   
