@@ -134,7 +134,7 @@ onMounted(() => {
   color: rgba(255, 255, 255, 0.80); /* Un blanco casi puro para máxima legibilidad */
   font-size: 1.25rem; /* Letra un pelín más grande */
   line-height: 1.5;
-  text-align: centerv; 
+  text-align: center; 
   margin: 0;
   padding: 0; 
   
