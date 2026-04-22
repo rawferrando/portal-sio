@@ -3,42 +3,32 @@ import { ref } from 'vue'
 
 const emit = defineEmits(['volver'])
 
-// Listado de proyectos reales (puedes ampliarlo aquí mismo)
+// TUS PROYECTOS REALES DE LA WIKISIO
 const enCurso = ref([
-  { 
-    titulo: 'Campaña Antártica 2025', 
-    tipo: 'Plan Nacional', 
-    ip: 'Jordi Font',
-    descripcion: 'Soporte técnico para el despliegue de boyas de deriva y sensores CTD en el Mar de Weddell.' 
-  },
-  { 
-    titulo: 'Mantenimiento OBSEA', 
-    tipo: 'Infraestructura', 
-    ip: 'Joaquín del Río',
-    descripcion: 'Operaciones periódicas de limpieza de sensores y revisión del cableado del observatorio submarino.' 
-  },
-  { 
-    titulo: 'Taller Escolar Marino', 
-    tipo: 'Divulgación', 
-    ip: 'Equipo SIO',
-    descripcion: 'Programa de formación en tecnología oceanográfica para institutos locales.' 
-  }
+  { titulo: 'ALBARANES', tipo: 'Infraestructura' },
+  { titulo: 'SALADET', tipo: 'Contrato' },
+  { titulo: 'TECTUGA', tipo: 'Plan Nacional' },
+  { titulo: 'EPSP', tipo: 'Otro' },
+  { titulo: 'CAMARAS PLAYA', tipo: 'Infraestructura' },
+  { titulo: 'OPT4DIV', tipo: 'Plan Nacional' }
 ])
 
 const solicitados = ref([
-  { 
-    titulo: 'Propuesta ROV Abisal', 
-    tipo: 'Infraestructura', 
-    ip: 'Pendiente IP',
-    descripcion: 'Solicitud de adquisición de un nuevo vehículo operado remotamente para trabajos a 2000m.' 
-  },
-  { 
-    titulo: 'Proyecto BlueTech', 
-    tipo: 'Plan Nacional', 
-    ip: 'Raúl Ferrando',
-    descripcion: 'Desarrollo de nuevos sistemas de comunicación acústica submarina de bajo consumo.' 
-  }
+  { titulo: 'ÒHPERA DEL MAR', tipo: 'Divulgación Científica' },
+  { titulo: 'PROTEO', tipo: 'Divulgación Científica' }
 ])
+
+// Función para darle el color exacto a la etiqueta según el tipo
+const clasePorTipo = (tipo) => {
+  switch (tipo) {
+    case 'Infraestructura': return 'badge-verde';
+    case 'Contrato': return 'badge-turquesa';
+    case 'Plan Nacional': return 'badge-amarillo';
+    case 'Otro': return 'badge-naranja';
+    case 'Divulgación Científica': return 'badge-morado';
+    default: return 'badge-gris';
+  }
+}
 </script>
 
 <template>
@@ -61,12 +51,10 @@ const solicitados = ref([
           <div class="contenedor-proyectos">
             <div v-for="(p, i) in enCurso" :key="'ec'+i" class="mini-tarjeta">
               <div class="header-mini">
-                <span class="badge-tipo">{{ p.tipo }}</span>
-                <span class="punto-estado verde"></span>
+                <span :class="['badge-tipo', clasePorTipo(p.tipo)]">{{ p.tipo }}</span>
+                <span class="punto-estado verde" title="En curso"></span>
               </div>
               <h3>{{ p.titulo }}</h3>
-              <p class="ip-info"><strong>IP:</strong> {{ p.ip }}</p>
-              <p class="desc-info">{{ p.descripcion }}</p>
             </div>
           </div>
         </div>
@@ -80,12 +68,10 @@ const solicitados = ref([
           <div class="contenedor-proyectos">
             <div v-for="(p, i) in solicitados" :key="'sol'+i" class="mini-tarjeta">
               <div class="header-mini">
-                <span class="badge-tipo azul">{{ p.tipo }}</span>
-                <span class="punto-estado naranja"></span>
+                <span :class="['badge-tipo', clasePorTipo(p.tipo)]">{{ p.tipo }}</span>
+                <span class="punto-estado naranja" title="Solicitado"></span>
               </div>
               <h3>{{ p.titulo }}</h3>
-              <p class="ip-info"><strong>IP:</strong> {{ p.ip }}</p>
-              <p class="desc-info">{{ p.descripcion }}</p>
             </div>
           </div>
         </div>
@@ -98,7 +84,6 @@ const solicitados = ref([
 <style scoped>
 .proyectos-hub { position: relative; min-height: 100vh; padding-bottom: 80px; background-color: #f4f7f9; }
 
-/* 🌊 FONDO CON TU IMAGEN (RUTA CON %20 POR LOS ESPACIOS) 🌊 */
 .fondo-proyectos { 
   position: absolute; 
   top: 0; 
@@ -113,7 +98,6 @@ const solicitados = ref([
   z-index: 0; 
 }
 
-/* Título bajado para máxima legibilidad */
 .contenido-hub { 
   position: relative; 
   z-index: 10; 
@@ -137,7 +121,7 @@ const solicitados = ref([
   left: 0;
   width: 100%;
   height: 4px;
-  background-color: #8cc63f; /* Verde corporativo ICM */
+  background-color: #8cc63f; 
 }
 
 .subtitulo { color: #e0e6ed; font-size: 1.1rem; margin-bottom: 40px; max-width: 800px; }
@@ -160,58 +144,61 @@ const solicitados = ref([
 .titulo-fija { color: #012169; margin-top: 0; font-size: 1.6rem; margin-bottom: 10px; }
 .cabecera-bloque p { color: #666; font-size: 0.95rem; line-height: 1.4; margin-bottom: 25px; }
 
-/* --- CONTENEDOR DE LAS MINI TARJETAS --- */
+/* --- CONTENEDOR Y MINI TARJETAS --- */
 .contenedor-proyectos {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 15px;
 }
 
 .mini-tarjeta {
   background: #fdfdfd;
   border-left: 4px solid #0086c0;
-  padding: 15px 20px;
+  padding: 12px 18px;
   border-radius: 4px 8px 8px 4px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  transition: transform 0.2s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .mini-tarjeta:hover {
   transform: translateX(5px);
   background: white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .header-mini {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
 }
 
+/* --- COLORES DE LAS ETIQUETAS (COPIADOS DE LA WIKISIO) --- */
 .badge-tipo {
-  background: #eef2f7;
-  color: #012169;
   font-size: 0.75rem;
   font-weight: bold;
-  padding: 3px 10px;
+  padding: 4px 10px;
   border-radius: 20px;
-  text-transform: uppercase;
+  color: white;
 }
 
-.badge-tipo.azul { background: #e0f0ff; color: #0061af; }
+.badge-verde { background-color: #28a745; } /* Infraestructura */
+.badge-turquesa { background-color: #17a2b8; } /* Contrato */
+.badge-amarillo { background-color: #ffc107; color: #333; } /* Plan Nacional */
+.badge-naranja { background-color: #fd7e14; } /* Otro */
+.badge-morado { background-color: #6f42c1; } /* Divulgación Científica */
+.badge-gris { background-color: #6c757d; }
 
+/* Puntos de estado */
 .punto-estado { width: 10px; height: 10px; border-radius: 50%; }
-.punto-estado.verde { background: #28a745; box-shadow: 0 0 5px #28a745; }
-.punto-estado.naranja { background: #ffc107; box-shadow: 0 0 5px #ffc107; }
+.punto-estado.verde { background: #28a745; box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); }
+.punto-estado.naranja { background: #ffc107; box-shadow: 0 0 5px rgba(255, 193, 7, 0.5); }
 
 .mini-tarjeta h3 { 
-  margin: 0 0 5px 0; 
-  font-size: 1.15rem; 
+  margin: 5px 0 0 0; 
+  font-size: 1.1rem; 
   color: #333; 
 }
-
-.ip-info { font-size: 0.85rem; color: #0086c0; margin-bottom: 8px; }
-.desc-info { font-size: 0.9rem; color: #666; line-height: 1.5; margin: 0; }
 
 @media (max-width: 992px) {
   .grid-horizontal { grid-template-columns: 1fr; }
