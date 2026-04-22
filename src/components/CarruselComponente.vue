@@ -124,25 +124,23 @@ onMounted(() => {
   z-index: 5; 
 }
 
-.texto-carrusel {
-  /* 1. Hacemos el color un poco transparente (85% de opacidad) en lugar de blanco puro */
+/* 2. TEXTO ATENUADO Y CENTRADO */
+.texto-slide {
+  /* Hacemos el blanco semitransparente (85% opacidad) */
   color: rgba(255, 255, 255, 0.85); 
-  
-  /* 2. Le quitamos la negrita si la tenía (400 es normal, 300 es más finito) */
-  font-weight: 300; 
-  
-  /* 3. Reducimos un poco el tamaño */
-  font-size: 1.1rem; 
-  line-height: 1.4;
-  
-  /* 4. Suavizamos la sombra para que no sea tan dura y negra */
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4); 
-  
-  /* 5. (Opcional) Limitamos el ancho para que el texto no cruce toda la pantalla */
-  max-width: 700px; 
-  margin: 0 auto; /* Para centrarlo si lo has hecho más estrecho */
+  /* Reducimos un poquito el tamaño base */
+  font-size: 1.15rem; 
+  line-height: 1.6;
+  max-width: 800px; 
+  margin: 0;
+  padding-bottom: 0px; 
+  padding-top: 140px; 
+  /* Sombra mucho más suave y difuminada */
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.4); 
+  /* Letra más fina (si la fuente lo soporta) */
+  font-weight: 300;
+  letter-spacing: 0.5px;
 }
-
 /* --- ESTILOS DE LOS PUNTITOS --- */
 .contenedor-puntos {
   position: absolute;
