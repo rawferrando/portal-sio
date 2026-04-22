@@ -3,15 +3,41 @@ import { ref } from 'vue'
 
 const emit = defineEmits(['volver'])
 
-// Datos de ejemplo extraídos de la WikiSIO
+// Listado de proyectos reales (puedes ampliarlo aquí mismo)
 const enCurso = ref([
-  { nombre: 'Campaña Antártica', detalle: 'Mantenimiento de sensores de salinidad.' },
-  { nombre: 'Observatorio OBSEA', detalle: 'Revisión de infraestructura cableada.' }
+  { 
+    titulo: 'Campaña Antártica 2025', 
+    tipo: 'Plan Nacional', 
+    ip: 'Jordi Font',
+    descripcion: 'Soporte técnico para el despliegue de boyas de deriva y sensores CTD en el Mar de Weddell.' 
+  },
+  { 
+    titulo: 'Mantenimiento OBSEA', 
+    tipo: 'Infraestructura', 
+    ip: 'Joaquín del Río',
+    descripcion: 'Operaciones periódicas de limpieza de sensores y revisión del cableado del observatorio submarino.' 
+  },
+  { 
+    titulo: 'Taller Escolar Marino', 
+    tipo: 'Divulgación', 
+    ip: 'Equipo SIO',
+    descripcion: 'Programa de formación en tecnología oceanográfica para institutos locales.' 
+  }
 ])
 
 const solicitados = ref([
-  { nombre: 'Expedición Abisal', detalle: 'Propuesta de cámaras de baja luz.' },
-  { nombre: 'Muestreo Litoral', detalle: 'Pendiente de aprobación de presupuesto.' }
+  { 
+    titulo: 'Propuesta ROV Abisal', 
+    tipo: 'Infraestructura', 
+    ip: 'Pendiente IP',
+    descripcion: 'Solicitud de adquisición de un nuevo vehículo operado remotamente para trabajos a 2000m.' 
+  },
+  { 
+    titulo: 'Proyecto BlueTech', 
+    tipo: 'Plan Nacional', 
+    ip: 'Raúl Ferrando',
+    descripcion: 'Desarrollo de nuevos sistemas de comunicación acústica submarina de bajo consumo.' 
+  }
 ])
 </script>
 
@@ -22,41 +48,45 @@ const solicitados = ref([
     <div class="contenedor-ancho contenido-hub">
       
       <h1 class="titulo-seccion">Proyectos y Campañas</h1>
-      <p class="subtitulo">Gestión y seguimiento del soporte técnico a la investigación oceanográfica.</p>
+      <p class="subtitulo">Visualiza el estado actual de los proyectos técnicos y las solicitudes en curso del servicio.</p>
 
       <div class="grid-horizontal">
         
         <div class="seccion-bloque">
           <div class="cabecera-bloque">
             <h2 class="titulo-fija">Proyectos en Curso</h2>
-            <p>Listado de actividades y campañas que se están ejecutando actualmente bajo la supervisión técnica del SIO.</p>
+            <p>Actividades y campañas en fase de ejecución técnica actualmente.</p>
           </div>
 
-          <div class="lista-items">
-            <div v-for="(p, i) in enCurso" :key="i" class="item-proyecto">
-              <span class="punto-verde">●</span>
-              <div>
-                <strong>{{ p.nombre }}:</strong> {{ p.detalle }}
+          <div class="contenedor-proyectos">
+            <div v-for="(p, i) in enCurso" :key="'ec'+i" class="mini-tarjeta">
+              <div class="header-mini">
+                <span class="badge-tipo">{{ p.tipo }}</span>
+                <span class="punto-estado verde"></span>
               </div>
+              <h3>{{ p.titulo }}</h3>
+              <p class="ip-info"><strong>IP:</strong> {{ p.ip }}</p>
+              <p class="desc-info">{{ p.descripcion }}</p>
             </div>
-            <button class="btn-ver-mas">Ver todos en WikiSIO</button>
           </div>
         </div>
 
         <div class="seccion-bloque">
           <div class="cabecera-bloque">
             <h2 class="titulo-fija">Proyectos Solicitados</h2>
-            <p>Propuestas técnicas y solicitudes de equipamiento en fase de evaluación o planificación logística.</p>
+            <p>Propuestas técnicas y licitaciones en fase de evaluación o planificación.</p>
           </div>
 
-          <div class="lista-items">
-            <div v-for="(p, i) in solicitados" :key="i" class="item-proyecto">
-              <span class="punto-azul">●</span>
-              <div>
-                <strong>{{ p.nombre }}:</strong> {{ p.detalle }}
+          <div class="contenedor-proyectos">
+            <div v-for="(p, i) in solicitados" :key="'sol'+i" class="mini-tarjeta">
+              <div class="header-mini">
+                <span class="badge-tipo azul">{{ p.tipo }}</span>
+                <span class="punto-estado naranja"></span>
               </div>
+              <h3>{{ p.titulo }}</h3>
+              <p class="ip-info"><strong>IP:</strong> {{ p.ip }}</p>
+              <p class="desc-info">{{ p.descripcion }}</p>
             </div>
-            <button class="btn-ver-mas">Consultar solicitudes</button>
           </div>
         </div>
 
@@ -68,7 +98,7 @@ const solicitados = ref([
 <style scoped>
 .proyectos-hub { position: relative; min-height: 100vh; padding-bottom: 80px; background-color: #f4f7f9; }
 
-/* 🌊 FONDO CON TU IMAGEN Y ESPACIOS CORREGIDOS 🌊 */
+/* 🌊 FONDO CON TU IMAGEN (RUTA CON %20 POR LOS ESPACIOS) 🌊 */
 .fondo-proyectos { 
   position: absolute; 
   top: 0; 
@@ -83,7 +113,7 @@ const solicitados = ref([
   z-index: 0; 
 }
 
-/* Título bajo para no chocar con el header */
+/* Título bajado para máxima legibilidad */
 .contenido-hub { 
   position: relative; 
   z-index: 10; 
@@ -92,7 +122,7 @@ const solicitados = ref([
 
 .titulo-seccion { 
   color: white; 
-  font-size: 2rem; 
+  font-size: 2.2rem; 
   margin-bottom: 15px; 
   font-weight: bold; 
   position: relative;
@@ -107,10 +137,10 @@ const solicitados = ref([
   left: 0;
   width: 100%;
   height: 4px;
-  background-color: #8cc63f; 
+  background-color: #8cc63f; /* Verde corporativo ICM */
 }
 
-.subtitulo { color: #e0e6ed; font-size: 1rem; margin-bottom: 40px; max-width: 800px; }
+.subtitulo { color: #e0e6ed; font-size: 1.1rem; margin-bottom: 40px; max-width: 800px; }
 
 .grid-horizontal {
   display: grid;
@@ -125,41 +155,63 @@ const solicitados = ref([
   box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
   display: flex;
   flex-direction: column; 
-  min-height: 350px;
 }
 
-.titulo-fija { color: #012169; margin-top: 0; font-size: 1.5rem; margin-bottom: 15px; }
+.titulo-fija { color: #012169; margin-top: 0; font-size: 1.6rem; margin-bottom: 10px; }
+.cabecera-bloque p { color: #666; font-size: 0.95rem; line-height: 1.4; margin-bottom: 25px; }
 
-.cabecera-bloque p { color: #555; line-height: 1.6; font-size: 1rem; margin-bottom: 25px; }
-
-.lista-items { margin-top: auto; }
-
-.item-proyecto { 
-  display: flex; 
-  gap: 10px; 
-  margin-bottom: 12px; 
-  font-size: 0.95rem; 
-  color: #333;
-  line-height: 1.4;
+/* --- CONTENEDOR DE LAS MINI TARJETAS --- */
+.contenedor-proyectos {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.punto-verde { color: #28a745; }
-.punto-azul { color: #007bff; }
-
-.btn-ver-mas { 
-  margin-top: 20px;
-  background: #0086c0; 
-  color: white; 
-  border: none; 
-  padding: 10px 20px; 
-  border-radius: 6px; 
-  font-weight: bold; 
-  cursor: pointer; 
-  width: 100%;
-  transition: background 0.3s;
+.mini-tarjeta {
+  background: #fdfdfd;
+  border-left: 4px solid #0086c0;
+  padding: 15px 20px;
+  border-radius: 4px 8px 8px 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: transform 0.2s;
 }
 
-.btn-ver-mas:hover { background: #012169; }
+.mini-tarjeta:hover {
+  transform: translateX(5px);
+  background: white;
+}
+
+.header-mini {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.badge-tipo {
+  background: #eef2f7;
+  color: #012169;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 3px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+.badge-tipo.azul { background: #e0f0ff; color: #0061af; }
+
+.punto-estado { width: 10px; height: 10px; border-radius: 50%; }
+.punto-estado.verde { background: #28a745; box-shadow: 0 0 5px #28a745; }
+.punto-estado.naranja { background: #ffc107; box-shadow: 0 0 5px #ffc107; }
+
+.mini-tarjeta h3 { 
+  margin: 0 0 5px 0; 
+  font-size: 1.15rem; 
+  color: #333; 
+}
+
+.ip-info { font-size: 0.85rem; color: #0086c0; margin-bottom: 8px; }
+.desc-info { font-size: 0.9rem; color: #666; line-height: 1.5; margin: 0; }
 
 @media (max-width: 992px) {
   .grid-horizontal { grid-template-columns: 1fr; }
