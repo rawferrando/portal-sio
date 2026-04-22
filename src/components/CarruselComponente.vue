@@ -118,26 +118,22 @@ onMounted(() => {
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center; 
-  hyphens: auto; 
-  -webkit-hyphens: auto;
+  align-items: flex-end; /* MAGIA: Esto empuja todo el contenido hacia abajo */
+  justify-content: center;
+  padding-bottom: 140px; /* Lo deja justo encima de los puntos, que están a 100px */
   z-index: 5; 
 }
 
-/* 2. TEXTO ATENUADO Y CENTRADO */
+/* 2. EL TEXTO: Lo hacemos de extremo a extremo */
 .texto-slide {
-  /* Hacemos el blanco semitransparente (85% opacidad) */
   color: rgba(255, 255, 255, 0.85); 
-  /* Reducimos un poquito el tamaño base */
   font-size: 1.15rem; 
   line-height: 1.6;
-  max-width: 800px; 
-  margin: 0;
-  padding-bottom: 0px; 
-  padding-top: 140px; 
-  /* Sombra mucho más suave y difuminada */
+  max-width: 90%; /* MAGIA 2: Ahora ocupa el 90% de la pantalla (de extremo a extremo) */
+  text-align: center; /* Centramos el párrafo entero */
+  margin: 0 auto;
+  padding: 0; 
   text-shadow: 1px 1px 4px rgba(0,0,0,0.4); 
-  /* Letra más fina (si la fuente lo soporta) */
   font-weight: 300;
   letter-spacing: 0.5px;
 }
@@ -182,14 +178,9 @@ onMounted(() => {
     bottom: 70px; 
   }
 .texto-slide {
-    font-size: 1rem; 
-    padding: 0 20px;
-    /* Centrado real en móvil */
+    font-size: 0.95rem; 
     padding-bottom: 0px; 
-    padding-top: 155px; 
-    text-align: justify; 
-    hyphens: auto; 
-    -webkit-hyphens: auto;
+    padding-top: 0px; 
   }
 }
 </style>
