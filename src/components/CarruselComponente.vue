@@ -110,31 +110,34 @@ onMounted(() => {
   background: linear-gradient(rgba(1, 33, 105, 0.4), rgba(1, 33, 105, 0.8)); 
 }
 
-/* --- ESTILOS DEL TEXTO --- */
+/* 1. EL CONTENEDOR: Lo dejamos libre */
 .carrusel-contenido {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: flex-end; /* MAGIA: Esto empuja todo el contenido hacia abajo */
-  justify-content: center;
-  padding-bottom: 140px; /* Lo deja justo encima de los puntos, que están a 100px */
   z-index: 5; 
 }
-
-/* 2. EL TEXTO: Lo hacemos de extremo a extremo */
+/* 2. EL TEXTO: Anclado fijamente por encima de los puntos */
 .texto-slide {
-  color: rgba(255, 255, 255, 0.85); 
-  font-size: 1.15rem; 
-  line-height: 1.6;
-  max-width: 90%; /* MAGIA 2: Ahora ocupa el 90% de la pantalla (de extremo a extremo) */
-  text-align: center; /* Centramos el párrafo entero */
-  margin: 0 auto;
+  position: absolute;
+  /* MAGIA: Esto clava la base del texto a 160px del fondo (los puntos están a 100px) */
+  bottom: 160px; 
+  left: 50%;
+  transform: translateX(-50%); /* Lo centra de forma perfecta */
+  
+  width: 90%; /* De extremo a extremo como querías */
+  color: rgba(255, 255, 255, 0.95); /* Un blanco casi puro para máxima legibilidad */
+  font-size: 1.25rem; /* Letra un pelín más grande */
+  line-height: 1.5;
+  text-align: center; 
+  margin: 0;
   padding: 0; 
-  text-shadow: 1px 1px 4px rgba(0,0,0,0.4); 
-  font-weight: 300;
+  
+  /* Doble sombra oscura para garantizar que se lea aunque el fondo sea claro */
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.9), 0px 0px 15px rgba(0,0,0,0.6); 
+  font-weight: 400;
   letter-spacing: 0.5px;
 }
 /* --- ESTILOS DE LOS PUNTITOS --- */
@@ -179,8 +182,8 @@ onMounted(() => {
   }
 .texto-slide {
     font-size: 0.95rem; 
-    padding-bottom: 0px; 
-    padding-top: 0px; 
+    bottom: 110px; /* En móvil los puntos bajan, así que bajamos el texto también */
+    width: 95%; /* Que aproveche a tope la pantalla pequeña */
   }
 }
 </style>
