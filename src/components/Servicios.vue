@@ -83,7 +83,7 @@ const buscarYNavegar = () => {
 .contenido-hub { 
   position: relative; 
   z-index: 10; 
-  padding-top: 80px; 
+  padding-top: 120px; 
 }
 
 .titulo-seccion { 

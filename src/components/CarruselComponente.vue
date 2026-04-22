@@ -6,16 +6,22 @@ const indiceActual = ref(0)
 // AQUÍ ESTÁN TUS IMÁGENES Y TUS TEXTOS
 const slides = [
   {
-    imagen: 'https://raw.githubusercontent.com/rawferrando/portal-sio/main/src/assets/instrumentacion.jpg', 
-    texto: 'Apoyo técnico especializado a grupos de investigación y proyectos en el ámbito de las ciencias del mar. Proporcionamos soluciones técnicas adaptadas a las necesidades específicas de cada cliente, así como asesoramiento experto basado en años de experiencia en el sector.'
+    imagen: '/peces.png', 
+    texto: 'Apoyo técnico especializado a grupos de investigación y proyectos en el ámbito de las ciencias del mar. Proporcionamos asesoramiento y soluciones técnicas adaptadas a las necesidades específicas de cada cliente, basado en años de experiencia.'
   },
   {
-    imagen: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1200', 
+    imagen: '/niskin.png', 
     texto: 'Equipo altamente cualificado y con una amplia gama de instrumentación y recursos, lo que nos permite innovar, desarrollar y personalizar equipos, así como diseñar, desplegar e implementar sistemas avanzados de adquisición de datos, tanto fijos como móviles.'
   },
   {
-    imagen: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200', 
+    imagen: '/oficinatecnica.png', 
     texto: 'Herramientas y técnicas específicas de verificación para garantizar la calidad de los datos obtenidos en los estudios oceanográficos.'
+  },
+  {
+    imagen: '/marmarejada.jpg' 
+  }
+    {
+    imagen: '/reflexesmar.jpg' 
   }
 ]
 
