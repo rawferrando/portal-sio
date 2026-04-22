@@ -18,15 +18,15 @@ const slides = [
     texto: 'Herramientas y técnicas específicas de verificación para garantizar la calidad de los datos obtenidos en los estudios oceanográficos.'
   },
   {
-  imagen: 'robotmari.jpg'
+  imagen: 'robotmari.jpg',
     texto: 'Asesoramiento y soluciones técnicas adaptadas a las necesidades específicas'
   },
   {
-    imagen: 'marmarejada.jpg' 
+    imagen: 'marmarejada.jpg', 
     texto: 'Asesoramiento y soluciones técnicas adaptadas a las necesidades específicas'
   },
   {
-    imagen: 'reflexesmar.jpg' 
+    imagen: 'reflexesmar.jpg', 
     texto: 'Innovar, Desarrollar, Diseñar, Desplegar, Iplementar i Personalizar equipos '
   }
 ]
@@ -126,15 +126,15 @@ onMounted(() => {
 .texto-slide {
   position: absolute;
   /* MAGIA: Esto clava la base del texto a 160px del fondo (los puntos están a 100px) */
-  bottom: 160px; 
+  bottom: 170px; 
   left: 50%;
   transform: translateX(-50%); /* Lo centra de forma perfecta */
   
-  width: 90%; /* De extremo a extremo como querías */
-  color: rgba(255, 255, 255, 0.95); /* Un blanco casi puro para máxima legibilidad */
+  width: 95%; /* De extremo a extremo como querías */
+  color: rgba(255, 255, 255, 0.80); /* Un blanco casi puro para máxima legibilidad */
   font-size: 1.25rem; /* Letra un pelín más grande */
   line-height: 1.5;
-  text-align: center; 
+  text-align: justify; 
   margin: 0;
   padding: 0; 
   
