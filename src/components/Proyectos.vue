@@ -76,7 +76,7 @@ const solicitados = ref([
   width: 100%; 
   height: 550px; 
   background-image: linear-gradient(rgba(1, 33, 105, 0.65), rgba(1, 33, 105, 0.85)), 
-                    url('/peces%20pecesagua%20alada.jpg');
+                    url('/pecesaguasalada.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
