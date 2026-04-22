@@ -18,9 +18,12 @@ const slides = [
     texto: 'Herramientas y técnicas específicas de verificación para garantizar la calidad de los datos obtenidos en los estudios oceanográficos.'
   },
   {
+  imagen: '/robotmari.jpg' 
+  },
+  {
     imagen: '/marmarejada.jpg' 
-  }
-    {
+  },
+  {
     imagen: '/reflexesmar.jpg' 
   }
 ]
