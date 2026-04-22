@@ -117,7 +117,7 @@ const solicitados = ref([
 .contenido-hub { 
   position: relative; 
   z-index: 10; 
-  padding-top: 180px; 
+  padding-top: 120px; 
 }
 
 .titulo-seccion { 
