@@ -96,7 +96,7 @@ const proyectos = ref([
 .contenido-hub { 
   position: relative; 
   z-index: 10; 
-  padding-top: 80px; 
+  padding-top: 120px; 
 }
 
 /* Título con línea verde inferior */
