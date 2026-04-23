@@ -1,12 +1,5 @@
 <script setup>
-import { ref } from 'vue'
-
 const emit = defineEmits(['cambiar-pagina'])
-const tipoBuscado = ref('Todos')
-
-const buscarYNavegar = () => {
-  emit('cambiar-pagina', 'instrumentacion')
-}
 </script>
 
 <template>
@@ -14,44 +7,74 @@ const buscarYNavegar = () => {
     <div class="fondo-servicios"></div>
 
     <div class="contenedor-ancho contenido-hub">
-      <h1 class="titulo-seccion">Servicios e instalaciones</h1>
-      <p class="subtitulo">Apoyo técnico, plataformas marinas y equipamiento oceanográfico de vanguardia.</p>
+      
+      <h1 class="titulo-seccion">Nuestros Servicios</h1>
+      <p class="subtitulo">Soluciones técnicas y tecnológicas de vanguardia para la comunidad científica marina.</p>
 
-      <div class="grid-horizontal">
+      <div class="grid-tres-columnas">
         
         <div class="seccion-bloque">
           <div class="cabecera-bloque">
-            <h2 @click="$emit('cambiar-pagina', 'instrumentacion')" class="titulo-clicable">
-              Instrumentación Oceanográfica <span class="flecha">➔</span>
-            </h2>
-            <p>Catálogo completo de sensores, plataformas y perfiladores. Accede a manuales, características técnicas y reservas.</p>
+            <h2 class="titulo-fija">Soporte Técnico</h2>
+            <p>Asesoramiento especializado y apoyo operativo en campañas oceanográficas y proyectos de investigación.</p>
           </div>
 
-          <div class="buscador-rapido">
-            <label>Búsqueda rápida:</label>
-            <div class="input-grupo">
-              <select v-model="tipoBuscado">
-                <option value="Todos">Todos los equipos</option>
-                <option value="Sensores">Sensores y Perfiladores</option>
-                <option value="Plataformas">Plataformas Autónomas</option>
-              </select>
-              <button @click="buscarYNavegar" class="btn-buscar">Ver</button>
+          <div class="lista-items">
+            <div class="item-servicio">
+              <span class="punto-azul">●</span>
+              <div>Diseño y despliegue de sistemas de adquisición de datos.</div>
+            </div>
+            <div class="item-servicio">
+              <span class="punto-azul">●</span>
+              <div>Configuración y mantenimiento de sensores oceanográficos.</div>
+            </div>
+            <div class="item-servicio">
+              <span class="punto-azul">●</span>
+              <div>Asistencia técnica personalizada in-situ.</div>
             </div>
           </div>
         </div>
 
         <div class="seccion-bloque">
           <div class="cabecera-bloque">
-            <h2 @click="$emit('cambiar-pagina', 'pelagia')" class="titulo-clicable">
-              Embarcación Pelagia <span class="flecha">➔</span>
-            </h2>
-            <p>Embarcación de apoyo para trabajos costeros y despliegue de instrumentación. Consulta características y disponibilidad.</p>
+            <h2 class="titulo-fija">Instrumentación</h2>
+            <p>Acceso a una amplia gama de instrumentación y recursos técnicos para el desarrollo de proyectos.</p>
           </div>
 
-          <div class="tarjetas-preview">
-            <div class="tarjeta-info" @click="$emit('cambiar-pagina', 'pelagia')">
-              <h3>Detalles Técnicos y Reservas</h3>
-              <p>Capacidad, motores y calendario de disponibilidad.</p>
+          <div class="lista-items">
+            <div class="item-servicio">
+              <span class="punto-verde">●</span>
+              <div>Desarrollo y personalización de equipos a medida.</div>
+            </div>
+            <div class="item-servicio">
+              <span class="punto-verde">●</span>
+              <div>Sistemas de comunicaciones y telemetría submarina.</div>
+            </div>
+            <div class="item-servicio">
+              <span class="punto-verde">●</span>
+              <div>Laboratorios de electrónica y prototipado rápido.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="seccion-bloque">
+          <div class="cabecera-bloque">
+            <h2 class="titulo-fija">Tanques de Pruebas</h2>
+            <p>Alquiler de áreas experimentales y tanques para la validación y calibración de instrumentación en entornos controlados.</p>
+          </div>
+
+          <div class="lista-items">
+            <div class="item-servicio">
+              <span class="punto-azul">●</span>
+              <div>Ensayos de estanqueidad, presión y flotabilidad para robótica.</div>
+            </div>
+            <div class="item-servicio">
+              <span class="punto-azul">●</span>
+              <div>Calibración de sensores acústicos y ópticos en agua controlada.</div>
+            </div>
+            <div class="item-servicio">
+              <span class="punto-azul">●</span>
+              <div>Soporte de ingeniería durante las fases de ensayo previas a campaña.</div>
             </div>
           </div>
         </div>
@@ -59,48 +82,27 @@ const buscarYNavegar = () => {
       </div> 
     </div>
   </div>
-  <div class="seccion-bloque">
-          <div class="cabecera-bloque">
-            <h2 class="titulo-fija">Tanques de Pruebas</h2>
-            <p>Alquiler de áreas experimentales y tanques para la validación, calibración y ensayo de instrumentación oceanográfica en entornos controlados.</p>
-          </div>
-
-          <div class="lista-items">
-            <div class="item-idi">
-              <span class="punto-azul">●</span>
-              <div>Ensayos de estanqueidad, presión y flotabilidad para equipos submarinos y robótica.</div>
-            </div>
-            <div class="item-idi">
-              <span class="punto-azul">●</span>
-              <div>Calibración y validación de sensores acústicos, ópticos y de calidad del agua.</div>
-            </div>
-            <div class="item-idi">
-              <span class="punto-azul">●</span>
-              <div>Soporte técnico y supervisión de ingeniería durante las campañas de pruebas.</div>
-            </div>
-          </div>
-        </div>
 </template>
 
 <style scoped>
-.servicios-hub { position: relative; min-height: 100vh; padding-bottom: 40px; background-color: #f4f7f9; }
+.servicios-hub { position: relative; min-height: 100vh; padding-bottom: 80px; background-color: #f4f7f9; }
 
-/* 🌊 CONFIGURACIÓN DEL FONDO 🌊 */
+/* 🌊 FONDO CON LA IMAGEN DE INSTRUMENTACIÓN 🌊 */
 .fondo-servicios { 
   position: absolute; 
   top: 0; 
   left: 0; 
   width: 100%; 
-  height: 480px; /* Reducido para que no ocupe tanto espacio vertical */
-  z-index: 0; 
-  /* IMPORTANTE: Cambia 'medusa.png' por el nombre de tu foto en la carpeta public */
-  background-image: linear-gradient(rgba(1, 33, 105, 0.6), rgba(1, 33, 105, 0.8)), url('/medusa.png');
-  background-position: center;
+  height: 550px; 
+  background-image: linear-gradient(rgba(1, 33, 105, 0.65), rgba(1, 33, 105, 0.85)), 
+                    url('/instrumentacion.jpg');
   background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
+  z-index: 0; 
 }
 
-/* Reducimos el padding-top para que el título suba (antes 150px) */
+/* Manteniendo el espacio que te gustó (120px) */
 .contenido-hub { 
   position: relative; 
   z-index: 10; 
@@ -109,7 +111,7 @@ const buscarYNavegar = () => {
 
 .titulo-seccion { 
   color: white; 
-  font-size: 2rem; 
+  font-size: 2.2rem; 
   margin-bottom: 15px; 
   font-weight: bold; 
   position: relative;
@@ -127,46 +129,49 @@ const buscarYNavegar = () => {
   background-color: #8cc63f; 
 }
 
-/* Reducimos el margen inferior del subtítulo para que las fichas suban (antes 60px) */
-.subtitulo { color: #e0e6ed; font-size: 1rem; margin-bottom: 30px; max-width: 800px; }
+.subtitulo { color: #e0e6ed; font-size: 1.1rem; margin-bottom: 40px; max-width: 800px; }
 
-.grid-horizontal {
+/* GRID ACTUALIZADO A 3 COLUMNAS */
+.grid-tres-columnas {
   display: grid;
-  /* Cambiamos de '1fr 1fr' a 3 columnas automáticas que se adaptan al tamaño */
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+  grid-template-columns: repeat(3, 1fr); 
   gap: 30px; 
 }
 
 .seccion-bloque { 
   background: white; 
   border-radius: 12px; 
-  padding: 30px; 
+  padding: 35px; 
   box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
   display: flex;
-  flex-direction: column;
-  min-height: 280px; /* Altura controlada */
+  flex-direction: column; 
+  min-height: 350px; /* Recuperando el espacio blanco que te gustó */
 }
 
-.titulo-clicable { color: #012169; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; transition: color 0.3s; margin-top: 0; font-size: 1.4rem; }
-.titulo-clicable:hover { color: #0086c0; }
-.flecha { font-size: 0.8em; }
+.titulo-fija { color: #012169; margin-top: 0; font-size: 1.6rem; margin-bottom: 10px; }
+.cabecera-bloque p { color: #666; font-size: 0.95rem; line-height: 1.4; margin-bottom: 25px; }
 
-.cabecera-bloque p { color: #555; line-height: 1.5; font-size: 0.95rem; }
+.lista-items { margin-top: auto; }
 
-.buscador-rapido { margin-top: auto; padding-top: 15px; } 
-.buscador-rapido label { display: block; font-weight: bold; color: #333; margin-bottom: 8px; font-size: 0.9rem; }
-.input-grupo { display: flex; gap: 8px; }
-.input-grupo select { flex-grow: 1; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.9rem; }
-.btn-buscar { background: #0086c0; color: white; border: none; padding: 0 15px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+.item-servicio { 
+  display: flex; 
+  gap: 10px; 
+  margin-bottom: 12px; 
+  font-size: 0.95rem; 
+  color: #333;
+  line-height: 1.4;
+}
 
-.tarjetas-preview { display: flex; flex-direction: column; gap: 10px; margin-top: auto; padding-top: 15px; }
-.tarjeta-info { padding: 12px 15px; border: 1px solid #e0e6ed; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
-.tarjeta-info:hover { border-color: #0086c0; background: #f0f7ff; } 
-.tarjeta-info h3 { margin-top: 0; color: #012169; font-size: 1rem; margin-bottom: 3px; }
-.tarjeta-info p { color: #666; margin: 0; font-size: 0.85rem; }
+.punto-azul { color: #007bff; }
+.punto-verde { color: #28a745; }
 
-@media (max-width: 992px) {
-  .grid-horizontal { grid-template-columns: 1fr; }
-  .fondo-servicios { height: 400px; }
+/* Adaptación para pantallas pequeñas */
+@media (max-width: 1100px) {
+  .grid-tres-columnas { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+  .grid-tres-columnas { grid-template-columns: 1fr; }
+  .contenido-hub { padding-top: 150px; }
 }
 </style>
