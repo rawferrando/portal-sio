@@ -137,7 +137,7 @@ const emit = defineEmits(['cambiar-pagina'])
 
 /* 1. EL CONTENEDOR DE LA LISTA */
 .lista-items { 
-  margin-top: auto; 
+  margin-top: 15px; 
   display: flex; 
   flex-direction: column; 
   gap: 5px; /* Esto controla la separación principal. Si lo quieres más junto, pon 2px */
