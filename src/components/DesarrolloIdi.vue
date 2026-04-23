@@ -133,7 +133,7 @@ const emit = defineEmits(['cambiar-pagina'])
 .titulo-fija { color: #012169; margin-top: 0; font-size: 1.6rem; margin-bottom: 10px; }
 
 /* Recuperamos el margen original de los párrafos (25px) */
-.cabecera-bloque p { color: #666; font-size: 0.95rem; line-height: 1.4; margin-bottom: 25px; }
+.cabecera-bloque p { color: #666; font-size: 0.95rem; line-height: 1.4; margin-bottom: 15px; }
 
 .lista-items { margin-top: auto; }
 
