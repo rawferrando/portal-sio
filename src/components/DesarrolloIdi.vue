@@ -1,39 +1,151 @@
-<template>
-  <div class="pagina-seccion fade-in">
-    <div class="cabecera-seccion">
-      <button @click="$emit('volver')" class="btn-volver">⬅ Volver al Inicio</button>
-      <h2>💡 Desarrollo I+D+i</h2>
-      <p>Diseño e integración de soluciones tecnológicas a medida para la observación marina.</p>
-    </div>
+<script setup>
+const emit = defineEmits(['cambiar-pagina'])
+</script>
 
-    <div class="contenido-idi">
-      <div class="grid-idi">
-        <div class="tarjeta-idi">
-          <h3>Ingeniería de Prototipos</h3>
-          <p>Diseño y fabricación de piezas técnicas y carcasas resistentes a la presión y corrosión marina.</p>
+<template>
+  <div class="idi-hub">
+    <div class="fondo-idi"></div>
+
+    <div class="contenedor-ancho contenido-hub">
+      
+      <h1 class="titulo-seccion">I+D+i</h1>
+      <p class="subtitulo">Impulsando la innovación tecnológica marina y la transferencia de conocimiento del SIO.</p>
+
+      <div class="grid-horizontal">
+        
+        <div class="seccion-bloque">
+          <div class="cabecera-bloque">
+            <h2 class="titulo-fija">Oficina I+D+i</h2>
+            <p>Soporte integral a la investigación: desde la gestión de convocatorias hasta la protección de resultados y transferencia tecnológica.</p>
+          </div>
+
+          <div class="lista-items">
+            <div class="item-idi">
+              <span class="punto-azul">●</span>
+              <div>Gestión de proyectos y asesoramiento técnico especializado.</div>
+            </div>
+            <div class="item-idi">
+              <span class="punto-azul">●</span>
+              <div>Propiedad intelectual y valorización de la tecnología desarrollada.</div>
+            </div>
+            <div class="item-idi">
+              <span class="punto-azul">●</span>
+              <div>Fomento de la colaboración con empresas y centros del sector marino.</div>
+            </div>
+          </div>
         </div>
-        <div class="tarjeta-idi">
-          <h3>Integración de Sensores</h3>
-          <p>Adaptación de instrumentación oceanográfica en plataformas autónomas y dataloggers propios.</p>
+
+        <div class="seccion-bloque">
+          <div class="cabecera-bloque">
+            <h2 class="titulo-fija">Blue Lab</h2>
+            <p>Espacio creativo y tecnológico dedicado al prototipado rápido y el desarrollo de nuevas soluciones para la observación del océano.</p>
+          </div>
+
+          <div class="lista-items">
+            <div class="item-idi">
+              <span class="punto-verde">●</span>
+              <div>Laboratorio de electrónica y fabricación digital aplicada.</div>
+            </div>
+            <div class="item-idi">
+              <span class="punto-verde">●</span>
+              <div>Banco de pruebas para nuevos sistemas de adquisición de datos.</div>
+            </div>
+            <div class="item-idi">
+              <span class="punto-verde">●</span>
+              <div>Incubación de ideas e instrumentación oceanográfica a medida.</div>
+            </div>
+          </div>
         </div>
-      </div>
+
+      </div> 
     </div>
   </div>
 </template>
 
 <style scoped>
-.pagina-seccion { max-width: 1200px; margin: 0 auto; padding: 20px; }
-.cabecera-seccion { margin-bottom: 40px; text-align: center; }
-.cabecera-seccion h2 { color: #005596; font-size: 2.2rem; margin-bottom: 10px; }
-.cabecera-seccion p { color: #555; font-size: 1.1rem; }
+.idi-hub { position: relative; min-height: 100vh; padding-bottom: 80px; background-color: #f4f7f9; }
 
-.btn-volver { background-color: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; float: left; font-weight: bold; transition: background-color 0.3s; }
-.btn-volver:hover { background-color: #5a6268; }
+/* 🌊 CONFIGURACIÓN DEL FONDO 🌊 */
+.fondo-idi { 
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 550px; 
+  /* Buscamos 'tortuga.jpg' en la carpeta public */
+  background-image: linear-gradient(rgba(1, 33, 105, 0.65), rgba(1, 33, 105, 0.85)), 
+                    url('/tortuga.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0; 
+}
 
-.grid-idi { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; clear: both; margin-top: 60px; }
-.tarjeta-idi { background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 5px solid #00aae4; }
-.tarjeta-idi h3 { color: #005596; margin-top: 0; }
+/* Bajamos el contenido para que respire (180px) */
+.contenido-hub { 
+  position: relative; 
+  z-index: 10; 
+  padding-top: 120px; 
+}
 
-.fade-in { animation: fadeIn 0.4s ease-in-out; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+.titulo-seccion { 
+  color: white; 
+  font-size: 2.2rem; 
+  margin-bottom: 15px; 
+  font-weight: bold; 
+  position: relative;
+  display: inline-block;
+  padding-bottom: 8px;
+}
+
+/* Línea verde ICM */
+.titulo-seccion::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: #8cc63f; 
+}
+
+.subtitulo { color: #e0e6ed; font-size: 1.1rem; margin-bottom: 40px; max-width: 800px; }
+
+.grid-horizontal {
+  display: grid;
+  grid-template-columns: 1fr 1fr; 
+  gap: 30px; 
+}
+
+.seccion-bloque { 
+  background: white; 
+  border-radius: 12px; 
+  padding: 35px; 
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
+  display: flex;
+  flex-direction: column; 
+  min-height: 350px;
+}
+
+.titulo-fija { color: #012169; margin-top: 0; font-size: 1.6rem; margin-bottom: 10px; }
+.cabecera-bloque p { color: #666; font-size: 0.95rem; line-height: 1.4; margin-bottom: 25px; }
+
+.lista-items { margin-top: auto; }
+
+.item-idi { 
+  display: flex; 
+  gap: 10px; 
+  margin-bottom: 12px; 
+  font-size: 0.95rem; 
+  color: #333;
+  line-height: 1.4;
+}
+
+.punto-azul { color: #007bff; }
+.punto-verde { color: #28a745; }
+
+@media (max-width: 992px) {
+  .grid-horizontal { grid-template-columns: 1fr; }
+  .contenido-hub { padding-top: 150px; }
+}
 </style>

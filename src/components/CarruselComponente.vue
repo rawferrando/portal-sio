@@ -19,7 +19,7 @@ const slides = [
   },
   {
   imagen: 'robotmari.jpg',
-    texto: 'Asesoramiento y soluciones técnicas adaptadas a las necesidades específicas'
+    texto: 'Integración de sensores en plataformas robóticas para muestreos de precisión'
   },
   {
     imagen: 'marmarejada.jpg', 
@@ -27,7 +27,7 @@ const slides = [
   },
   {
     imagen: 'reflexesmar.jpg', 
-    texto: 'Innovar, Desarrollar, Diseñar, Desplegar, Iplementar i Personalizar equipos '
+    texto: 'Innovar, Desarrollar, Diseñar, Desplegar, Implementar i Personalizar equipos '
   }
 ]
 
