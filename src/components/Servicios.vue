@@ -135,11 +135,11 @@ const emit = defineEmits(['cambiar-pagina'])
 .seccion-bloque { 
   background: white; 
   border-radius: 12px; 
-  padding: 35px; /* Recuperamos el espacio blanco */
+  padding: 35px; 
   box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
   display: flex;
   flex-direction: column; 
-  min-height: auto /* Recuperamos la altura elegante */
+  min-height: auto; /* <- ¡AQUÍ ASEGURAMOS EL PUNTO Y COMA! */
   transition: transform 0.3s;
 }
 
@@ -147,25 +147,25 @@ const emit = defineEmits(['cambiar-pagina'])
 
 .titulo-fija { color: #012169; margin-top: 0; font-size: 1.6rem; margin-bottom: 10px; }
 
-/* COMPRIMIMOS EL TEXTO DENTRO DE LA FICHA */
 .cabecera-bloque p { 
   color: #666; 
   font-size: 0.95rem; 
   line-height: 1.3; 
-  margin-bottom: 10px; /* Párrafo más pegado a la lista */
+  margin-bottom: 15px; 
 }
 
+/* LA LISTA COMPACTA CON SEPARACIÓN FIJA */
 .lista-items { 
-  margin-top: 15px; 
+  margin-top: 15px; /* Distancia fija al párrafo superior */
   display: flex; 
   flex-direction: column; 
-  gap: 5px; /* Puntos de la lista muy juntos */
+  gap: 5px; 
 }
 
 .item-servicio { 
   display: flex; 
   gap: 10px; 
-  margin-bottom: 0px !important; /* Quitamos el margen inferior rebelde */
+  margin-bottom: 0px !important; 
   font-size: 0.9rem; 
   color: #333;
   line-height: 1.2;
