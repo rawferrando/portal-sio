@@ -3,11 +3,11 @@ import { ref, computed } from 'vue'
 
 const emit = defineEmits(['volver'])
 
-// CATEGORÍAS (Igual que en I+D+i)
+// 1. LÓGICA DE CATEGORÍAS
 const categoriaActiva = ref('Física')
 const categorias = ['Física', 'Biogeoquímica', 'Geología', 'Laboratorio']
 
-// DATOS INSTRUMENTOS
+// 2. DATOS DE LOS INSTRUMENTOS (WikiSIO)
 const instrumentos = ref([
   { 
     id: 1, 
@@ -15,7 +15,7 @@ const instrumentos = ref([
     tipo: 'Física', 
     ultimaCalibracion: '2025-11-15', 
     estado: 'Disponible',
-    descripcion: 'Medida de conductividad, temperatura y presión.'
+    descripcion: 'Medida de conductividad, temperatura y presión en perfiles.'
   },
   { 
     id: 2, 
@@ -23,7 +23,7 @@ const instrumentos = ref([
     tipo: 'Física', 
     ultimaCalibracion: '2026-01-20', 
     estado: 'En Uso',
-    descripcion: 'Perfilador de corrientes por efecto Doppler.'
+    descripcion: 'Perfilador de corrientes por efecto Doppler (300 kHz).'
   },
   { 
     id: 3, 
@@ -31,7 +31,7 @@ const instrumentos = ref([
     tipo: 'Biogeoquímica', 
     ultimaCalibracion: '2025-09-10', 
     estado: 'Disponible',
-    descripcion: 'Sensor de oxígeno disuelto para rosetas.'
+    descripcion: 'Sensor de oxígeno disuelto para integración en rosetas.'
   }
 ])
 
@@ -72,13 +72,15 @@ const mostrarCalendario = (equipo) => {
       <div class="grid-principal">
         
         <div class="seccion-bloque">
-          <h2 class="titulo-fija">Equipamiento: {{ categoriaActiva }}</h2>
+          <div class="cabecera-bloque">
+            <h2 class="titulo-fija">Equipamiento: {{ categoriaActiva }}</h2>
+          </div>
           <div class="tabla-scroll">
             <table class="tabla-sio">
               <thead>
                 <tr>
                   <th>Equipo</th>
-                  <th>Calibración</th>
+                  <th>Última Calibración</th>
                   <th>Estado</th>
                   <th>Acción</th>
                 </tr>
@@ -106,9 +108,9 @@ const mostrarCalendario = (equipo) => {
 
         <div class="columna-derecha">
           
-          <div class="seccion-bloque card-doc">
+          <div class="seccion-bloque">
             <h2 class="titulo-fija">Préstamos</h2>
-            <p class="txt-pequeno">Es obligatorio el documento de responsabilidad firmado para solicitar equipos.</p>
+            <p class="txt-p">Es obligatorio el documento de responsabilidad firmado para solicitar equipos.</p>
             
             <div class="descarga-box">
               <span class="icon">📄</span>
@@ -142,9 +144,9 @@ const mostrarCalendario = (equipo) => {
 </template>
 
 <style scoped>
-/* COHERENCIA VISUAL TOTAL */
 .instrumentacion-hub { position: relative; min-height: 100vh; padding-bottom: 80px; background-color: #f4f7f9; }
 
+/* 🖼️ FONDO IGUAL QUE SERVICIOS */
 .fondo-instrumentacion { 
   position: absolute; 
   top: 0; 
@@ -229,14 +231,13 @@ const mostrarCalendario = (equipo) => {
 
 /* COLUMNA DERECHA */
 .columna-derecha { display: flex; flex-direction: column; gap: 25px; }
-.txt-pequeno { font-size: 0.85rem; color: #666; line-height: 1.4; margin-bottom: 15px; }
+.txt-p { font-size: 0.9rem; color: #666; line-height: 1.4; margin-bottom: 15px; }
 .descarga-box { display: flex; gap: 12px; align-items: center; background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px dashed #ccc; margin-bottom: 15px;}
 .link-download { display: block; font-size: 0.8rem; color: #0086c0; font-weight: bold; }
 .btn-upload { display: block; text-align: center; padding: 12px; background: #012169; color: white; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.9rem; }
 
 /* CALENDARIO */
 .card-cal { border-top: 4px solid #8cc63f; }
-.titulo-mini { font-size: 1rem; color: #012169; margin-bottom: 10px; }
 .mini-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
 .dia { background: #f0f0f0; padding: 6px; text-align: center; font-size: 0.7rem; border-radius: 3px; color: #999; }
 .dia.ocupado { background: #0086c0; color: white; font-weight: bold; }
