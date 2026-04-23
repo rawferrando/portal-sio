@@ -74,7 +74,7 @@ const emit = defineEmits(['cambiar-pagina'])
   left: 0; 
   width: 100%; 
   /* Reducimos la altura del fondo para compensar que las fichas ahora son más pequeñas */
-  height: 450px; 
+  height: 550px; 
   background-image: linear-gradient(rgba(1, 33, 105, 0.65), rgba(1, 33, 105, 0.85)), 
                     url('/tortuga.jpg');
   background-size: cover;

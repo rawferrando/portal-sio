@@ -4,6 +4,7 @@ import QuienesSomos from './components/QuienesSomos.vue'
 import Proyectos from './components/Proyectos.vue'
 import Servicios from './components/Servicios.vue'
 import DesarrolloIdi from './components/DesarrolloIdi.vue'
+import BlueLab from './components/BlueLab.vue'
 import IntranetPanel from './components/IntranetPanel.vue'
 import CarruselComponente from './components/CarruselComponente.vue'
 // ⚠️ El carrusel está comentado para que GitHub no dé error rojo.
@@ -104,7 +105,11 @@ const manejarClicIntranet = () => {
       <EmbarcacionPelagia v-else-if="vistaActual === 'pelagia'" @cambiar-pagina="cambiarVista" />
 
       <div v-else-if="vistaActual === 'proyectos'"><Proyectos @volver="volverAInicio" /></div>
-      <div v-else-if="vistaActual === 'idi'"><DesarrolloIdi @volver="volverAInicio" /></div>
+      
+      <div v-else-if="vistaActual === 'idi'"><DesarrolloIdi @volver="volverAInicio" @cambiar-pagina="cambiarVista" /></div>
+      
+      <div v-else-if="vistaActual === 'bluelab'"><BlueLab @volver="vistaActual = 'idi'" /></div>
+      
       <div v-else-if="vistaActual === 'intranet'"><IntranetPanel @volver="volverAInicio" /></div>
       
       <div v-else-if="vistaActual === 'contacto'" class="pagina-contacto">
