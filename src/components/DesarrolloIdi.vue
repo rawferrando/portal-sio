@@ -135,23 +135,23 @@ const emit = defineEmits(['cambiar-pagina'])
 /* Recuperamos el margen original de los párrafos (25px) */
 .cabecera-bloque p { color: #666; font-size: 0.95rem; line-height: 1.4; margin-bottom: 15px; }
 
-/* 2. LA LISTA DE PUNTOS: Reducimos la separación entre líneas */
+/* 1. EL CONTENEDOR DE LA LISTA */
 .lista-items { 
   margin-top: auto; 
   display: flex; 
   flex-direction: column; 
-  gap: 4px; /* BÁJALO: Antes estaba en 10px u 8px. Bájalo a 4px o 2px */
+  gap: 5px; /* Esto controla la separación principal. Si lo quieres más junto, pon 2px */
 }
 
+/* 2. CADA PUNTO DE LA LISTA (AQUÍ ESTABA EL ERROR) */
 .item-idi { 
   display: flex; 
   gap: 10px; 
-  margin-bottom: 12px; 
+  margin-bottom: 0px !important; /* <--- ¡Este es el culpable! Obligamos a que sea 0 */
   font-size: 0.95rem; 
   color: #333;
-  line-height: 1.4;
+  line-height: 1.2; /* Bajamos el interlineado de 1.4 a 1.2 para que las líneas estén más pegadas */
 }
-
 .punto-azul { color: #007bff; }
 .punto-verde { color: #28a745; }
 
