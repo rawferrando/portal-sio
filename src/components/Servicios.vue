@@ -156,10 +156,10 @@ const emit = defineEmits(['cambiar-pagina'])
 }
 
 .lista-items { 
-  margin-top: auto; 
+  margin-top: 15px; 
   display: flex; 
   flex-direction: column; 
-  gap: 4px; /* Puntos de la lista muy juntos */
+  gap: 5px; /* Puntos de la lista muy juntos */
 }
 
 .item-servicio { 
