@@ -135,7 +135,13 @@ const emit = defineEmits(['cambiar-pagina'])
 /* Recuperamos el margen original de los párrafos (25px) */
 .cabecera-bloque p { color: #666; font-size: 0.95rem; line-height: 1.4; margin-bottom: 15px; }
 
-.lista-items { margin-top: auto; }
+/* 2. LA LISTA DE PUNTOS: Reducimos la separación entre líneas */
+.lista-items { 
+  margin-top: auto; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 4px; /* BÁJALO: Antes estaba en 10px u 8px. Bájalo a 4px o 2px */
+}
 
 .item-idi { 
   display: flex; 
