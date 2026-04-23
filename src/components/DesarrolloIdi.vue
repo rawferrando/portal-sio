@@ -8,7 +8,7 @@ const emit = defineEmits(['cambiar-pagina'])
 
     <div class="contenedor-ancho contenido-hub">
       
-      <h1 class="titulo-seccion">I+D+i</h1>
+      <h1 class="titulo-seccion">I+D+I</h1>
       <p class="subtitulo">Impulsando la innovación tecnológica marina y la transferencia de conocimiento del SIO.</p>
 
       <div class="grid-horizontal">
@@ -35,24 +35,26 @@ const emit = defineEmits(['cambiar-pagina'])
           </div>
         </div>
 
-        <div class="seccion-bloque">
+          <div class="seccion-bloque" @click="$emit('cambiar-pagina', 'bluelab')" style="cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
           <div class="cabecera-bloque">
-            <h2 class="titulo-fija">Blue Lab</h2>
-            <p>Espacio creativo y tecnológico dedicado al prototipado rápido y el desarrollo de nuevas soluciones para la observación del océano.</p>
+            <h2 class="titulo-fija" style="display: flex; justify-content: space-between; align-items: center;">
+              BLUE Lab <span style="font-size: 1rem; color: #0086c0;">Ver más ➔</span>
+            </h2>
+            <p>Instalación estratégica del ICM-CSIC orientada a acelerar la adopción de la robótica marina autónoma y la IA en la observación del océano.</p>
           </div>
 
           <div class="lista-items">
             <div class="item-idi">
               <span class="punto-verde">●</span>
-              <div>Laboratorio de electrónica y fabricación digital aplicada.</div>
+              <div>Plataformas robóticas autónomas (AUVs, ASVs y drones).</div>
             </div>
             <div class="item-idi">
               <span class="punto-verde">●</span>
-              <div>Banco de pruebas para nuevos sistemas de adquisición de datos.</div>
+              <div>Diseño bioinspirado y robótica submarina de bajo impacto.</div>
             </div>
             <div class="item-idi">
               <span class="punto-verde">●</span>
-              <div>Incubación de ideas e instrumentación oceanográfica a medida.</div>
+              <div>Sensores en animales (Biologging) y Machine Learning.</div>
             </div>
           </div>
         </div>
