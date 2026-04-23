@@ -86,7 +86,7 @@ const manejarClicIntranet = () => {
           <a href="#" @click.prevent="cambiarVista('inicio')" class="nav-item">EL SIO</a>
           <a href="#" @click.prevent="cambiarVista('servicios')" class="nav-item">SERVICIOS</a>
           <a href="#" @click.prevent="cambiarVista('proyectos')" class="nav-item">PROYECTOS</a>
-          <a href="#" @click.prevent="cambiarVista('idi')" class="nav-item">I+D+i</a>
+          <a href="#" @click.prevent="cambiarVista('idi')" class="nav-item">I+D+I</a>
         </nav>
         
       </div>

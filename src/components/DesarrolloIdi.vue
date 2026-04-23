@@ -65,7 +65,7 @@ const emit = defineEmits(['cambiar-pagina'])
 </template>
 
 <style scoped>
-.idi-hub { position: relative; min-height: 100vh; padding-bottom: 80px; background-color: #f4f7f9; }
+.idi-hub { position: relative; min-height: 100vh; padding-bottom: 50px; background-color: #f4f7f9; }
 
 /* 🌊 CONFIGURACIÓN DEL FONDO 🌊 */
 .fondo-idi { 
@@ -73,8 +73,8 @@ const emit = defineEmits(['cambiar-pagina'])
   top: 0; 
   left: 0; 
   width: 100%; 
-  height: 550px; 
-  /* Buscamos 'tortuga.jpg' en la carpeta public */
+  /* Reducimos la altura del fondo para compensar que las fichas ahora son más pequeñas */
+  height: 450px; 
   background-image: linear-gradient(rgba(1, 33, 105, 0.65), rgba(1, 33, 105, 0.85)), 
                     url('/tortuga.jpg');
   background-size: cover;
@@ -83,7 +83,6 @@ const emit = defineEmits(['cambiar-pagina'])
   z-index: 0; 
 }
 
-/* Bajamos el contenido para que respire (180px) */
 .contenido-hub { 
   position: relative; 
   z-index: 10; 
@@ -111,7 +110,8 @@ const emit = defineEmits(['cambiar-pagina'])
   background-color: #8cc63f; 
 }
 
-.subtitulo { color: #e0e6ed; font-size: 1.1rem; margin-bottom: 40px; max-width: 800px; }
+/* Margen reducido de 40px a 25px */
+.subtitulo { color: #e0e6ed; font-size: 1.1rem; margin-bottom: 25px; max-width: 800px; }
 
 .grid-horizontal {
   display: grid;
@@ -122,22 +122,33 @@ const emit = defineEmits(['cambiar-pagina'])
 .seccion-bloque { 
   background: white; 
   border-radius: 12px; 
-  padding: 35px; 
+  /* Padding reducido de 35px a 25px para comprimir la caja */
+  padding: 25px; 
   box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
   display: flex;
   flex-direction: column; 
-  min-height: 350px;
+  /* Altura mínima cambiada a auto para que se adapte al texto y no deje huecos blancos */
+  min-height: auto; 
 }
 
 .titulo-fija { color: #012169; margin-top: 0; font-size: 1.6rem; margin-bottom: 10px; }
-.cabecera-bloque p { color: #666; font-size: 0.95rem; line-height: 1.4; margin-bottom: 25px; }
 
-.lista-items { margin-top: auto; }
+/* Margen reducido de 25px a 15px */
+.cabecera-bloque p { color: #666; font-size: 0.95rem; line-height: 1.4; margin-bottom: 15px; }
+
+/* Añadido un gap de 8px para controlar el espacio entre los puntos de la lista */
+.lista-items { 
+  margin-top: auto; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 8px; 
+}
 
 .item-idi { 
   display: flex; 
   gap: 10px; 
-  margin-bottom: 12px; 
+  /* Margen individual a 0 porque ahora lo controla el gap superior */
+  margin-bottom: 0; 
   font-size: 0.95rem; 
   color: #333;
   line-height: 1.4;
@@ -148,6 +159,6 @@ const emit = defineEmits(['cambiar-pagina'])
 
 @media (max-width: 992px) {
   .grid-horizontal { grid-template-columns: 1fr; }
-  .contenido-hub { padding-top: 150px; }
+  .contenido-hub { padding-top: 120px; }
 }
 </style>
