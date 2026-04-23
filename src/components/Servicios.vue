@@ -59,6 +59,27 @@ const buscarYNavegar = () => {
       </div> 
     </div>
   </div>
+  <div class="seccion-bloque">
+          <div class="cabecera-bloque">
+            <h2 class="titulo-fija">Tanques de Pruebas</h2>
+            <p>Alquiler de áreas experimentales y tanques para la validación, calibración y ensayo de instrumentación oceanográfica en entornos controlados.</p>
+          </div>
+
+          <div class="lista-items">
+            <div class="item-idi">
+              <span class="punto-azul">●</span>
+              <div>Ensayos de estanqueidad, presión y flotabilidad para equipos submarinos y robótica.</div>
+            </div>
+            <div class="item-idi">
+              <span class="punto-azul">●</span>
+              <div>Calibración y validación de sensores acústicos, ópticos y de calidad del agua.</div>
+            </div>
+            <div class="item-idi">
+              <span class="punto-azul">●</span>
+              <div>Soporte técnico y supervisión de ingeniería durante las campañas de pruebas.</div>
+            </div>
+          </div>
+        </div>
 </template>
 
 <style scoped>
@@ -111,8 +132,9 @@ const buscarYNavegar = () => {
 
 .grid-horizontal {
   display: grid;
-  grid-template-columns: 1fr 1fr; 
-  gap: 20px; 
+  /* Cambiamos de '1fr 1fr' a 3 columnas automáticas que se adaptan al tamaño */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+  gap: 30px; 
 }
 
 .seccion-bloque { 
