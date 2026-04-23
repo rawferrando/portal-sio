@@ -89,7 +89,7 @@ const researchAreas = ref([
 .contenido-hub { 
   position: relative; 
   z-index: 10; 
-  padding-top: 120px; 
+  padding-top: 150px; 
 }
 
 .titulo-seccion { 

@@ -15,7 +15,7 @@ const emit = defineEmits(['cambiar-pagina'])
         
         <div class="seccion-bloque">
           <div class="cabecera-bloque">
-            <h2 class="titulo-fija">Oficina I+D+i</h2>
+            <h2 class="titulo-fija">Oficina I+D+I</h2>
             <p>Soporte integral a la investigación: desde la gestión de convocatorias hasta la protección de resultados y transferencia tecnológica.</p>
           </div>
 
