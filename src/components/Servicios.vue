@@ -139,7 +139,7 @@ const emit = defineEmits(['cambiar-pagina'])
   box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
   display: flex;
   flex-direction: column; 
-  min-height: 350px; /* Recuperamos la altura elegante */
+  min-height: auto /* Recuperamos la altura elegante */
   transition: transform 0.3s;
 }
 

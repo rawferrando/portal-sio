@@ -127,7 +127,7 @@ const emit = defineEmits(['cambiar-pagina'])
   box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
   display: flex;
   flex-direction: column; 
-  min-height: 350px; 
+  min-height: auto; 
 }
 
 .titulo-fija { color: #012169; margin-top: 0; font-size: 1.6rem; margin-bottom: 10px; }
