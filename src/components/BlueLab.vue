@@ -37,20 +37,13 @@ const researchAreas = ref([
 
     <div class="contenedor-ancho contenido-hub">
       
-      <div class="migas-pan" @click="$emit('volver')" style="cursor: pointer; color: #8cc63f; margin-bottom: 20px; font-weight: bold; display: inline-block;">
-        &larr; Volver a I+D+i
-      </div>
-
       <h1 class="titulo-seccion">BLUE Lab</h1>
-      <p class="subtitulo">Pioneros en el futuro de la observación marina mediante robótica autónoma e inteligencia artificial.</p>
-
+   
       <div class="seccion-intro">
         <p>
-          El <strong>BLUE Lab</strong> es una nueva instalación estratégica del ICM-CSIC, integrada en el Servicio de Ingeniería (SIO). Su misión es dotar a los investigadores de capacidades avanzadas en sensórica robótica, plataformas autónomas e innovación tecnológica.
+        Su misión es dotar a los investigadores de capacidades avanzadas en sensórica robótica, plataformas autónomas e innovación tecnológica.
         </p>
       </div>
-
-      <h2 class="titulo-areas">Áreas de Investigación Principales</h2>
 
       <div class="grid-areas">
         <div v-for="(area, i) in researchAreas" :key="i" class="tarjeta-area">
@@ -85,7 +78,7 @@ const researchAreas = ref([
   z-index: 0; 
 }
 
-.contenido-hub { position: relative; z-index: 10; padding-top: 150px; }
+.contenido-hub { position: relative; z-index: 10; padding-top: 120px; }
 .titulo-seccion { color: white; font-size: 2.5rem; margin-bottom: 15px; font-weight: bold; position: relative; display: inline-block; padding-bottom: 8px; }
 .titulo-seccion::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 4px; background-color: #8cc63f; }
 .subtitulo { color: #e0e6ed; font-size: 1.2rem; margin-bottom: 40px; max-width: 800px; }
