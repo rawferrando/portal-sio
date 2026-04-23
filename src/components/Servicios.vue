@@ -35,11 +35,9 @@ const emit = defineEmits(['cambiar-pagina'])
           </div>
         </div>
 
-        <div class="seccion-bloque" @click="$emit('cambiar-pagina', 'instrumentacion')" style="cursor: pointer;">
+          <div class="seccion-bloque" @click="$emit('cambiar-pagina', 'instrumentacion')" style="cursor: pointer;">
           <div class="cabecera-bloque">
-            <h2 class="titulo-fija" style="display: flex; justify-content: space-between; align-items: center;">
-              Instrumentación <span style="font-size: 1rem; color: #0086c0;">Ver más ➔</span>
-            </h2>
+            <h2 class="titulo-fija">Instrumentación</h2>
             <p>Acceso a una amplia gama de instrumentación oceanográfica y soporte técnico para su configuración.</p>
           </div>
 
@@ -141,7 +139,7 @@ const emit = defineEmits(['cambiar-pagina'])
   box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
   display: flex;
   flex-direction: column; 
-  min-height: auto; 
+  min-height: auto; /* <- ¡AQUÍ ASEGURAMOS EL PUNTO Y COMA! */
   transition: transform 0.3s;
 }
 
@@ -156,8 +154,9 @@ const emit = defineEmits(['cambiar-pagina'])
   margin-bottom: 15px; 
 }
 
+/* LA LISTA COMPACTA CON SEPARACIÓN FIJA */
 .lista-items { 
-  margin-top: 15px; 
+  margin-top: 15px; /* Distancia fija al párrafo superior */
   display: flex; 
   flex-direction: column; 
   gap: 5px; 
