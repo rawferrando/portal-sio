@@ -21,9 +21,8 @@ const cargarDatos = async () => {
     const respuesta = await fetch(csvUrl)
     const textoCsv = await respuesta.text()
     
-    // Convertir texto CSV a Array
     const filas = parseCSV(textoCsv)
-    const cabeceras = filas[0].map(h => h.toLowerCase().trim())
+    const cabeceras = filas[0].map(h => h ? h.toLowerCase().trim() : '')
     
     const idxId = cabeceras.indexOf('id')
     const idxCat = cabeceras.indexOf('categoria')
@@ -34,13 +33,12 @@ const cargarDatos = async () => {
     const idxCalibracion = cabeceras.indexOf('ultima_calibracion')
     const idxDesc = cabeceras.indexOf('descripcion')
     const idxParams = cabeceras.indexOf('parametros_tecnicos')
-    const idxWiki = cabeceras.indexOf('wiki_url')
 
     const nuevosInstrumentos = []
     
     for (let i = 1; i < filas.length; i++) {
       const fila = filas[i]
-      if (!fila || fila.length < 2 || !fila[idxNombre]) continue // Saltar filas vacías
+      if (!fila || fila.length < 2 || !fila[idxNombre]) continue 
       
       nuevosInstrumentos.push({
         id: fila[idxId] || i,
@@ -51,14 +49,12 @@ const cargarDatos = async () => {
         estado: fila[idxEstado] || 'Disponible',
         ultimaCalibracion: fila[idxCalibracion] || 'N/A',
         descripcionCompleta: fila[idxDesc] || '',
-        parametros: fila[idxParams] || '',
-        wikiUrl: fila[idxWiki] || null
+        parametros: fila[idxParams] || ''
       })
     }
     
     instrumentos.value = nuevosInstrumentos
     
-    // Activar la primera pestaña disponible
     if (categorias.value.length > 0) {
       categoriaActiva.value = categorias.value[0]
     }
@@ -71,7 +67,7 @@ const cargarDatos = async () => {
   }
 }
 
-// LECTOR INTERNO DE CSV (Evita fallos con comas dentro de descripciones)
+// LECTOR INTERNO DE CSV
 const parseCSV = (str) => {
   const arr = []
   let quote = false
@@ -90,7 +86,6 @@ const parseCSV = (str) => {
   return arr
 }
 
-// EJECUTA LA CARGA AL ABRIR LA PÁGINA
 onMounted(() => {
   cargarDatos()
 })
@@ -165,9 +160,8 @@ Gracias y un saludo.`
 
     <div class="contenido-hub">
       <h1 class="titulo-seccion">Instrumentación Oceanográfica</h1>
-      <p class="subtitulo">Catálogo WikiSIO: Características técnicas, calibraciones y gestión de préstamos.</p>
+      <p class="subtitulo">Catálogo técnico, calibraciones y gestión de préstamos del SIO.</p>
 
-      <!-- PANTALLA DE CARGA (Mientras lee el Excel) -->
       <div v-if="cargando" class="alerta-estado carga">
         ⏳ Conectando con la Base de Datos del SIO...
       </div>
@@ -176,9 +170,7 @@ Gracias y un saludo.`
         ❌ Error de conexión. No se ha podido cargar el catálogo de instrumentos.
       </div>
 
-      <!-- CONTENIDO PRINCIPAL -->
       <div v-else>
-        <!-- PESTAÑAS (Generadas desde el Excel) -->
         <div class="tabs-sio">
           <button 
             v-for="cat in categorias" 
@@ -192,7 +184,6 @@ Gracias y un saludo.`
 
         <div class="grid-layout">
           
-          <!-- ZONA IZQUIERDA: LISTADO WIKISIO -->
           <div class="seccion-bloque ficha-wiki">
             <div v-if="Object.keys(instrumentosAgrupados).length === 0" style="color: #666; font-style: italic;">
               No hay instrumentos catalogados en esta sección actualmente.
@@ -208,7 +199,6 @@ Gracias y un saludo.`
                     <span class="marca-wiki">({{ inst.marca }})</span>
                   </div>
                   <div class="caja-gris-wiki">
-                    <div v-if="inst.parametros"><strong>- Parámetros:</strong> {{ inst.parametros }}</div>
                     <div v-if="inst.ultimaCalibracion"><strong>- Última calibración:</strong> {{ inst.ultimaCalibracion }}</div>
                   </div>
                 </li>
@@ -216,7 +206,6 @@ Gracias y un saludo.`
             </div>
           </div>
 
-          <!-- ZONA DERECHA: RESERVAS Y DESCRIPCIÓN -->
           <div class="seccion-bloque ficha-gestion">
             
             <div v-if="equipoSeleccionado" class="detalles-equipo">
@@ -259,28 +248,23 @@ Gracias y un saludo.`
                 Se abrirá tu correo. ¡Recuerda adjuntar el PDF firmado!
               </p>
 
-              <!-- FICHA TÉCNICA Y ENLACE -->
+              <!-- FICHA TÉCNICA INTEGRADA (Lee directamente el Excel respetando saltos de línea) -->
               <div class="info-tecnica-abajo">
-                <h3 class="titulo-mini">Ficha Técnica</h3>
+                <h3 class="titulo-mini">Ficha Técnica Completa</h3>
                 
-                <div class="caja-desc">
-                  <p>{{ equipoSeleccionado.descripcionCompleta }}</p>
+                <div v-if="equipoSeleccionado.descripcionCompleta" class="caja-desc">
+                  <p class="texto-formateado">{{ equipoSeleccionado.descripcionCompleta }}</p>
                 </div>
 
-                <a 
-                  v-if="equipoSeleccionado.wikiUrl && equipoSeleccionado.wikiUrl.trim() !== ''" 
-                  :href="equipoSeleccionado.wikiUrl" 
-                  target="_blank" 
-                  class="btn-wiki-externo"
-                >
-                  📖 Ver toda la información detallada en WikiSIO ↗
-                </a>
+                <div v-if="equipoSeleccionado.parametros" class="caja-parametros">
+                  <h4 class="titulo-seccion-mini">Especificaciones / Parámetros</h4>
+                  <p class="texto-formateado">{{ equipoSeleccionado.parametros }}</p>
+                </div>
               </div>
               
               <button class="btn-cerrar" @click="equipoSeleccionado = null">Cerrar Detalles</button>
             </div>
 
-            <!-- VISTA GENERAL (Sin equipo seleccionado) -->
             <div v-else>
               <h2 class="titulo-fija">Préstamos SIO</h2>
               <p class="txt-p">Haga clic en el enlace azul de cualquier instrumento a la izquierda para ver su ficha técnica completa y disponibilidad.</p>
@@ -330,7 +314,7 @@ Gracias y un saludo.`
 .seccion-bloque { background: white; border-radius: 12px; padding: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); min-height: auto; }
 .titulo-fija { color: #012169; margin-top: 0; font-size: 1.4rem; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
 
-/* ESTILO WIKISIO (ZONA IZQUIERDA) */
+/* ESTILO LISTADO (ZONA IZQUIERDA) */
 .bloque-subcat { margin-bottom: 30px; }
 .titulo-subcat { font-size: 1.1rem; color: #333; margin-bottom: 15px; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
 .lista-wiki { list-style: none; padding-left: 0; margin: 0; }
@@ -339,7 +323,7 @@ Gracias y un saludo.`
 .enlace-wiki { color: #0056b3; font-weight: 500; cursor: pointer; text-decoration: none; font-size: 1.05rem; }
 .enlace-wiki:hover { text-decoration: underline; }
 .marca-wiki { color: #666; font-size: 0.9rem; margin-left: 5px; }
-.caja-gris-wiki { background-color: #f1f3f4; border-radius: 6px; padding: 15px; margin-left: 15px; margin-bottom: 20px; font-family: 'Consolas', 'Courier New', Courier, monospace; font-size: 0.85rem; color: #202124; line-height: 1.6; }
+.caja-gris-wiki { background-color: #f1f3f4; border-radius: 6px; padding: 10px 15px; margin-left: 15px; margin-bottom: 20px; font-family: 'Consolas', 'Courier New', Courier, monospace; font-size: 0.85rem; color: #202124; line-height: 1.6; }
 
 /* PANEL DERECHO (GESTIÓN) */
 .cabecera-estado { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 15px;}
@@ -370,31 +354,14 @@ Gracias y un saludo.`
 .btn-correo { width: 100%; background-color: #012169; color: white; border: none; padding: 15px; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px; }
 .btn-correo:hover { background-color: #0056b3; transform: translateY(-2px); }
 
-/* SECCIÓN WIKI ABAJO */
+/* SECCIÓN FICHA TÉCNICA ABAJO */
 .info-tecnica-abajo { margin-top: 30px; border-top: 2px solid #eee; padding-top: 25px; }
 .caja-desc { background: #f8f9fa; padding: 15px; border-left: 4px solid #8cc63f; border-radius: 0 8px 8px 0; margin-bottom: 15px;}
-.caja-desc p { margin: 0; color: #444; line-height: 1.5; font-size: 0.95rem; text-align: justify;}
+.caja-parametros { background: #f1f3f4; padding: 15px; border-radius: 8px; font-family: 'Consolas', monospace; font-size: 0.85rem;}
+.titulo-seccion-mini { font-size: 0.95rem; color: #0056b3; margin-bottom: 10px; margin-top: 0; border-bottom: 1px solid #ddd; padding-bottom: 4px; font-family: system-ui, -apple-system, sans-serif;}
 
-/* NUEVO BOTÓN WIKISIO EXTERNO */
-.btn-wiki-externo {
-  display: inline-block;
-  width: calc(100% - 4px);
-  background-color: #f8f9fa;
-  color: #0086c0;
-  border: 2px solid #0086c0;
-  padding: 12px;
-  border-radius: 8px;
-  text-align: center;
-  font-weight: bold;
-  text-decoration: none;
-  font-size: 0.95rem;
-  transition: 0.3s;
-  box-sizing: border-box;
-}
-.btn-wiki-externo:hover {
-  background-color: #0086c0;
-  color: white;
-}
+/* TRUCO PARA MANTENER SALTOS DE LÍNEA DEL EXCEL */
+.texto-formateado { margin: 0; color: #444; line-height: 1.6; white-space: pre-line; text-align: left; }
 
 .btn-cerrar { margin-top: 30px; width: 100%; background: #eee; color: #555; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
 .btn-cerrar:hover { background: #e0e0e0; color: #333; }
