@@ -5,37 +5,52 @@ import { ref, computed } from 'vue'
 const categoriaActiva = ref('Física')
 const categorias = ['Física', 'Biogeoquímica', 'Geología', 'Laboratorio']
 
-// BASE DE DATOS WIKISIO (Descripciones ampliadas)
+// BASE DE DATOS WIKISIO (Ahora con detalles avanzados estilo Wiki)
 const instrumentos = ref([
   { 
     id: 1, tipo: 'Física', subcategoria: 'Sistemas Estacionarios', 
     nombre: 'Sonda Multiparamétrica CTD-48M', marca: 'Sea & Sun Technology', 
-    profundidad: '6,000 metros', parametros: 'Conductividad, Temperatura, Profundidad + sensor opcional', 
-    aplicacion: 'Perfiles de alta precisión en aguas profundas', caracteristicas: 'Carcasa de titanio, memoria interna 128 MB',
+    profundidad: '6,000 metros', parametros: 'Conductividad, Temperatura, Profundidad', 
+    aplicacion: 'Perfiles de alta precisión en aguas profundas', caracteristicas: 'Carcasa de titanio',
     estado: 'Disponible', ultimaCalibracion: '2023-05-10', 
-    descripcionCompleta: 'Equipo robusto diseñado para despliegues en rosetas oceanográficas. Permite obtener perfiles profundos con altísima resolución espacial. Ideal para campañas oceanográficas de gran escala donde la precisión en conductividad y temperatura es crítica para el cálculo de masas de agua.'
+    descripcionCompleta: 'Equipo robusto diseñado para despliegues en rosetas oceanográficas. Permite obtener perfiles profundos con altísima resolución espacial.',
+    detallesAvanzados: null
   },
   { 
+    // EL CASTAWAY CON TODA LA INFO DE TU WIKISIO
     id: 2, tipo: 'Física', subcategoria: 'Sistemas Portátiles', 
     nombre: 'CastAway CTD Portátil', marca: 'SonTek/Xylem', 
-    profundidad: '100 metros', parametros: 'Conductividad, Temperatura, Profundidad', 
-    aplicacion: 'Perfiles rápidos sin infraestructura de winch', caracteristicas: 'Primer CTD lanzable del mundo, operación autónoma, GPS integrado',
+    profundidad: '0 a 100 metros', parametros: 'Conductividad, Temperatura, Profundidad', 
+    aplicacion: 'Perfiles rápidos sin infraestructura de winch', caracteristicas: 'Primer CTD lanzable del mundo, flotabilidad neutra',
     estado: 'En Uso', ultimaCalibracion: '2024-01-15', 
-    descripcionCompleta: 'CTD de mano con GPS incorporado que registra la posición de cada perfil. No requiere cables de conexión (comunicación Bluetooth). Su diseño hidrodinámico permite lanzarlo a mano desde embarcaciones pequeñas y recuperarlo rápidamente, ideal para oceanografía costera.'
+    descripcionCompleta: 'El CastAway CTD es el primer instrumento CTD portátil lanzable del mundo, diseñado para proporcionar perfiles instantáneos de temperatura, salinidad y velocidad del sonido. Revoluciona las mediciones al permitir perfiles CTD de alta precisión sin necesidad de embarcaciones especializadas.',
+    detallesAvanzados: {
+      mediciones: [
+        'Conductividad: 0 a 100,000 µS/cm (Precisión: ±0.25% ±5 µS/cm)',
+        'Temperatura: -5°C a +45°C (Precisión: ±0.05°C)',
+        'Presión/Profundidad: 0 a 100 metros (Precisión: ±0.25% escala completa)',
+        'Parámetros Calculados: Salinidad (PSS-78), Densidad (UNESCO), Velocidad del sonido (Chen-Millero)'
+      ],
+      fisicas: [
+        'Dimensiones: 4.6 cm x 18.6 cm x 33.5 cm',
+        'Peso: 0.6 kg en aire (Flotabilidad neutra en agua)',
+        'Alimentación: 4 pilas AA (Autonomía >500 perfiles)',
+        'Conectividad: Bluetooth para transferencia de datos inalámbrica'
+      ],
+      operacion: [
+        'Software CastAway: Descarga automática vía Bluetooth, gráficos en tiempo real y exportación (CSV, Excel)',
+        'Mantenimiento: Enjuague con agua dulce post-uso, inspección de sensores y almacenamiento en seco',
+        'Estudios ideales: Caracterización de estuarios, monitoreo portuario, acuicultura y plumas costeras'
+      ]
+    }
   },
   { 
     id: 3, tipo: 'Física', subcategoria: 'Sensores Físicos', 
     nombre: 'Sensor de Presión SBE 5', marca: 'Sea-Bird Scientific', 
     numSerie: '11599', ultimaCalibracion: 'Mayo 2023', rango: '0-6800 dbar', precision: '±0.1% escala completa',
     estado: 'Disponible', 
-    descripcionCompleta: 'Bomba sumergible de titanio para integración modular en sistemas CTD. Asegura un flujo constante de agua a través de los sensores de conductividad y oxígeno, eliminando errores por variaciones en la velocidad de descenso de la roseta.'
-  },
-  { 
-    id: 5, tipo: 'Biogeoquímica', subcategoria: 'Sensores Ópticos', 
-    nombre: 'Fluorímetro ECO-AFL', marca: 'WET Labs', 
-    profundidad: '6,000 metros', parametros: 'Fluorescencia (Clorofila-a)', aplicacion: 'Detección de fitoplancton', caracteristicas: 'Óptica de alta resolución, bajo consumo',
-    estado: 'Disponible', ultimaCalibracion: '2023-11-20', 
-    descripcionCompleta: 'Sensor óptico de un solo canal diseñado para medir la concentración de clorofila-a in situ. Utiliza tecnología de retrodispersión para estimar la biomasa fitoplanctónica en tiempo real. Extremadamente sensible, ideal para estudios de productividad primaria.'
+    descripcionCompleta: 'Bomba sumergible de titanio para integración modular en sistemas CTD.',
+    detallesAvanzados: null
   }
 ])
 
@@ -50,11 +65,11 @@ const instrumentosAgrupados = computed(() => {
 })
 
 const equipoSeleccionado = ref(null)
-const diasSeleccionados = ref([]) // Guarda los días que el usuario hace clic
+const diasSeleccionados = ref([])
 
 const verDetalles = (equipo) => {
   equipoSeleccionado.value = equipo
-  diasSeleccionados.value = [] // Resetea los días al cambiar de equipo
+  diasSeleccionados.value = [] 
 }
 
 const cambiarCategoria = (cat) => {
@@ -62,31 +77,26 @@ const cambiarCategoria = (cat) => {
   equipoSeleccionado.value = null
 }
 
-// LÓGICA DEL CALENDARIO INTERACTIVO
 const esOcupado = (n) => {
-  // Simulamos unos días ocupados si el estado es "En Uso"
   return n > 10 && n < 15 && equipoSeleccionado.value.estado === 'En Uso'
 }
 
 const toggleDia = (n) => {
-  if (esOcupado(n)) return // No hace nada si está ocupado
-
+  if (esOcupado(n)) return
   const index = diasSeleccionados.value.indexOf(n)
   if (index > -1) {
-    diasSeleccionados.value.splice(index, 1) // Lo quita si ya estaba
+    diasSeleccionados.value.splice(index, 1) 
   } else {
-    diasSeleccionados.value.push(n) // Lo añade si no estaba
+    diasSeleccionados.value.push(n) 
   }
 }
 
-// GENERADOR DE EMAIL
 const enviarSolicitud = () => {
   if (diasSeleccionados.value.length === 0) {
     alert("⚠️ Por favor, selecciona al menos un día disponible en el calendario para tu reserva.")
     return
   }
 
-  // Ordenamos los días para que queden bonitos (ej: 2, 3, 4)
   const diasOrdenados = [...diasSeleccionados.value].sort((a, b) => a - b).join(', ')
   const equipo = equipoSeleccionado.value.nombre
 
@@ -104,7 +114,6 @@ He comprobado la disponibilidad en la web y solicito la reserva para los días: 
 Gracias y un saludo.`
   )
 
-  // Esto abre el Outlook/Gmail del usuario con todo rellenado
   window.location.href = `mailto:sio@icm.csic.es?subject=${subject}&body=${body}`
 }
 </script>
@@ -201,15 +210,36 @@ Gracias y un saludo.`
             <button class="btn-correo" @click="enviarSolicitud">
               ✉️ Paso 3: Enviar Solicitud por Email
             </button>
-            <p style="font-size: 0.75rem; color: #888; text-align: center; margin-top: 5px;">
+            <p style="font-size: 0.75rem; color: #888; text-align: center; margin-top: 5px; margin-bottom: 20px;">
               Se abrirá tu correo. ¡Recuerda adjuntar el PDF firmado!
             </p>
 
-            <!-- DESCRIPCIÓN DETALLADA MOVIDA ABAJO -->
+            <!-- DESCRIPCIÓN DETALLADA WIKISIO ABAJO -->
             <div class="info-tecnica-abajo">
-              <h3 class="titulo-mini">Información Extendida</h3>
+              <h3 class="titulo-mini">Ficha Técnica Completa</h3>
+              
               <div class="caja-desc">
                 <p>{{ equipoSeleccionado.descripcionCompleta }}</p>
+              </div>
+
+              <!-- SECCIONES AVANZADAS SI EXISTEN -->
+              <div v-if="equipoSeleccionado.detallesAvanzados" class="detalles-avanzados">
+                
+                <h4 class="titulo-seccion-mini">Mediciones y Precisión</h4>
+                <ul class="lista-detalles">
+                  <li v-for="(item, idx) in equipoSeleccionado.detallesAvanzados.mediciones" :key="'med-'+idx">{{ item }}</li>
+                </ul>
+
+                <h4 class="titulo-seccion-mini">Características Físicas</h4>
+                <ul class="lista-detalles">
+                  <li v-for="(item, idx) in equipoSeleccionado.detallesAvanzados.fisicas" :key="'fis-'+idx">{{ item }}</li>
+                </ul>
+
+                <h4 class="titulo-seccion-mini">Operación y Software</h4>
+                <ul class="lista-detalles">
+                  <li v-for="(item, idx) in equipoSeleccionado.detallesAvanzados.operacion" :key="'op-'+idx">{{ item }}</li>
+                </ul>
+
               </div>
             </div>
             
@@ -219,7 +249,7 @@ Gracias y un saludo.`
           <!-- VISTA GENERAL (Sin equipo seleccionado) -->
           <div v-else>
             <h2 class="titulo-fija">Préstamos SIO</h2>
-            <p class="txt-p">Haga clic en el enlace azul de cualquier instrumento a la izquierda para ver su disponibilidad en tiempo real.</p>
+            <p class="txt-p">Haga clic en el enlace azul de cualquier instrumento a la izquierda para ver su ficha técnica completa y disponibilidad.</p>
             
             <hr style="border: 0; border-top: 1px solid #eee; margin: 25px 0;">
             <h3 class="titulo-mini">¿Cómo funciona?</h3>
@@ -256,7 +286,7 @@ Gracias y un saludo.`
 .tab-btn.activa { background: #8cc63f; border-color: #8cc63f; color: #012169; }
 
 /* GRID */
-.grid-layout { display: grid; grid-template-columns: 1.8fr 1.2fr; gap: 30px; }
+.grid-layout { display: grid; grid-template-columns: 1.8fr 1.3fr; gap: 30px; }
 .seccion-bloque { background: white; border-radius: 12px; padding: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); min-height: auto; }
 .titulo-fija { color: #012169; margin-top: 0; font-size: 1.4rem; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
 
@@ -266,7 +296,7 @@ Gracias y un saludo.`
 .lista-wiki { list-style: none; padding-left: 0; margin: 0; }
 .item-header { margin-bottom: 8px; font-size: 0.95rem; }
 .punto-azul { color: #0056b3; margin-right: 8px; font-size: 1.2rem; line-height: 0; }
-.enlace-wiki { color: #0056b3; font-weight: 500; cursor: pointer; text-decoration: none; }
+.enlace-wiki { color: #0056b3; font-weight: 500; cursor: pointer; text-decoration: none; font-size: 1.05rem; }
 .enlace-wiki:hover { text-decoration: underline; }
 .marca-wiki { color: #666; font-size: 0.9rem; margin-left: 5px; }
 .caja-gris-wiki { background-color: #f1f3f4; border-radius: 6px; padding: 15px; margin-left: 15px; margin-bottom: 20px; font-family: 'Consolas', 'Courier New', Courier, monospace; font-size: 0.85rem; color: #202124; line-height: 1.6; }
@@ -287,7 +317,7 @@ Gracias y un saludo.`
 
 /* CALENDARIO INTERACTIVO */
 .calendario-mini { margin-bottom: 20px; }
-.titulo-mini { font-size: 1rem; color: #012169; margin-bottom: 10px; font-weight: bold; }
+.titulo-mini { font-size: 1.1rem; color: #012169; margin-bottom: 10px; font-weight: bold; }
 .grid-dias { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
 .dia { padding: 8px; text-align: center; font-size: 0.85rem; border-radius: 4px; font-weight: bold; transition: 0.2s; user-select: none; }
 .dia.disponible { background: #f0f0f0; color: #666; cursor: pointer; border: 1px solid transparent;}
@@ -300,12 +330,16 @@ Gracias y un saludo.`
 .btn-correo { width: 100%; background-color: #012169; color: white; border: none; padding: 15px; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px; }
 .btn-correo:hover { background-color: #0056b3; transform: translateY(-2px); }
 
-/* DESCRIPCIÓN MOVIDA ABAJO */
-.info-tecnica-abajo { margin-top: 30px; border-top: 2px solid #eee; padding-top: 20px; }
-.caja-desc { background: #f8f9fa; padding: 15px; border-left: 4px solid #8cc63f; border-radius: 0 8px 8px 0; }
-.caja-desc p { margin: 0; color: #555; line-height: 1.5; font-size: 0.9rem; text-align: justify;}
+/* SECCIÓN WIKI DETALLADA ABAJO */
+.info-tecnica-abajo { margin-top: 30px; border-top: 2px solid #eee; padding-top: 25px; }
+.caja-desc { background: #f8f9fa; padding: 15px; border-left: 4px solid #8cc63f; border-radius: 0 8px 8px 0; margin-bottom: 20px;}
+.caja-desc p { margin: 0; color: #444; line-height: 1.5; font-size: 0.95rem; text-align: justify;}
 
-.btn-cerrar { margin-top: 20px; width: 100%; background: #eee; color: #555; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+.detalles-avanzados { margin-top: 15px; }
+.titulo-seccion-mini { font-size: 0.95rem; color: #0056b3; margin-bottom: 8px; margin-top: 15px; border-bottom: 1px solid #e0e0e0; padding-bottom: 4px;}
+.lista-detalles { list-style-type: square; padding-left: 20px; color: #555; font-size: 0.85rem; line-height: 1.6; margin-top: 5px; margin-bottom: 0;}
+
+.btn-cerrar { margin-top: 30px; width: 100%; background: #eee; color: #555; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
 .btn-cerrar:hover { background: #e0e0e0; color: #333; }
 
 @media (max-width: 992px) { .grid-layout { grid-template-columns: 1fr; } }
