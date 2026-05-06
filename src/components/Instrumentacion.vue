@@ -1,7 +1,6 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 
-// URL DE TU EXCEL (Google Sheets)
 const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSC1-4DfysLLx94TlNqImWISIOd18Yur4XX0F69qXYvDaLBt2W1xyrxS75YDYwf4BFzWcxCkJH1Vajm/pub?output=csv'
 
 const cargando = ref(true)
@@ -9,16 +8,15 @@ const errorCarga = ref(false)
 const instrumentos = ref([])
 const categoriaActiva = ref('Física')
 
-// EXTRAE LAS CATEGORÍAS AUTOMÁTICAMENTE DEL EXCEL
 const categorias = computed(() => {
   const cats = new Set(instrumentos.value.map(inst => inst.tipo))
   return Array.from(cats)
 })
 
-// FUNCIÓN PARA LEER EL EXCEL (CSV)
 const cargarDatos = async () => {
   try {
-    const respuesta = await fetch(csvUrl)
+    const urlSinCache = csvUrl + '&t=' + new Date().getTime()
+    const respuesta = await fetch(urlSinCache)
     const textoCsv = await respuesta.text()
     
     const filas = parseCSV(textoCsv)
@@ -54,20 +52,14 @@ const cargarDatos = async () => {
     }
     
     instrumentos.value = nuevosInstrumentos
-    
-    if (categorias.value.length > 0) {
-      categoriaActiva.value = categorias.value[0]
-    }
-    
+    if (categorias.value.length > 0) categoriaActiva.value = categorias.value[0]
     cargando.value = false
   } catch (error) {
-    console.error("Error al cargar el Excel:", error)
     errorCarga.value = true
     cargando.value = false
   }
 }
 
-// LECTOR INTERNO DE CSV
 const parseCSV = (str) => {
   const arr = []
   let quote = false
@@ -86,9 +78,7 @@ const parseCSV = (str) => {
   return arr
 }
 
-onMounted(() => {
-  cargarDatos()
-})
+onMounted(() => cargarDatos())
 
 const instrumentosAgrupados = computed(() => {
   const filtrados = instrumentos.value.filter(inst => inst.tipo === categoriaActiva.value)
@@ -120,38 +110,16 @@ const esOcupado = (n) => {
 const toggleDia = (n) => {
   if (esOcupado(n)) return
   const index = diasSeleccionados.value.indexOf(n)
-  if (index > -1) {
-    diasSeleccionados.value.splice(index, 1) 
-  } else {
-    diasSeleccionados.value.push(n) 
-  }
+  if (index > -1) diasSeleccionados.value.splice(index, 1) 
+  else diasSeleccionados.value.push(n) 
 }
 
-const enviarSolicitud = () => {
-  if (diasSeleccionados.value.length === 0) {
-    alert("⚠️ Por favor, selecciona al menos un día disponible en el calendario para tu reserva.")
-    return
-  }
+// Convertimos los días seleccionados en un texto bonito para enviarlo por el formulario
+const diasOrdenadosTexto = computed(() => {
+  if (diasSeleccionados.value.length === 0) return 'Ningún día seleccionado'
+  return [...diasSeleccionados.value].sort((a, b) => a - b).join(', ')
+})
 
-  const diasOrdenados = [...diasSeleccionados.value].sort((a, b) => a - b).join(', ')
-  const equipo = equipoSeleccionado.value.nombre
-
-  const subject = encodeURIComponent(`Solicitud de Préstamo SIO: ${equipo}`)
-  const body = encodeURIComponent(
-`Hola SIO,
-
-Deseo solicitar el equipo de instrumentación:
-➡️ ${equipo}
-
-He comprobado la disponibilidad en la web y solicito la reserva para los días: ${diasOrdenados} de este mes.
-
-[POR FAVOR, ADJUNTA EL DOCUMENTO DE RESPONSABILIDAD FIRMADO A ESTE CORREO ANTES DE ENVIARLO].
-
-Gracias y un saludo.`
-  )
-
-  window.location.href = `mailto:sio@icm.csic.es?subject=${subject}&body=${body}`
-}
 </script>
 
 <template>
@@ -162,32 +130,20 @@ Gracias y un saludo.`
       <h1 class="titulo-seccion">Instrumentación Oceanográfica</h1>
       <p class="subtitulo">Catálogo técnico, calibraciones y gestión de préstamos del SIO.</p>
 
-      <div v-if="cargando" class="alerta-estado carga">
-        ⏳ Conectando con la Base de Datos del SIO...
-      </div>
-
-      <div v-else-if="errorCarga" class="alerta-estado error">
-        ❌ Error de conexión. No se ha podido cargar el catálogo de instrumentos.
-      </div>
+      <div v-if="cargando" class="alerta-estado carga">⏳ Conectando con la Base de Datos del SIO...</div>
+      <div v-else-if="errorCarga" class="alerta-estado error">❌ Error de conexión. No se ha podido cargar el catálogo de instrumentos.</div>
 
       <div v-else>
         <div class="tabs-sio">
-          <button 
-            v-for="cat in categorias" 
-            :key="cat" 
-            :class="['tab-btn', { activa: categoriaActiva === cat }]" 
-            @click="cambiarCategoria(cat)"
-          >
+          <button v-for="cat in categorias" :key="cat" :class="['tab-btn', { activa: categoriaActiva === cat }]" @click="cambiarCategoria(cat)">
             {{ cat }}
           </button>
         </div>
 
         <div class="grid-layout">
-          
+          <!-- ZONA IZQUIERDA: CATÁLOGO -->
           <div class="seccion-bloque ficha-wiki">
-            <div v-if="Object.keys(instrumentosAgrupados).length === 0" style="color: #666; font-style: italic;">
-              No hay instrumentos catalogados en esta sección actualmente.
-            </div>
+            <div v-if="Object.keys(instrumentosAgrupados).length === 0" style="color: #666; font-style: italic;">No hay instrumentos catalogados en esta sección actualmente.</div>
 
             <div v-for="(lista, subcat) in instrumentosAgrupados" :key="subcat" class="bloque-subcat">
               <h3 class="titulo-subcat">{{ subcat }}</h3>
@@ -206,6 +162,7 @@ Gracias y un saludo.`
             </div>
           </div>
 
+          <!-- ZONA DERECHA: GESTIÓN DE RESERVAS -->
           <div class="seccion-bloque ficha-gestion">
             
             <div v-if="equipoSeleccionado" class="detalles-equipo">
@@ -225,37 +182,53 @@ Gracias y un saludo.`
               <div class="calendario-mini">
                 <h3 class="titulo-mini">Paso 2: Selecciona los días de reserva</h3>
                 <div class="grid-dias">
-                  <div 
-                    v-for="n in 28" 
-                    :key="n" 
-                    @click="toggleDia(n)"
-                    :class="['dia', { 
-                      ocupado: esOcupado(n), 
-                      seleccionado: diasSeleccionados.includes(n),
-                      disponible: !esOcupado(n)
-                    }]"
-                  >
+                  <div v-for="n in 28" :key="n" @click="toggleDia(n)" :class="['dia', { ocupado: esOcupado(n), seleccionado: diasSeleccionados.includes(n), disponible: !esOcupado(n) }]">
                     {{ n }}
                   </div>
                 </div>
                 <p class="leyenda">* Gris: Disponible | Azul: Ocupado | Verde: Tu selección</p>
               </div>
 
-              <button class="btn-correo" @click="enviarSolicitud">
-                ✉️ Paso 3: Enviar Solicitud por Email
-              </button>
-              <p style="font-size: 0.75rem; color: #888; text-align: center; margin-top: 5px; margin-bottom: 20px;">
-                Se abrirá tu correo. ¡Recuerda adjuntar el PDF firmado!
-              </p>
+              <!-- ============================================== -->
+              <!-- NUEVO FORMULARIO INTEGRADO (Sustituye al mailto) -->
+              <!-- ============================================== -->
+              <form action="https://formsubmit.co/sio@icm.csic.es" method="POST" enctype="multipart/form-data" class="formulario-reserva">
+                <h3 class="titulo-mini" style="margin-top: 20px;">Paso 3: Envía tu Solicitud</h3>
+                
+                <!-- Campos ocultos para configuración de FormSubmit y datos del equipo -->
+                <input type="hidden" name="_subject" :value="'Nueva Reserva SIO: ' + equipoSeleccionado.nombre">
+                <input type="hidden" name="_template" value="table">
+                <input type="hidden" name="Equipo_Solicitado" :value="equipoSeleccionado.nombre">
+                <input type="hidden" name="Dias_de_Reserva" :value="diasOrdenadosTexto">
 
-              <!-- FICHA TÉCNICA INTEGRADA (Lee directamente el Excel respetando saltos de línea) -->
+                <div class="form-grupo">
+                  <label>Tu Correo Electrónico (Para confirmarte la reserva):</label>
+                  <input type="email" name="email" required placeholder="ejemplo@icm.csic.es" class="input-form">
+                </div>
+
+                <div class="form-grupo">
+                  <label>Adjunta el PDF de Responsabilidad Firmado:</label>
+                  <input type="file" name="Documento_Adjunto" accept="application/pdf" required class="input-form file-input">
+                </div>
+
+                <button 
+                  type="submit" 
+                  :class="['btn-submit', { 'btn-desactivado': diasSeleccionados.length === 0 }]"
+                  :disabled="diasSeleccionados.length === 0"
+                  :title="diasSeleccionados.length === 0 ? 'Selecciona al menos un día en el calendario' : ''"
+                >
+                  📤 Enviar Solicitud de Reserva
+                </button>
+                <p v-if="diasSeleccionados.length === 0" class="aviso-dias">Selecciona al menos un día en el calendario superior para poder enviar.</p>
+              </form>
+              <!-- ============================================== -->
+
+              <!-- FICHA TÉCNICA INTEGRADA -->
               <div class="info-tecnica-abajo">
                 <h3 class="titulo-mini">Ficha Técnica Completa</h3>
-                
                 <div v-if="equipoSeleccionado.descripcionCompleta" class="caja-desc">
                   <p class="texto-formateado">{{ equipoSeleccionado.descripcionCompleta }}</p>
                 </div>
-
                 <div v-if="equipoSeleccionado.parametros" class="caja-parametros">
                   <h4 class="titulo-seccion-mini">Especificaciones / Parámetros</h4>
                   <p class="texto-formateado">{{ equipoSeleccionado.parametros }}</p>
@@ -268,14 +241,13 @@ Gracias y un saludo.`
             <div v-else>
               <h2 class="titulo-fija">Préstamos SIO</h2>
               <p class="txt-p">Haga clic en el enlace azul de cualquier instrumento a la izquierda para ver su ficha técnica completa y disponibilidad.</p>
-              
               <hr style="border: 0; border-top: 1px solid #eee; margin: 25px 0;">
               <h3 class="titulo-mini">¿Cómo funciona?</h3>
               <ol style="color: #666; font-size: 0.9rem; line-height: 1.6; padding-left: 20px;">
                 <li>Selecciona un instrumento de la lista.</li>
                 <li>Descarga el PDF de responsabilidad.</li>
                 <li>Haz clic en los días del calendario que necesites.</li>
-                <li>Pulsa en enviar para notificarnos por email con tu PDF adjunto.</li>
+                <li>Rellena el formulario web con tu email y el PDF firmado. Nuestro equipo contactará contigo.</li>
               </ol>
             </div>
 
@@ -350,17 +322,23 @@ Gracias y un saludo.`
 .dia.seleccionado { background: #8cc63f; color: #012169; border: 1px solid #012169; transform: scale(1.05); }
 .leyenda { font-size: 0.75rem; color: #999; margin-top: 10px; text-align: center; }
 
-/* BOTÓN EMAIL */
-.btn-correo { width: 100%; background-color: #012169; color: white; border: none; padding: 15px; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px; }
-.btn-correo:hover { background-color: #0056b3; transform: translateY(-2px); }
+/* FORMULARIO NUEVO */
+.formulario-reserva { background-color: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0; margin-top: 15px; }
+.form-grupo { margin-bottom: 15px; }
+.form-grupo label { display: block; font-size: 0.9rem; color: #333; margin-bottom: 5px; font-weight: bold; }
+.input-form { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.95rem; box-sizing: border-box; }
+.file-input { background: white; font-size: 0.85rem; cursor: pointer; }
+
+.btn-submit { width: 100%; background-color: #012169; color: white; border: none; padding: 15px; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+.btn-submit:hover:not(.btn-desactivado) { background-color: #0056b3; transform: translateY(-2px); }
+.btn-desactivado { background-color: #ccc; cursor: not-allowed; }
+.aviso-dias { font-size: 0.75rem; color: #d32f2f; text-align: center; margin-top: 8px; font-weight: bold;}
 
 /* SECCIÓN FICHA TÉCNICA ABAJO */
 .info-tecnica-abajo { margin-top: 30px; border-top: 2px solid #eee; padding-top: 25px; }
 .caja-desc { background: #f8f9fa; padding: 15px; border-left: 4px solid #8cc63f; border-radius: 0 8px 8px 0; margin-bottom: 15px;}
 .caja-parametros { background: #f1f3f4; padding: 15px; border-radius: 8px; font-family: 'Consolas', monospace; font-size: 0.85rem;}
 .titulo-seccion-mini { font-size: 0.95rem; color: #0056b3; margin-bottom: 10px; margin-top: 0; border-bottom: 1px solid #ddd; padding-bottom: 4px; font-family: system-ui, -apple-system, sans-serif;}
-
-/* TRUCO PARA MANTENER SALTOS DE LÍNEA DEL EXCEL */
 .texto-formateado { margin: 0; color: #444; line-height: 1.6; white-space: pre-line; text-align: left; }
 
 .btn-cerrar { margin-top: 30px; width: 100%; background: #eee; color: #555; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
