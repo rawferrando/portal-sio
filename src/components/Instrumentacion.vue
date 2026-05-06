@@ -25,6 +25,9 @@ const instrumentosFiltrados = computed(() => {
     <!-- FONDO UNIFICADO -->
     <div class="fondo-servicios"></div>
 
+    <div class="contenido-hub">
+
+
       <h1 class="titulo-seccion">Instrumentación Oceanográfica</h1>
       <p class="subtitulo">Gestión integral de equipamiento científico, calibraciones y préstamos del SIO.</p>
 
