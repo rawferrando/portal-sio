@@ -25,12 +25,6 @@ const instrumentosFiltrados = computed(() => {
     <!-- FONDO UNIFICADO -->
     <div class="fondo-servicios"></div>
 
-    <div class="contenido-hub">
-      <!-- BOTÓN VOLVER -->
-      <div class="migas-pan" @click="$emit('volver')" style="cursor: pointer; color: #8cc63f; font-weight: bold; margin-bottom: 20px; display: inline-block;">
-        &larr; Volver a Servicios
-      </div>
-
       <h1 class="titulo-seccion">Instrumentación Oceanográfica</h1>
       <p class="subtitulo">Gestión integral de equipamiento científico, calibraciones y préstamos del SIO.</p>
 
