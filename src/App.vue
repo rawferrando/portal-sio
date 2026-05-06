@@ -7,6 +7,7 @@ import DesarrolloIdi from './components/DesarrolloIdi.vue'
 import BlueLab from './components/BlueLab.vue'
 import IntranetPanel from './components/IntranetPanel.vue'
 import CarruselComponente from './components/CarruselComponente.vue'
+import Instrumentacion from './components/Instrumentacion.vue'
 // ⚠️ El carrusel está comentado para que GitHub no dé error rojo.
 // import CarruselComponente from './components/CarruselComponente.vue'
 
