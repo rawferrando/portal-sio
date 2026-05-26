@@ -13,7 +13,6 @@ import logoSio from './assets/sioblanco.png'
 import logoCsic from './assets/csic.png'
 import logoIcm from './assets/icm.png'
 import logoSevero from './assets/severo.png'
-import planDoc from '@/assets/Plan_Campana_Pelagia.docx'
 
 const goToSlide = (index) => {
   currentSlide.value = index;
