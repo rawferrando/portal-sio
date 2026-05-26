@@ -137,8 +137,8 @@ const manejarClicIntranet = () => {
             <div class="descarga-box-pequena">
             <span>📄 Plan de Campaña Pelagia.docx</span>
   
-            <a href="/portal-sio/Plan_Campana_Pelagia.docx" download="Plan_Campana_Pelagia.docx" class="link-dl-mini">
-    ⬇ Descargar Plan de Campaña
+            <a href="Plan_Campana_Pelagia.docx" download="Plan_Campana_Pelagia.docx" class="link-dl-mini">
+             ⬇ Descargar Plan de Campaña
             </a>
             </div>
 
