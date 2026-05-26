@@ -98,8 +98,8 @@ const diasOrdenadosTexto = computed(() => {
           <p style="font-size: 0.9rem; color: #666; margin-bottom: 5px;">Paso 1: Descarga las normas y plan de campaña.</p>
           <div class="descarga-box-pequena">
             <span>📄 Plan de Campaña Pelagia.docx</span>
-            <a href="Plan_Campana_Pelagia.docx" download="Plan_Campana_Pelagia.docx" class="link-dl-mini">
-              ⬇ Descargar Plan de Campaña
+            <a href="/portal-sio/Plan_Campana_Pelagia.docx" download="Plan_Campana_Pelagia.docx" class="link-dl-mini">
+  ⬇ Descargar Plan de Campaña
             </a>
           </div>
 
