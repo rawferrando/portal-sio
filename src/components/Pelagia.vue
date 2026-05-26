@@ -80,8 +80,10 @@ const diasOrdenadosTexto = computed(() => {
             <div class="caja-desc">
               <p>
                 Para el uso de la embarcación Pelagia es estrictamente obligatorio contar con la aprobación del SIO. 
-                El patrón deberá estar en posesión de la titulación náutica exigida vigente. Se debe adjuntar 
-                el plan de navegación y evaluación de riesgos junto con la solicitud de reserva.
+                ELa plataforma Pelagia está capitaneada por Bryan Nicolas, profesional con amplia experiencia demostrable 
+                en navegación costera y soporte a operaciones oceanográficas. Su liderazgo a bordo garantiza la seguridad 
+                de la tripulación y la correcta ejecución de los protocolos de trabajo marítimo. Su perfil resolutivo y 
+                su actitud colaborativa facilitan enormemente la coordinación de las actividades científicas durante las campañas.  
               </p>
             </div>
           </div>
@@ -95,8 +97,8 @@ const diasOrdenadosTexto = computed(() => {
           
           <p style="font-size: 0.9rem; color: #666; margin-bottom: 5px;">Paso 1: Descarga las normas y plan de campaña.</p>
           <div class="descarga-box-pequena">
-            <span>📄 Plan_Campana_Pelagia.pdf</span>
-            <a href="Plan_Campana_Pelagia.pdf" download="Plan_Campana_Pelagia.pdf" class="link-dl-mini">⬇ Descargar</a>
+            <span>📄 Plan de Campaña Pelagia.docx</span>
+            <a href="/Plan_Campana_Pelagia.docx" download="Plan_Campana_Pelagia.docx" class="link-dl-mini">⬇ Descargar</a>
           </div>
 
           <div class="calendario-mini">
