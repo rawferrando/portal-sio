@@ -83,7 +83,7 @@ const diasOrdenadosTexto = computed(() => {
                 ELa plataforma Pelagia está capitaneada por Bryan Nicolas, profesional con amplia experiencia demostrable 
                 en navegación costera y soporte a operaciones oceanográficas. Su liderazgo a bordo garantiza la seguridad 
                 de la tripulación y la correcta ejecución de los protocolos de trabajo marítimo. Su perfil resolutivo y 
-                su actitud colaborativa facilitan enormemente la coordinación de las actividades científicas durante las campañas.
+                su actitud colaborativa facilitan enormemente la coordinación de las actividades científicas durante las campañas.  
               </p>
             </div>
           </div>
