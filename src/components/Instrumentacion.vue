@@ -176,7 +176,7 @@ const diasOrdenadosTexto = computed(() => {
               <p style="font-size: 0.9rem; color: #666; margin-bottom: 5px;">Paso 1: Descarga el formulario y fírmalo.</p>
               <div class="descarga-box-pequena">
                 <span>📄 Responsabilidad_SIO.pdf</span>
-                <a href="/Responsabilidad_SIO.pdf" download="Formulario_Responsabilidad_SIO.pdf" class="link-dl-mini">⬇ Descargar</a>
+                <a href="Responsabilidad_SIO.pdf" download="Formulario_Responsabilidad_SIO.pdf" class="link-dl-mini">⬇ Descargar</a>
               </div>
 
               <div class="calendario-mini">

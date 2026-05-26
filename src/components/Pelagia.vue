@@ -1,0 +1,224 @@
+<script setup>
+import { ref, computed } from 'vue'
+
+// AL SER UN SOLO "EQUIPO" (La Pelagia), LA LÓGICA DE RESERVA ES MÁS SENCILLA
+const diasSeleccionados = ref([])
+
+// Simulador de días ocupados (puedes cambiar la lógica más adelante si lo conectáis a un Excel de la Pelagia)
+const esOcupado = (n) => {
+  // Ejemplo: Los días 12, 13 y 14 están ocupados
+  return n === 12 || n === 13 || n === 14
+}
+
+const toggleDia = (n) => {
+  if (esOcupado(n)) return
+  const index = diasSeleccionados.value.indexOf(n)
+  if (index > -1) diasSeleccionados.value.splice(index, 1) 
+  else diasSeleccionados.value.push(n) 
+}
+
+const diasOrdenadosTexto = computed(() => {
+  if (diasSeleccionados.value.length === 0) return 'Ningún día seleccionado'
+  return [...diasSeleccionados.value].sort((a, b) => a - b).join(', ')
+})
+</script>
+
+<template>
+  <div class="servicios-hub">
+    <div class="fondo-servicios"></div>
+
+    <div class="contenido-hub">
+      <h1 class="titulo-seccion">Plataforma Pelagia</h1>
+      <p class="subtitulo">Información técnica, disponibilidad y gestión de reservas de la embarcación del SIO.</p>
+
+      <div class="grid-layout">
+        
+        <div class="seccion-bloque ficha-wiki">
+          <h2 class="titulo-fija">Ficha Técnica</h2>
+          
+          <div class="bloque-subcat">
+            <h3 class="titulo-subcat">Descripción General</h3>
+            <p class="texto-descripcion">
+              La Pelagia es la plataforma de trabajo costero del Servicio de Ingeniería Oceanográfica (SIO). 
+              Está diseñada y equipada para dar soporte a operaciones de buceo científico, despliegue y recuperación 
+              de instrumentación oceanográfica, y muestreos costeros.
+            </p>
+          </div>
+
+          <div class="bloque-subcat">
+            <h3 class="titulo-subcat">Especificaciones Principales</h3>
+            <ul class="lista-wiki">
+              <li>
+                <div class="item-header">
+                  <span class="punto-azul">•</span>
+                  <span class="enlace-wiki">Características Básicas</span>
+                </div>
+                <div class="caja-gris-wiki">
+                  <strong>- Eslora:</strong> [Añadir metros] m<br>
+                  <strong>- Manga:</strong> [Añadir metros] m<br>
+                  <strong>- Motorización:</strong> [Añadir CV/Marca]<br>
+                  <strong>- Capacidad máxima:</strong> [Añadir pax] personas (incluyendo patrón)
+                </div>
+              </li>
+              <li>
+                <div class="item-header">
+                  <span class="punto-azul">•</span>
+                  <span class="enlace-wiki">Equipamiento a bordo</span>
+                </div>
+                <div class="caja-gris-wiki">
+                  <strong>- Navegación:</strong> GPS / Sonda plotter integrado.<br>
+                  <strong>- Comunicación:</strong> Emisora VHF fija.<br>
+                  <strong>- Maniobra:</strong> Pescante / Maquinilla para perfiladores ligeros (CTD, roseta pequeña).<br>
+                  <strong>- Seguridad:</strong> Material de seguridad completo zona [X].
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="bloque-subcat">
+            <h3 class="titulo-subcat">Normativa de Uso</h3>
+            <div class="caja-desc">
+              <p>
+                Para el uso de la embarcación Pelagia es estrictamente obligatorio contar con la aprobación del SIO. 
+                El patrón deberá estar en posesión de la titulación náutica exigida vigente. Se debe adjuntar 
+                el plan de navegación y evaluación de riesgos junto con la solicitud de reserva.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="seccion-bloque ficha-gestion">
+          <div class="cabecera-estado">
+            <h2 class="titulo-fija">Solicitud de Uso</h2>
+            <span class="badge-grande disponible">Operativa</span>
+          </div>
+          
+          <p style="font-size: 0.9rem; color: #666; margin-bottom: 5px;">Paso 1: Descarga las normas y plan de campaña.</p>
+          <div class="descarga-box-pequena">
+            <span>📄 Plan_Campana_Pelagia.pdf</span>
+            <a href="Plan_Campana_Pelagia.pdf" download="Plan_Campana_Pelagia.pdf" class="link-dl-mini">⬇ Descargar</a>
+          </div>
+
+          <div class="calendario-mini">
+            <h3 class="titulo-mini">Paso 2: Selecciona los días de salida</h3>
+            <div class="grid-dias">
+              <div 
+                v-for="n in 31" 
+                :key="n" 
+                @click="toggleDia(n)" 
+                :class="['dia', { ocupado: esOcupado(n), seleccionado: diasSeleccionados.includes(n), disponible: !esOcupado(n) }]"
+              >
+                {{ n }}
+              </div>
+            </div>
+            <p class="leyenda">* Gris: Disponible | Azul: Ocupado/Mantenimiento | Verde: Tu selección</p>
+          </div>
+
+          <form action="https://formsubmit.co/sio@icm.csic.es" method="POST" enctype="multipart/form-data" class="formulario-reserva">
+            <h3 class="titulo-mini" style="margin-top: 20px;">Paso 3: Envía tu Plan</h3>
+            
+            <input type="hidden" name="_subject" value="Nueva Reserva SIO: Embarcación Pelagia">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="Recurso_Solicitado" value="Pelagia">
+            <input type="hidden" name="Dias_de_Reserva" :value="diasOrdenadosTexto">
+
+            <div class="form-grupo">
+              <label>Tu Correo Electrónico (Para confirmación):</label>
+              <input type="email" name="email" required placeholder="ejemplo@icm.csic.es" class="input-form">
+            </div>
+
+            <div class="form-grupo">
+              <label>Adjunta el Plan de Campaña Firmado:</label>
+              <input type="file" name="Documento_Adjunto" accept="application/pdf" required class="input-form file-input">
+            </div>
+
+            <button 
+              type="submit" 
+              :class="['btn-submit', { 'btn-desactivado': diasSeleccionados.length === 0 }]"
+              :disabled="diasSeleccionados.length === 0"
+              :title="diasSeleccionados.length === 0 ? 'Selecciona al menos un día' : ''"
+            >
+              📤 Enviar Solicitud de Salida
+            </button>
+            <p v-if="diasSeleccionados.length === 0" class="aviso-dias">Selecciona al menos un día en el calendario superior para poder enviar.</p>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+/* ========================================================================= */
+/* MISMO CSS EXACTO DE INSTRUMENTACIÓN PARA MANTENER LA COHERENCIA VISUAL    */
+/* ========================================================================= */
+
+.servicios-hub { position: relative; min-height: 100vh; padding-bottom: 80px; background-color: #f4f7f9; }
+
+.fondo-servicios { 
+  position: absolute; top: 0; left: 0; width: 100%; height: 550px; 
+  /* Puedes cambiar '/instrumentacion.jpg' por una foto de la pelagia '/pelagia.jpg' en tu carpeta public */
+  background-image: linear-gradient(rgba(1, 33, 105, 0.75), rgba(1, 33, 105, 0.9)), url('/instrumentacion.jpg');
+  background-size: cover; background-position: center; z-index: 0; 
+}
+
+.contenido-hub { position: relative; z-index: 10; padding-top: 120px; max-width: 1300px; margin: 0 auto; padding-left: 20px; padding-right: 20px; }
+
+.titulo-seccion { color: white; font-size: 2.2rem; font-weight: bold; position: relative; display: inline-block; padding-bottom: 8px; margin-bottom: 15px; }
+.titulo-seccion::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 4px; background-color: #8cc63f; }
+.subtitulo { color: #e0e6ed; font-size: 1.1rem; margin-bottom: 35px; max-width: 800px; }
+
+.grid-layout { display: grid; grid-template-columns: 1.8fr 1.3fr; gap: 30px; }
+.seccion-bloque { background: white; border-radius: 12px; padding: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); min-height: auto; }
+.titulo-fija { color: #012169; margin-top: 0; font-size: 1.6rem; margin-bottom: 25px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+
+/* ZONA IZQUIERDA */
+.bloque-subcat { margin-bottom: 30px; }
+.titulo-subcat { font-size: 1.2rem; color: #0056b3; margin-bottom: 15px; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
+.texto-descripcion { color: #444; line-height: 1.6; font-size: 1rem; text-align: justify; }
+
+.lista-wiki { list-style: none; padding-left: 0; margin: 0; }
+.item-header { margin-bottom: 8px; font-size: 1.05rem; }
+.punto-azul { color: #0056b3; margin-right: 8px; font-size: 1.2rem; line-height: 0; }
+.enlace-wiki { color: #0056b3; font-weight: bold; }
+
+.caja-gris-wiki { background-color: #f1f3f4; border-radius: 6px; padding: 15px 20px; margin-left: 15px; margin-bottom: 20px; font-family: 'Consolas', monospace; font-size: 0.9rem; color: #202124; line-height: 1.8; }
+.caja-desc { background: #f8f9fa; padding: 15px; border-left: 4px solid #8cc63f; border-radius: 0 8px 8px 0; margin-bottom: 15px;}
+.caja-desc p { margin: 0; color: #444; line-height: 1.6; font-size: 0.95rem; text-align: justify;}
+
+/* PANEL DERECHO (GESTIÓN) */
+.cabecera-estado { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px;}
+.cabecera-estado .titulo-fija { border-bottom: none; margin-bottom: 0; padding-bottom: 0; font-size: 1.4rem;}
+
+.badge-grande { padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; }
+.badge-grande.disponible { background: #e6f4ea; color: #1e7e34; }
+.badge-grande.ocupado { background: #fff4e5; color: #b45d00; }
+
+.descarga-box-pequena { background: #eef5fa; padding: 10px 15px; border: 1px dashed #0086c0; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; font-size: 0.85rem; }
+.link-dl-mini { color: #0086c0; font-weight: bold; text-decoration: none; font-size: 0.8rem; background: white; padding: 4px 8px; border-radius: 4px; border: 1px solid #0086c0;}
+
+.calendario-mini { margin-bottom: 20px; }
+.titulo-mini { font-size: 1.1rem; color: #012169; margin-bottom: 10px; font-weight: bold; }
+.grid-dias { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+.dia { padding: 8px; text-align: center; font-size: 0.85rem; border-radius: 4px; font-weight: bold; transition: 0.2s; user-select: none; }
+.dia.disponible { background: #f0f0f0; color: #666; cursor: pointer; border: 1px solid transparent;}
+.dia.disponible:hover { border-color: #8cc63f; }
+.dia.ocupado { background: #0086c0; color: white; cursor: not-allowed; opacity: 0.6; }
+.dia.seleccionado { background: #8cc63f; color: #012169; border: 1px solid #012169; transform: scale(1.05); }
+.leyenda { font-size: 0.75rem; color: #999; margin-top: 10px; text-align: center; }
+
+/* FORMULARIO NUEVO */
+.formulario-reserva { background-color: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0; margin-top: 15px; }
+.form-grupo { margin-bottom: 15px; }
+.form-grupo label { display: block; font-size: 0.9rem; color: #333; margin-bottom: 5px; font-weight: bold; }
+.input-form { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.95rem; box-sizing: border-box; }
+.file-input { background: white; font-size: 0.85rem; cursor: pointer; }
+
+.btn-submit { width: 100%; background-color: #012169; color: white; border: none; padding: 15px; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+.btn-submit:hover:not(.btn-desactivado) { background-color: #0056b3; transform: translateY(-2px); }
+.btn-desactivado { background-color: #ccc; cursor: not-allowed; }
+.aviso-dias { font-size: 0.75rem; color: #d32f2f; text-align: center; margin-top: 8px; font-weight: bold;}
+
+@media (max-width: 992px) { .grid-layout { grid-template-columns: 1fr; } }
+</style>
