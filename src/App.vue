@@ -8,9 +8,7 @@ import BlueLab from './components/BlueLab.vue'
 import IntranetPanel from './components/IntranetPanel.vue'
 import CarruselComponente from './components/CarruselComponente.vue'
 import Instrumentacion from './components/Instrumentacion.vue'
-// ⚠️ El carrusel está comentado para que GitHub no dé error rojo.
-// import CarruselComponente from './components/CarruselComponente.vue'
-
+import Pelagia from './components/Pelagia.vue'
 import logoSio from './assets/sioblanco.png'
 import logoCsic from './assets/csic.png'
 import logoIcm from './assets/icm.png'
@@ -103,7 +101,7 @@ const manejarClicIntranet = () => {
       
       <Servicios v-else-if="vistaActual === 'servicios'" @cambiar-pagina="cambiarVista" />
       <Instrumentacion v-else-if="vistaActual === 'instrumentacion'" @cambiar-pagina="cambiarVista" />
-      <EmbarcacionPelagia v-else-if="vistaActual === 'pelagia'" @cambiar-pagina="cambiarVista" />
+      <Pelagia v-else-if="vistaActual === 'pelagia'" @cambiar-pagina="cambiarVista" />
 
       <div v-else-if="vistaActual === 'proyectos'"><Proyectos @volver="volverAInicio" /></div>
       
