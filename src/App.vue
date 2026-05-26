@@ -13,6 +13,7 @@ import logoSio from './assets/sioblanco.png'
 import logoCsic from './assets/csic.png'
 import logoIcm from './assets/icm.png'
 import logoSevero from './assets/severo.png'
+import planDoc from '@/assets/Plan_Campana_Pelagia.docx'
 
 const goToSlide = (index) => {
   currentSlide.value = index;
@@ -133,6 +134,13 @@ const manejarClicIntranet = () => {
                 loading="lazy" 
                 referrerpolicy="no-referrer-when-downgrade">
               </iframe>
+            </div>
+            <div class="descarga-box-pequena">
+            <span>📄 Plan de Campaña Pelagia.docx</span>
+    
+            <a :href="planDoc" download="Plan_Campana_Pelagia.docx" class="link-dl-mini">
+      ⬇ Descargar Plan de Campaña
+            </a>
             </div>
 
             <div class="tarjeta-dato formulario-amplio">
