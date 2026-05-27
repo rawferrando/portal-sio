@@ -39,7 +39,7 @@ const diasOrdenadosTexto = computed(() => {
           <div class="bloque-subcat">
             <h3 class="titulo-subcat">Descripción General</h3>
             <p class="texto-descripcion">
-              La Pelagia es la plataforma de trabajo costero del Servicio de Ingeniería Oceanográfica (SIO). 
+              La Pelagia es la embarcación de trabajo costero del Servicio de Ingeniería Oceanográfica (SIO). 
               Está diseñada y equipada para dar soporte a operaciones de buceo científico, despliegue y recuperación 
               de instrumentación oceanográfica, y muestreos costeros.
             </p>
@@ -98,7 +98,7 @@ const diasOrdenadosTexto = computed(() => {
           <p style="font-size: 0.9rem; color: #666; margin-bottom: 5px;">Paso 1: Descarga las normas y plan de campaña.</p>
           <div class="descarga-box-pequena">
             <span>📄 Plan de Campaña Pelagia.docx</span>
-            <a href="/portal-sio/Plan_Campana_Pelagia.docx" download="Plan_Campana_Pelagia.docx" class="link-dl-mini">
+            <a href="Plan_Campana_Pelagia.docx" download="Plan_Campana_Pelagia.docx" class="link-dl-mini">
   ⬇ Descargar Plan de Campaña
             </a>
           </div>
