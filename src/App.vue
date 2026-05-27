@@ -13,6 +13,7 @@ import logoSio from './assets/sioblanco.png'
 import logoCsic from './assets/csic.png'
 import logoIcm from './assets/icm.png'
 import logoSevero from './assets/severo.png'
+import TanquesPruebas from './components/TanquesPruebas.vue'
 
 const goToSlide = (index) => {
   currentSlide.value = index;
@@ -102,6 +103,7 @@ const manejarClicIntranet = () => {
       <Servicios v-else-if="vistaActual === 'servicios'" @cambiar-pagina="cambiarVista" />
       <Instrumentacion v-else-if="vistaActual === 'instrumentacion'" @cambiar-pagina="cambiarVista" />
       <Pelagia v-else-if="vistaActual === 'pelagia'" @cambiar-pagina="cambiarVista" />
+      <TanquesPruebas v-else-if="vistaActual === 'tanques'" @cambiar-pagina="cambiarVista" />
 
       <div v-else-if="vistaActual === 'proyectos'"><Proyectos @volver="volverAInicio" /></div>
       
