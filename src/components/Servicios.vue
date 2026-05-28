@@ -57,12 +57,12 @@ const emit = defineEmits(['cambiar-pagina'])
           </div>
         </div>
 
-        <div class="seccion-bloque" @click="$emit('cambiar-pagina', 'tanques')" style="cursor: pointer;">
-           <div class="cabecera-bloque">
-          <h2 class="titulo-fija">Tanques de Pruebas</h2>
-         <p>Alquiler de áreas experimentales para la validación y calibración de instrumentación en entornos controlados.</p>
-          </div>
-          </div>
+            <div class="seccion-bloque" @click="$emit('cambiar-pagina', 'tanques')" style="cursor: pointer;">
+             <div class="cabecera-bloque">
+             <h2 class="titulo-fija">Tanques de Pruebas</h2>
+             <p>Alquiler de áreas experimentales para la validación y calibración de instrumentación en entornos controlados.</p>
+           </div>
+         </div>
           
           <div class="lista-items">
             <div class="item-servicio">
