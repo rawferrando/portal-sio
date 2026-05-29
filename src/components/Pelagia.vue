@@ -1,31 +1,61 @@
 <script setup>
 import { ref, computed } from 'vue'
+// Importamos tu imagen de fondo
+import fondoPelagia from '../assets/Pelagia.jpg'
 
-// AL SER UN SOLO "EQUIPO" (La Pelagia), LA LÓGICA DE RESERVA ES MÁS SENCILLA
+// --- LÓGICA DEL CALENDARIO (6 MESES VISTA) ---
+const meses = [
+  'Mayo 2026', 'Junio 2026', 'Julio 2026', 'Agosto 2026',
+  'Septiembre 2026', 'Octubre 2026', 'Noviembre 2026'
+]
+
+const mesActualIndex = ref(0)
+
+const mesAnterior = () => { if (mesActualIndex.value > 0) mesActualIndex.value-- }
+const mesSiguiente = () => { if (mesActualIndex.value < meses.length - 1) mesActualIndex.value++ }
+
 const diasSeleccionados = ref([])
 
-// Simulador de días ocupados (puedes cambiar la lógica más adelante si lo conectáis a un Excel de la Pelagia)
-const esOcupado = (n) => {
-  // Ejemplo: Los días 12, 13 y 14 están ocupados
-  return n === 12 || n === 13 || n === 14
+// Simulador de días ocupados (distribuidos por meses)
+const esOcupado = (dia, mesIndex) => {
+  if (mesIndex === 0 && [12, 13, 14].includes(dia)) return true // Mayo
+  if (mesIndex === 1 && [2, 5, 14, 15, 22].includes(dia)) return true // Junio
+  if (mesIndex === 2 && [10, 11, 12, 28, 29].includes(dia)) return true // Julio
+  if (mesIndex === 3 && [1, 2, 3, 20, 21].includes(dia)) return true // Agosto
+  if (mesIndex === 4 && [15, 16, 17].includes(dia)) return true // Septiembre
+  return false
 }
 
-const toggleDia = (n) => {
-  if (esOcupado(n)) return
-  const index = diasSeleccionados.value.indexOf(n)
-  if (index > -1) diasSeleccionados.value.splice(index, 1) 
-  else diasSeleccionados.value.push(n) 
+// Seleccionar un día, guardando también el mes para el correo
+const toggleDia = (dia) => {
+  if (esOcupado(dia, mesActualIndex.value)) return
+
+  const fechaStr = `${dia} de ${meses[mesActualIndex.value]}`
+  const index = diasSeleccionados.value.indexOf(fechaStr)
+
+  if (index === -1) {
+    diasSeleccionados.value.push(fechaStr) 
+  } else {
+    diasSeleccionados.value.splice(index, 1) 
+  }
 }
 
+// Comprueba si un día de este mes está en la lista de seleccionados
+const estaSeleccionado = (dia) => {
+  const fechaStr = `${dia} de ${meses[mesActualIndex.value]}`
+  return diasSeleccionados.value.includes(fechaStr)
+}
+
+// Formatea los días para el envío por FormSubmit
 const diasOrdenadosTexto = computed(() => {
   if (diasSeleccionados.value.length === 0) return 'Ningún día seleccionado'
-  return [...diasSeleccionados.value].sort((a, b) => a - b).join(', ')
+  return diasSeleccionados.value.join(' | ')
 })
 </script>
 
 <template>
   <div class="servicios-hub">
-    <div class="fondo-servicios"></div>
+    <div class="fondo-servicios" :style="{ backgroundImage: `linear-gradient(rgba(1, 33, 105, 0.75), rgba(1, 33, 105, 0.9)), url(${fondoPelagia})` }"></div>
 
     <div class="contenido-hub">
       <h1 class="titulo-seccion">Plataforma Pelagia</h1>
@@ -80,7 +110,7 @@ const diasOrdenadosTexto = computed(() => {
             <div class="caja-desc">
               <p>
                 Para el uso de la embarcación Pelagia es estrictamente obligatorio contar con la aprobación del SIO. 
-                ELa plataforma Pelagia está capitaneada por Bryan Nicolas, profesional con amplia experiencia demostrable 
+                La plataforma Pelagia está capitaneada por Bryan Nicolas, profesional con amplia experiencia demostrable 
                 en navegación costera y soporte a operaciones oceanográficas. Su liderazgo a bordo garantiza la seguridad 
                 de la tripulación y la correcta ejecución de los protocolos de trabajo marítimo. Su perfil resolutivo y 
                 su actitud colaborativa facilitan enormemente la coordinación de las actividades científicas durante las campañas.  
@@ -104,14 +134,25 @@ const diasOrdenadosTexto = computed(() => {
 
           <div class="calendario-mini">
             <h3 class="titulo-mini">Paso 2: Selecciona los días de salida</h3>
+            
+            <div class="cabecera-mes">
+              <button type="button" class="btn-mes" @click="mesAnterior" :class="{ 'oculto': mesActualIndex === 0 }">❮</button>
+              <span class="mes-actual">{{ meses[mesActualIndex] }}</span>
+              <button type="button" class="btn-mes" @click="mesSiguiente" :class="{ 'oculto': mesActualIndex === meses.length - 1 }">❯</button>
+            </div>
+
             <div class="grid-dias">
               <div 
-                v-for="n in 31" 
-                :key="n" 
-                @click="toggleDia(n)" 
-                :class="['dia', { ocupado: esOcupado(n), seleccionado: diasSeleccionados.includes(n), disponible: !esOcupado(n) }]"
+                v-for="dia in 31" 
+                :key="dia" 
+                @click="toggleDia(dia)" 
+                :class="['dia', { 
+                  ocupado: esOcupado(dia, mesActualIndex), 
+                  seleccionado: estaSeleccionado(dia), 
+                  disponible: !esOcupado(dia, mesActualIndex) 
+                }]"
               >
-                {{ n }}
+                {{ dia }}
               </div>
             </div>
             <p class="leyenda">* Gris: Disponible | Azul: Ocupado/Mantenimiento | Verde: Tu selección</p>
@@ -153,16 +194,11 @@ const diasOrdenadosTexto = computed(() => {
 </template>
 
 <style scoped>
-/* ========================================================================= */
-/* MISMO CSS EXACTO DE INSTRUMENTACIÓN PARA MANTENER LA COHERENCIA VISUAL    */
-/* ========================================================================= */
-
 .servicios-hub { position: relative; min-height: 100vh; padding-bottom: 80px; background-color: #f4f7f9; }
 
 .fondo-servicios { 
   position: absolute; top: 0; left: 0; width: 100%; height: 550px; 
-  /* Puedes cambiar '/instrumentacion.jpg' por una foto de la pelagia '/pelagia.jpg' en tu carpeta public */
-  background-image: linear-gradient(rgba(1, 33, 105, 0.75), rgba(1, 33, 105, 0.9)), url('/instrumentacion.jpg');
+  /* La imagen se gestiona dinámicamente en el template */
   background-size: cover; background-position: center; z-index: 0; 
 }
 
@@ -201,8 +237,16 @@ const diasOrdenadosTexto = computed(() => {
 .descarga-box-pequena { background: #eef5fa; padding: 10px 15px; border: 1px dashed #0086c0; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; font-size: 0.85rem; }
 .link-dl-mini { color: #0086c0; font-weight: bold; text-decoration: none; font-size: 0.8rem; background: white; padding: 4px 8px; border-radius: 4px; border: 1px solid #0086c0;}
 
+/* CALENDARIO INTERACTIVO PELAGIA */
 .calendario-mini { margin-bottom: 20px; }
 .titulo-mini { font-size: 1.1rem; color: #012169; margin-bottom: 10px; font-weight: bold; }
+
+.cabecera-mes { display: flex; justify-content: space-between; align-items: center; background-color: #012169; color: white; padding: 10px 15px; border-radius: 6px 6px 0 0; margin-bottom: 5px; }
+.mes-actual { font-weight: bold; font-size: 1rem; }
+.btn-mes { background: transparent; border: none; color: white; font-size: 1.1rem; cursor: pointer; transition: transform 0.2s; }
+.btn-mes:hover { transform: scale(1.2); }
+.oculto { visibility: hidden; }
+
 .grid-dias { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
 .dia { padding: 8px; text-align: center; font-size: 0.85rem; border-radius: 4px; font-weight: bold; transition: 0.2s; user-select: none; }
 .dia.disponible { background: #f0f0f0; color: #666; cursor: pointer; border: 1px solid transparent;}
@@ -211,7 +255,7 @@ const diasOrdenadosTexto = computed(() => {
 .dia.seleccionado { background: #8cc63f; color: #012169; border: 1px solid #012169; transform: scale(1.05); }
 .leyenda { font-size: 0.75rem; color: #999; margin-top: 10px; text-align: center; }
 
-/* FORMULARIO NUEVO */
+/* FORMULARIO */
 .formulario-reserva { background-color: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0; margin-top: 15px; }
 .form-grupo { margin-bottom: 15px; }
 .form-grupo label { display: block; font-size: 0.9rem; color: #333; margin-bottom: 5px; font-weight: bold; }
