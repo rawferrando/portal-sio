@@ -1,8 +1,8 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 
-// Conectado a tu nuevo Google Sheets de forma automática
-const csvUrl = 'https://docs.google.com/spreadsheets/d/1h1j4rXGvF-3SVUQa-g9Jwuhx5C-yK2JgMRFescdzAHY/pub?output=csv'
+// Usamos el enlace de EXPORTACIÓN directa, que funciona perfecto con tu permiso de "Cualquiera con el enlace"
+const csvUrl = 'https://docs.google.com/spreadsheets/d/1h1j4rXGvF-3SVUQa-g9Jwuhx5C-yK2JgMRFescdzAHY/export?format=csv'
 
 const cargando = ref(true)
 const errorCarga = ref(false)
@@ -18,6 +18,9 @@ const cargarDatos = async () => {
   try {
     const urlSinCache = csvUrl + '&t=' + new Date().getTime()
     const respuesta = await fetch(urlSinCache)
+    
+    if (!respuesta.ok) throw new Error('Error en la descarga del CSV')
+    
     const textoCsv = await respuesta.text()
     
     const filas = parseCSV(textoCsv)
@@ -221,6 +224,7 @@ const generarDocumento = () => {
         </div>
 
         <div class="grid-layout">
+          <!-- ZONA IZQUIERDA: CATÁLOGO CON ACORDEÓN -->
           <div class="seccion-bloque ficha-wiki">
             <div v-if="Object.keys(instrumentosAgrupados).length === 0" style="color: #666; font-style: italic;">No hi ha instruments catalogats en aquesta secció.</div>
 
@@ -262,6 +266,7 @@ const generarDocumento = () => {
             </div>
           </div>
 
+          <!-- ZONA DERECHA: GESTIÓN DE RESERVAS -->
           <div class="seccion-bloque ficha-gestion">
             
             <div v-if="equipoSeleccionado" class="detalles-equipo">
