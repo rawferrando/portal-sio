@@ -1,7 +1,8 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 
-const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSC1-4DfysLLx94TlNqImWISIOd18Yur4XX0F69qXYvDaLBt2W1xyrxS75YDYwf4BFzWcxCkJH1Vajm/pub?output=csv'
+// Conectado a tu archivo local en el servidor SACO
+const csvUrl = '/instrumentos.csv'
 
 const cargando = ref(true)
 const errorCarga = ref(false)
@@ -15,7 +16,7 @@ const categorias = computed(() => {
 
 const cargarDatos = async () => {
   try {
-    const urlSinCache = csvUrl + '&t=' + new Date().getTime()
+    const urlSinCache = csvUrl + '?t=' + new Date().getTime()
     const respuesta = await fetch(urlSinCache)
     const textoCsv = await respuesta.text()
     
@@ -46,13 +47,15 @@ const cargarDatos = async () => {
         marca: fila[idxMarca] || '',
         estado: fila[idxEstado] || 'Disponible',
         ultimaCalibracion: fila[idxCalibracion] || 'N/A',
-        descripcionCompleta: fila[idxDesc] || 'No hay descripció disponible.',
+        descripcionCompleta: fila[idxDesc] || 'No hi ha descripció disponible.',
         parametros: fila[idxParams] || 'No hi ha paràmetres tècnics especificats.'
       })
     }
     
     instrumentos.value = nuevosInstrumentos
-    if (categorias.value.length > 0) categoriaActiva.value = categorias.value[0]
+    if (categorias.value.length > 0 && !categorias.value.includes(categoriaActiva.value)) {
+      categoriaActiva.value = categorias.value[0]
+    }
     cargando.value = false
   } catch (error) {
     errorCarga.value = true
@@ -166,7 +169,6 @@ const generarDocumento = () => {
   const ventana = window.open('', 'PRINT', 'height=800,width=800');
   const fechaHoyStr = new Date().toLocaleDateString('ca-ES', { year: 'numeric', month: 'long', day: 'numeric' });
 
-  // Inyectamos el HTML del documento oficial
   ventana.document.write(`
     <html>
       <head>
@@ -180,48 +182,27 @@ const generarDocumento = () => {
         </style>
       </head>
       <body>
-        <div class="header">
-          Barcelona, ${fechaHoyStr}
-        </div>
-
-        <div class="destinatario">
-          A l'atenció del Servei d'Enginyeria Oceanogràfica (SEO)<br>
-          Institut de Ciències del Mar (ICM-CSIC)
-        </div>
-
+        <div class="header">Barcelona, ${fechaHoyStr}</div>
+        <div class="destinatario">A l'atenció del Servei d'Enginyeria Oceanogràfica (SEO)<br>Institut de Ciències del Mar (ICM-CSIC)</div>
         <div class="title">DOCUMENT DE RESPONSABILITAT D'EQUIPAMENT SIO</div>
-
         <p>Per mitjà d'aquest document, jo <strong>${nombreInvestigador.value.toUpperCase()}</strong>, amb DNI/Passaport número <strong>${dniInvestigador.value.toUpperCase()}</strong>, en representació de la institució/grup <strong>${institucionInvestigador.value || '_______________________'}</strong>,</p>
-
         <p>Sol·licito la reserva de l'equipament tecnològic:</p>
         <p style="text-align: center; font-weight: bold; font-size: 1.2em; margin: 20px 0; padding: 10px; border: 1px solid #ccc; background-color: #f9f9f9;">
           ${equipoSeleccionado.value.nombre} ${equipoSeleccionado.value.marca ? `(${equipoSeleccionado.value.marca})` : ''}
         </p>
-
         <p>El període de préstec sol·licitat i bloquejat al calendari del Servei d'Enginyeria Oceanogràfica correspon a: <strong>${diasOrdenadosTexto.value}</strong>.</p>
-
         <p>Accepto la responsabilitat sobre l'equip esmentat i assumeixo el compromís de reemborsar el cost íntegre de l'equip en cas de pèrdua, així com el cost de la seva reparació en cas de danys, durant el període de préstec al nostre grup.</p>
-
         <p style="margin-top: 40px;">Cordialment,</p>
-
-        <div class="signature-box">
-          Signat digitalment per:<br>
-          <strong>${nombreInvestigador.value.toUpperCase()}</strong>
-        </div>
-
-        <script>
-          window.onload = function() {
-            setTimeout(function() {
-              window.print();
-            }, 500);
-          }
-        <\/script>
+        <div class="signature-box">Signat digitalment per:<br><strong>${nombreInvestigador.value.toUpperCase()}</strong></div>
+        <script>window.onload = function() { setTimeout(function() { window.print(); }, 500); }<\/script>
       </body>
     </html>
   `);
-
   ventana.document.close();
 }
+
+// === CONTROL DEL FORMULARIO DE INTRANET ===
+const mostrarFormularioNuevo = ref(false)
 
 </script>
 
@@ -233,10 +214,17 @@ const generarDocumento = () => {
       <h1 class="titulo-seccion">Instrumentación Oceanográfica</h1>
       <p class="subtitulo">Catálogo técnico, calibraciones y gestión de préstamos del SIO.</p>
 
-      <div v-if="cargando" class="alerta-estado carga">⏳ Conectando con la Base de Datos del SIO...</div>
-      <div v-else-if="errorCarga" class="alerta-estado error">❌ Error de conexión. No se ha podido cargar el catálogo de instrumentos.</div>
+      <div v-if="cargando" class="alerta-estado carga">⏳ Connectant amb la Base de Dades del SIO...</div>
+      <div v-else-if="errorCarga" class="alerta-estado error">❌ Error de connexió. No s'ha pogut carregar el catàleg d'instruments.</div>
 
       <div v-else>
+        <!-- BOTÓN DE INTRANET (AÑADIR EQUIPO) -->
+        <div class="contenedor-intranet">
+          <button @click="mostrarFormularioNuevo = true" class="btn-intranet">
+            ➕ Afegir Nou Equip (Només Personal SIO)
+          </button>
+        </div>
+
         <div class="tabs-sio">
           <button v-for="cat in categorias" :key="cat" :class="['tab-btn', { activa: categoriaActiva === cat }]" @click="cambiarCategoria(cat)">
             {{ cat }}
@@ -246,7 +234,7 @@ const generarDocumento = () => {
         <div class="grid-layout">
           <!-- ZONA IZQUIERDA: CATÁLOGO CON ACORDEÓN -->
           <div class="seccion-bloque ficha-wiki">
-            <div v-if="Object.keys(instrumentosAgrupados).length === 0" style="color: #666; font-style: italic;">No hi ha instruments catalogats.</div>
+            <div v-if="Object.keys(instrumentosAgrupados).length === 0" style="color: #666; font-style: italic;">No hi ha instruments catalogats en aquesta secció.</div>
 
             <div v-for="(lista, subcat) in instrumentosAgrupados" :key="subcat" class="bloque-subcat">
               <h3 class="titulo-subcat">{{ subcat }}</h3>
@@ -258,26 +246,25 @@ const generarDocumento = () => {
                     <span class="marca-wiki">({{ inst.marca }})</span>
                   </div>
                   <div class="caja-gris-wiki">
-                    <div v-if="inst.ultimaCalibracion"><strong>- Última calibración:</strong> {{ inst.ultimaCalibracion }}</div>
+                    <div v-if="inst.ultimaCalibracion"><strong>- Última calibració:</strong> {{ inst.ultimaCalibracion }}</div>
                     
                     <button class="btn-acordeon" @click="toggleAcordeon(inst.id)">
-                      <span v-if="instrumentoExpandido === inst.id">▲ Ocultar información técnica</span>
-                      <span v-else>▼ Ver información técnica y manuales</span>
+                      <span v-if="instrumentoExpandido === inst.id">▲ Ocultar informació tècnica</span>
+                      <span v-else>▼ Veure informació tècnica i manuals</span>
                     </button>
                     
                     <div v-show="instrumentoExpandido === inst.id" class="contenido-acordeon">
                       <div class="bloque-info-wiki">
-                        <h4>Descripción General</h4>
+                        <h4>Descripció General</h4>
                         <p class="texto-wiki">{{ inst.descripcionCompleta }}</p>
                       </div>
                       <div class="bloque-info-wiki">
-                        <h4>Especificaciones Técnicas / Manuales</h4>
+                        <h4>Especificacions Tècniques / Manuals</h4>
                         <p class="texto-wiki parametros-wiki">{{ inst.parametros }}</p>
                       </div>
                       
-                      <!-- AQUÍ ESTÁ EL BOTÓN NUEVO AL FINAL DEL ACORDEÓN -->
                       <button class="btn-acordeon btn-cerrar-acordeon" @click="toggleAcordeon(inst.id)">
-                        ▲ Ocultar información técnica
+                        ▲ Ocultar informació tècnica
                       </button>
                     </div>
 
@@ -298,7 +285,6 @@ const generarDocumento = () => {
                 </span>
               </div>
               
-              <!-- PASO 1: CALENDARIO DINÁMICO -->
               <div class="calendario-mini">
                 <h3 class="titulo-mini">Pàs 1: Selecciona els dies de reserva</h3>
                 
@@ -316,7 +302,6 @@ const generarDocumento = () => {
                 <p class="leyenda">* Gris: Disponible | Blau: Ocupat | Verd: La teva selecció</p>
               </div>
 
-              <!-- PASO 2: GENERACIÓN DE DOCUMENTO -->
               <div class="generador-doc-box">
                 <h3 class="titulo-mini">Pàs 2: Generar Document de Responsabilitat</h3>
                 <p class="txt-p" style="font-size: 0.85rem; margin-bottom: 15px;">Emplena les teves dades per generar el document amb les dates de reserva ja incloses. Desa'l com a PDF per signar-lo.</p>
@@ -341,7 +326,6 @@ const generarDocumento = () => {
                 </button>
               </div>
 
-              <!-- PASO 3: ENVÍO -->
               <form action="https://formsubmit.co/sio@icm.csic.es" method="POST" enctype="multipart/form-data" class="formulario-reserva">
                 <h3 class="titulo-mini">Pàs 3: Envia la Sol·licitud</h3>
                 
@@ -390,6 +374,68 @@ const generarDocumento = () => {
         </div>
       </div>
     </div>
+
+    <!-- MODAL FORMULARIO INTRANET (AÑADIR EQUIPO) -->
+    <div v-if="mostrarFormularioNuevo" class="modal-fondo">
+      <div class="modal-contenido">
+        <div class="cabecera-modal">
+          <h2 style="margin:0; color:#012169;">Petició d'Alta de Nou Equipament</h2>
+          <button @click="mostrarFormularioNuevo = false" class="btn-cerrar-modal">✖</button>
+        </div>
+        <p style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">
+          Emplena les dades per afegir un equip de la Wiki al nou catàleg. Rebrem un correu amb la informació estructurada per validar-la i afegir-la de forma segura al CSV del servidor.
+        </p>
+
+        <form action="https://formsubmit.co/sio@icm.csic.es" method="POST" class="form-alta">
+          <input type="hidden" name="_subject" value="PETICIÓ D'ALTA: Nou Equip per al Catàleg SIO">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_next" value="https://rawferrando.github.io/portal-sio/"> <!-- Te devuelve a tu web al enviar -->
+
+          <div class="grid-form-alta">
+            <div class="form-grupo">
+              <label>Nom de l'Equip *</label>
+              <input type="text" name="Nombre_Equipo" required class="input-form">
+            </div>
+            <div class="form-grupo">
+              <label>Marca / Fabricant</label>
+              <input type="text" name="Marca" class="input-form">
+            </div>
+            <div class="form-grupo">
+              <label>Categoria Principal *</label>
+              <input type="text" name="Categoria" required placeholder="Ex: Física" class="input-form">
+            </div>
+            <div class="form-grupo">
+              <label>Subcategoria</label>
+              <input type="text" name="Subcategoria" placeholder="Ex: CTDs" class="input-form">
+            </div>
+            <div class="form-grupo">
+              <label>Estat Inicial</label>
+              <select name="Estado" class="input-form">
+                <option>Disponible</option>
+                <option>En Uso</option>
+                <option>Mantenimiento</option>
+              </select>
+            </div>
+            <div class="form-grupo">
+              <label>Última Calibració</label>
+              <input type="text" name="Calibracion" placeholder="Ex: 2026-05-10" class="input-form">
+            </div>
+          </div>
+
+          <div class="form-grupo mt-15">
+            <label>Descripció (Copia aquí el text general de la Wiki) *</label>
+            <textarea name="Descripcion" required class="input-form textarea-form" rows="4"></textarea>
+          </div>
+
+          <div class="form-grupo mt-15">
+            <label>Paràmetres Tècnics / Manuals</label>
+            <textarea name="Parametros" class="input-form textarea-form" rows="4"></textarea>
+          </div>
+
+          <button type="submit" class="btn-submit mt-15">📨 Enviar Petició d'Alta al SEO</button>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -404,14 +450,18 @@ const generarDocumento = () => {
 .contenido-hub { position: relative; z-index: 10; padding-top: 120px; max-width: 1300px; margin: 0 auto; padding-left: 20px; padding-right: 20px; }
 .titulo-seccion { color: white; font-size: 2.2rem; font-weight: bold; position: relative; display: inline-block; padding-bottom: 8px; margin-bottom: 15px; }
 .titulo-seccion::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 4px; background-color: #8cc63f; }
-.subtitulo { color: #e0e6ed; font-size: 1.1rem; margin-bottom: 35px; max-width: 800px; }
+.subtitulo { color: #e0e6ed; font-size: 1.1rem; margin-bottom: 25px; max-width: 800px; }
 
 /* ALERTAS ESTADO */
 .alerta-estado { text-align: center; padding: 20px; border-radius: 8px; font-weight: bold; margin-bottom: 30px; font-size: 1.2rem; }
 .alerta-estado.carga { background: rgba(255, 255, 255, 0.9); color: #012169; border: 2px solid #0086c0; }
 .alerta-estado.error { background: #ffebee; color: #c62828; border: 2px solid #ef5350; }
 
-/* TABS */
+/* BOTÓN INTRANET Y TABS */
+.contenedor-intranet { display: flex; justify-content: flex-end; margin-bottom: 10px; }
+.btn-intranet { background: rgba(255,255,255,0.1); border: 1px dashed rgba(255,255,255,0.5); color: white; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: 0.2s; }
+.btn-intranet:hover { background: rgba(255,255,255,0.2); border-color: white; }
+
 .tabs-sio { display: flex; gap: 10px; margin-bottom: 25px; overflow-x: auto; }
 .tab-btn { padding: 10px 20px; background: rgba(255, 255, 255, 0.1); border: 1px solid white; color: white; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; white-space: nowrap; }
 .tab-btn.activa { background: #8cc63f; border-color: #8cc63f; color: #012169; }
@@ -435,11 +485,8 @@ const generarDocumento = () => {
 /* ESTILOS ACORDEÓN */
 .btn-acordeon { background: none; border: none; color: #0086c0; font-family: inherit; font-size: 0.85rem; font-weight: bold; cursor: pointer; padding: 5px 0 0 0; display: block; margin-top: 5px; text-align: left; }
 .btn-acordeon:hover { text-decoration: underline; }
-
-/* ESTILO DEL NUEVO BOTÓN DE CIERRE ABAJO */
 .btn-cerrar-acordeon { width: 100%; text-align: center; margin-top: 15px; padding-top: 12px; border-top: 1px dashed #ddd; color: #666; font-size: 0.8rem; }
 .btn-cerrar-acordeon:hover { color: #d32f2f; text-decoration: none; }
-
 .contenido-acordeon { background: white; border-left: 3px solid #8cc63f; padding: 15px; margin-top: 10px; border-radius: 0 6px 6px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); animation: fadeIn 0.3s; }
 .bloque-info-wiki { margin-bottom: 15px; }
 .bloque-info-wiki h4 { color: #012169; font-size: 0.95rem; margin: 0 0 5px 0; font-family: system-ui, -apple-system, sans-serif; }
@@ -450,7 +497,6 @@ const generarDocumento = () => {
 /* PANEL DERECHO (GESTIÓN) */
 .cabecera-estado { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 15px;}
 .cabecera-estado .titulo-fija { border-bottom: none; margin-bottom: 0; padding-bottom: 0; font-size: 1.3rem;}
-
 .badge-grande { padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; }
 .badge-grande.disponible { background: #e6f4ea; color: #1e7e34; }
 .badge-grande.en-uso { background: #fff4e5; color: #b45d00; }
@@ -472,7 +518,7 @@ const generarDocumento = () => {
 .dia.seleccionado { background: #8cc63f; color: #012169; border: 1px solid #012169; transform: scale(1.05); }
 .leyenda { font-size: 0.75rem; color: #999; margin-top: 10px; text-align: center; }
 
-/* GENERADOR DE DOCUMENTO Y FORMULARIO */
+/* GENERADOR DE DOCUMENTO Y FORMULARIO RESERVA */
 .generador-doc-box { background-color: #eef5fa; padding: 20px; border-radius: 8px; border: 1px dashed #0086c0; margin-bottom: 20px; }
 .formulario-reserva { background-color: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0; margin-top: 15px; }
 .form-grupo { margin-bottom: 15px; }
@@ -491,5 +537,18 @@ const generarDocumento = () => {
 .btn-cerrar { margin-top: 30px; width: 100%; background: #eee; color: #555; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
 .btn-cerrar:hover { background: #e0e0e0; color: #333; }
 
-@media (max-width: 992px) { .grid-layout { grid-template-columns: 1fr; } }
+/* === ESTILOS DEL MODAL (NUEVO EQUIPO) === */
+.modal-fondo { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
+.modal-contenido { background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto; box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+.cabecera-modal { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; margin-bottom: 15px; padding-bottom: 10px; }
+.btn-cerrar-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #999; transition: color 0.2s; }
+.btn-cerrar-modal:hover { color: #d32f2f; }
+.grid-form-alta { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.mt-15 { margin-top: 15px; }
+.textarea-form { resize: vertical; min-height: 80px; }
+
+@media (max-width: 992px) { 
+  .grid-layout { grid-template-columns: 1fr; } 
+  .grid-form-alta { grid-template-columns: 1fr; }
+}
 </style>
