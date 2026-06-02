@@ -1,5 +1,7 @@
 <script setup>
 import { ref } from 'vue'
+// Importamos tu imagen de fondo
+import fondoTanques from '../assets/tanques.jpg'
 
 const emit = defineEmits(['cambiar-pagina'])
 
@@ -77,7 +79,7 @@ const enviarSolicitud = () => {
 <template>
   <div class="pagina-detalle">
     
-    <div class="hero-detalle hero-tanques">
+    <div class="hero-detalle hero-tanques" :style="{ backgroundImage: `linear-gradient(rgba(1, 33, 105, 0.7), rgba(1, 33, 105, 0.8)), url(${fondoTanques})`, backgroundSize: 'cover', backgroundPosition: 'center' }">
       <div class="contenedor-ancho contenido-hero">
         <h1 class="titulo-hero">Tanques de Pruebas</h1>
         <p class="subtitulo-hero">Instalaciones experimentales para ensayos controlados, calibración y biología.</p>
@@ -179,7 +181,7 @@ const enviarSolicitud = () => {
 <style scoped>
 .pagina-detalle { background-color: #f4f7f9; min-height: 100vh; padding-bottom: 80px; }
 
-.hero-detalle { background-color: #012169; padding: 120px 0 60px 0; color: white; }
+.hero-detalle { padding: 120px 0 60px 0; color: white; }
 .contenido-hero { position: relative; display: flex; flex-direction: column; align-items: flex-start; }
 .titulo-hero { font-size: 3rem; font-weight: bold; margin: 0 0 15px 0; position: relative; display: inline-block; padding-bottom: 10px; }
 .titulo-hero::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 5px; background-color: #8cc63f; }

@@ -14,6 +14,7 @@ import logoCsic from './assets/csic.png'
 import logoIcm from './assets/icm.png'
 import logoSevero from './assets/severo.png'
 import TanquesPruebas from './components/TanquesPruebas.vue'
+import AnalisisSalinidad from './components/AnalisisSalinidad.vue'
 
 const goToSlide = (index) => {
   currentSlide.value = index;
