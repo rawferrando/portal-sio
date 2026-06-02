@@ -274,6 +274,11 @@ const generarDocumento = () => {
                         <h4>Especificaciones Técnicas / Manuales</h4>
                         <p class="texto-wiki parametros-wiki">{{ inst.parametros }}</p>
                       </div>
+                      
+                      <!-- AQUÍ ESTÁ EL BOTÓN NUEVO AL FINAL DEL ACORDEÓN -->
+                      <button class="btn-acordeon btn-cerrar-acordeon" @click="toggleAcordeon(inst.id)">
+                        ▲ Ocultar información técnica
+                      </button>
                     </div>
 
                   </div>
@@ -430,6 +435,11 @@ const generarDocumento = () => {
 /* ESTILOS ACORDEÓN */
 .btn-acordeon { background: none; border: none; color: #0086c0; font-family: inherit; font-size: 0.85rem; font-weight: bold; cursor: pointer; padding: 5px 0 0 0; display: block; margin-top: 5px; text-align: left; }
 .btn-acordeon:hover { text-decoration: underline; }
+
+/* ESTILO DEL NUEVO BOTÓN DE CIERRE ABAJO */
+.btn-cerrar-acordeon { width: 100%; text-align: center; margin-top: 15px; padding-top: 12px; border-top: 1px dashed #ddd; color: #666; font-size: 0.8rem; }
+.btn-cerrar-acordeon:hover { color: #d32f2f; text-decoration: none; }
+
 .contenido-acordeon { background: white; border-left: 3px solid #8cc63f; padding: 15px; margin-top: 10px; border-radius: 0 6px 6px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); animation: fadeIn 0.3s; }
 .bloque-info-wiki { margin-bottom: 15px; }
 .bloque-info-wiki h4 { color: #012169; font-size: 0.95rem; margin: 0 0 5px 0; font-family: system-ui, -apple-system, sans-serif; }
