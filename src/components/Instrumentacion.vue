@@ -1,8 +1,8 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 
-// Conectado a tu archivo local en el servidor SACO
-const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSfzOz1SfHwIoDV9XyQ7jZpFwx6-8UXs2mSgxBcPNYy3C4wqXJraxuVu8VUHdroUuEMqv0YTAIhJhtB/pub?gid=1278015245&single=true&output=csv'
+// Conectado a tu nuevo Google Sheets de forma automática
+const csvUrl = 'https://docs.google.com/spreadsheets/d/1h1j4rXGvF-3SVUQa-g9Jwuhx5C-yK2JgMRFescdzAHY/pub?output=csv'
 
 const cargando = ref(true)
 const errorCarga = ref(false)
@@ -16,7 +16,7 @@ const categorias = computed(() => {
 
 const cargarDatos = async () => {
   try {
-    const urlSinCache = csvUrl + '?t=' + new Date().getTime()
+    const urlSinCache = csvUrl + '&t=' + new Date().getTime()
     const respuesta = await fetch(urlSinCache)
     const textoCsv = await respuesta.text()
     
@@ -221,7 +221,6 @@ const generarDocumento = () => {
         </div>
 
         <div class="grid-layout">
-          <!-- ZONA IZQUIERDA: CATÁLOGO CON ACORDEÓN -->
           <div class="seccion-bloque ficha-wiki">
             <div v-if="Object.keys(instrumentosAgrupados).length === 0" style="color: #666; font-style: italic;">No hi ha instruments catalogats en aquesta secció.</div>
 
@@ -263,7 +262,6 @@ const generarDocumento = () => {
             </div>
           </div>
 
-          <!-- ZONA DERECHA: GESTIÓN DE RESERVAS -->
           <div class="seccion-bloque ficha-gestion">
             
             <div v-if="equipoSeleccionado" class="detalles-equipo">
@@ -389,7 +387,7 @@ const generarDocumento = () => {
 .tab-btn { padding: 10px 20px; background: rgba(255, 255, 255, 0.1); border: 1px solid white; color: white; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; white-space: nowrap; }
 .tab-btn.activa { background: #8cc63f; border-color: #8cc63f; color: #012169; }
 
-/* GRID */
+/* GRID PRINCIPAL */
 .grid-layout { display: grid; grid-template-columns: 1.8fr 1.3fr; gap: 30px; }
 .seccion-bloque { background: white; border-radius: 12px; padding: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); min-height: auto; }
 .titulo-fija { color: #012169; margin-top: 0; font-size: 1.4rem; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
@@ -405,12 +403,13 @@ const generarDocumento = () => {
 .marca-wiki { color: #666; font-size: 0.9rem; margin-left: 5px; }
 .caja-gris-wiki { background-color: #f1f3f4; border-radius: 6px; padding: 10px 15px; margin-left: 15px; margin-bottom: 20px; font-family: 'Consolas', 'Courier New', Courier, monospace; font-size: 0.85rem; color: #202124; line-height: 1.6; }
 
-/* ESTILOS ACORDEÓN */
+/* ESTILOS ACORDEÓN E IMAGEN */
 .btn-acordeon { background: none; border: none; color: #0086c0; font-family: inherit; font-size: 0.85rem; font-weight: bold; cursor: pointer; padding: 5px 0 0 0; display: block; margin-top: 5px; text-align: left; }
 .btn-acordeon:hover { text-decoration: underline; }
 .btn-cerrar-acordeon { width: 100%; text-align: center; margin-top: 15px; padding-top: 12px; border-top: 1px dashed #ddd; color: #666; font-size: 0.8rem; }
 .btn-cerrar-acordeon:hover { color: #d32f2f; text-decoration: none; }
 .contenido-acordeon { background: white; border-left: 3px solid #8cc63f; padding: 15px; margin-top: 10px; border-radius: 0 6px 6px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); animation: fadeIn 0.3s; }
+
 .bloque-info-wiki { margin-bottom: 15px; }
 .bloque-info-wiki h4 { color: #012169; font-size: 0.95rem; margin: 0 0 5px 0; font-family: system-ui, -apple-system, sans-serif; }
 .texto-wiki { margin: 0; white-space: pre-line; color: #555; font-size: 0.9rem; }
