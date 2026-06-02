@@ -2,7 +2,7 @@
 import { ref, computed, onMounted } from 'vue'
 
 // Conectado a tu archivo local en el servidor SACO
-const csvUrl = 'https://saco.csic.es/s/QQYXp6KL9PzWF46/download'
+const csvUrl = 'https://docs.google.com/spreadsheets/d/1h1j4rXGvF-3SVUQa-g9Jwuhx5C-yK2JgMRFescdzAHY/edit?usp=sharing/download'
 
 const cargando = ref(true)
 const errorCarga = ref(false)
