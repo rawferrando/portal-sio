@@ -2,7 +2,7 @@
 import { ref, computed, onMounted } from 'vue'
 
 // Conectado a tu archivo local en el servidor SACO
-const csvUrl = '/instrumentos.csv'
+const csvUrl = 'https://saco.csic.es/s/QQYXp6KL9PzWF46/download'
 
 const cargando = ref(true)
 const errorCarga = ref(false)
@@ -200,10 +200,6 @@ const generarDocumento = () => {
   `);
   ventana.document.close();
 }
-
-// === CONTROL DEL FORMULARIO DE INTRANET ===
-const mostrarFormularioNuevo = ref(false)
-
 </script>
 
 <template>
@@ -218,13 +214,6 @@ const mostrarFormularioNuevo = ref(false)
       <div v-else-if="errorCarga" class="alerta-estado error">❌ Error de connexió. No s'ha pogut carregar el catàleg d'instruments.</div>
 
       <div v-else>
-        <!-- BOTÓN DE INTRANET (AÑADIR EQUIPO) -->
-        <div class="contenedor-intranet">
-          <button @click="mostrarFormularioNuevo = true" class="btn-intranet">
-            ➕ Afegir Nou Equip (Només Personal SIO)
-          </button>
-        </div>
-
         <div class="tabs-sio">
           <button v-for="cat in categorias" :key="cat" :class="['tab-btn', { activa: categoriaActiva === cat }]" @click="cambiarCategoria(cat)">
             {{ cat }}
@@ -374,68 +363,6 @@ const mostrarFormularioNuevo = ref(false)
         </div>
       </div>
     </div>
-
-    <!-- MODAL FORMULARIO INTRANET (AÑADIR EQUIPO) -->
-    <div v-if="mostrarFormularioNuevo" class="modal-fondo">
-      <div class="modal-contenido">
-        <div class="cabecera-modal">
-          <h2 style="margin:0; color:#012169;">Petició d'Alta de Nou Equipament</h2>
-          <button @click="mostrarFormularioNuevo = false" class="btn-cerrar-modal">✖</button>
-        </div>
-        <p style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">
-          Emplena les dades per afegir un equip de la Wiki al nou catàleg. Rebrem un correu amb la informació estructurada per validar-la i afegir-la de forma segura al CSV del servidor.
-        </p>
-
-        <form action="https://formsubmit.co/sio@icm.csic.es" method="POST" class="form-alta">
-          <input type="hidden" name="_subject" value="PETICIÓ D'ALTA: Nou Equip per al Catàleg SIO">
-          <input type="hidden" name="_template" value="table">
-          <input type="hidden" name="_next" value="https://rawferrando.github.io/portal-sio/"> <!-- Te devuelve a tu web al enviar -->
-
-          <div class="grid-form-alta">
-            <div class="form-grupo">
-              <label>Nom de l'Equip *</label>
-              <input type="text" name="Nombre_Equipo" required class="input-form">
-            </div>
-            <div class="form-grupo">
-              <label>Marca / Fabricant</label>
-              <input type="text" name="Marca" class="input-form">
-            </div>
-            <div class="form-grupo">
-              <label>Categoria Principal *</label>
-              <input type="text" name="Categoria" required placeholder="Ex: Física" class="input-form">
-            </div>
-            <div class="form-grupo">
-              <label>Subcategoria</label>
-              <input type="text" name="Subcategoria" placeholder="Ex: CTDs" class="input-form">
-            </div>
-            <div class="form-grupo">
-              <label>Estat Inicial</label>
-              <select name="Estado" class="input-form">
-                <option>Disponible</option>
-                <option>En Uso</option>
-                <option>Mantenimiento</option>
-              </select>
-            </div>
-            <div class="form-grupo">
-              <label>Última Calibració</label>
-              <input type="text" name="Calibracion" placeholder="Ex: 2026-05-10" class="input-form">
-            </div>
-          </div>
-
-          <div class="form-grupo mt-15">
-            <label>Descripció (Copia aquí el text general de la Wiki) *</label>
-            <textarea name="Descripcion" required class="input-form textarea-form" rows="4"></textarea>
-          </div>
-
-          <div class="form-grupo mt-15">
-            <label>Paràmetres Tècnics / Manuals</label>
-            <textarea name="Parametros" class="input-form textarea-form" rows="4"></textarea>
-          </div>
-
-          <button type="submit" class="btn-submit mt-15">📨 Enviar Petició d'Alta al SEO</button>
-        </form>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -457,11 +384,7 @@ const mostrarFormularioNuevo = ref(false)
 .alerta-estado.carga { background: rgba(255, 255, 255, 0.9); color: #012169; border: 2px solid #0086c0; }
 .alerta-estado.error { background: #ffebee; color: #c62828; border: 2px solid #ef5350; }
 
-/* BOTÓN INTRANET Y TABS */
-.contenedor-intranet { display: flex; justify-content: flex-end; margin-bottom: 10px; }
-.btn-intranet { background: rgba(255,255,255,0.1); border: 1px dashed rgba(255,255,255,0.5); color: white; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: 0.2s; }
-.btn-intranet:hover { background: rgba(255,255,255,0.2); border-color: white; }
-
+/* TABS */
 .tabs-sio { display: flex; gap: 10px; margin-bottom: 25px; overflow-x: auto; }
 .tab-btn { padding: 10px 20px; background: rgba(255, 255, 255, 0.1); border: 1px solid white; color: white; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; white-space: nowrap; }
 .tab-btn.activa { background: #8cc63f; border-color: #8cc63f; color: #012169; }
@@ -537,18 +460,7 @@ const mostrarFormularioNuevo = ref(false)
 .btn-cerrar { margin-top: 30px; width: 100%; background: #eee; color: #555; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
 .btn-cerrar:hover { background: #e0e0e0; color: #333; }
 
-/* === ESTILOS DEL MODAL (NUEVO EQUIPO) === */
-.modal-fondo { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
-.modal-contenido { background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto; box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
-.cabecera-modal { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; margin-bottom: 15px; padding-bottom: 10px; }
-.btn-cerrar-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #999; transition: color 0.2s; }
-.btn-cerrar-modal:hover { color: #d32f2f; }
-.grid-form-alta { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-.mt-15 { margin-top: 15px; }
-.textarea-form { resize: vertical; min-height: 80px; }
-
 @media (max-width: 992px) { 
   .grid-layout { grid-template-columns: 1fr; } 
-  .grid-form-alta { grid-template-columns: 1fr; }
 }
 </style>
