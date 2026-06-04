@@ -1,280 +1,254 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
 
-const emit = defineEmits(['volver'])
+const apiUrl = 'http://localhost:5000/api/instrumentos'
 
 const estaLogueado = ref(false)
+const seccionActiva = ref('dashboard')
 const usuario = ref('')
 const password = ref('')
-const errorLogin = ref(false)
+const recordarSesion = ref(false)
+const instrumentos = ref([])
 
-// Comprobamos si ya habíamos iniciado sesión antes
+// Variable per saber si estem editant o creant
+const editandoId = ref(null)
+
+const nuevoEquipo = ref({ 
+  nombre: '', marca: '', numero_serie: '', categoria: '', subcategoria: '', ultima_calibracion: '', descripcion: '', parametros_tecnicos: '' 
+})
+
+const cargarInstrumentos = async () => {
+  try {
+    const respuesta = await fetch(apiUrl)
+    instrumentos.value = await respuesta.json()
+  } catch (error) { console.error("Error carregant:", error) }
+}
+
 onMounted(() => {
-  if (sessionStorage.getItem('sio_auth') === 'true') {
+  if (sessionStorage.getItem('sio_auth') === 'true' || localStorage.getItem('sio_auth') === 'true') {
     estaLogueado.value = true
+    cargarInstrumentos()
   }
 })
 
-// Función para entrar
 const iniciarSesion = () => {
-  // 💡 CREDENCIALES DE PRUEBA: usuario "sio" y contraseña "admin"
   if (usuario.value === 'sio' && password.value === 'admin') {
-    sessionStorage.setItem('sio_auth', 'true')
+    if (recordarSesion.value) {
+      localStorage.setItem('sio_auth', 'true')
+    } else {
+      sessionStorage.setItem('sio_auth', 'true')
+    }
     estaLogueado.value = true
-    errorLogin.value = false
+    cargarInstrumentos()
   } else {
-    errorLogin.value = true
+    alert("Usuari o contrasenya incorrectes")
   }
 }
 
-// Función para salir
 const cerrarSesion = () => {
   sessionStorage.removeItem('sio_auth')
+  localStorage.removeItem('sio_auth')
   estaLogueado.value = false
-  emit('volver') // Nos devuelve a la portada automáticamente
+}
+
+// AQUÍ ESTÀ LA FUNCIÓ PER CARREGAR L'EDICIÓ
+const cargarParaEditar = (inst) => {
+  editandoId.value = inst.id
+  nuevoEquipo.value = { 
+    nombre: inst.nombre, 
+    marca: inst.marca || '', 
+    numero_serie: inst.numero_serie || '',
+    categoria: inst.categoria || '', 
+    subcategoria: inst.subcategoria || '', 
+    ultima_calibracion: inst.ultima_calibracion || '', 
+    descripcion: inst.descripcion || '', 
+    parametros_tecnicos: inst.parametros_tecnicos || '' 
+  }
+  seccionActiva.value = 'instrumentacion' // Canvia directament a la pestanya del formulari
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+const cancelarEdicion = () => {
+  editandoId.value = null
+  nuevoEquipo.value = { nombre: '', marca: '', numero_serie: '', categoria: '', subcategoria: '', ultima_calibracion: '', descripcion: '', parametros_tecnicos: '' }
+  seccionActiva.value = 'dashboard'
+}
+
+const guardarInstrumento = async () => {
+  try {
+    const metodo = editandoId.value ? 'PUT' : 'POST'
+    const url = editandoId.value ? `${apiUrl}/${editandoId.value}` : apiUrl
+
+    const respuesta = await fetch(url, {
+      method: metodo,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(nuevoEquipo.value)
+    })
+    if (respuesta.ok) {
+      alert(editandoId.value ? "✅ Instrument actualitzat!" : "✅ Equip registrat!")
+      cancelarEdicion()
+      cargarInstrumentos()
+    }
+  } catch (error) { console.error(error) }
+}
+
+const eliminarInstrumento = async (id) => {
+  if (!confirm("Segur que vols esborrar aquest instrument?")) return
+  try {
+    const respuesta = await fetch(`${apiUrl}/${id}`, { method: 'DELETE' })
+    if (respuesta.ok) {
+      alert("🗑️ Instrument eliminat")
+      cargarInstrumentos()
+    }
+  } catch (error) { console.error(error) }
 }
 </script>
 
 <template>
   <div class="intranet-wrapper">
     
-    <div v-if="!estaLogueado" class="login-container">
+    <div v-if="!estaLogueado" class="login-overlay">
       <div class="login-box">
-        <div class="login-header">
-          <h2>SIO Intranet</h2>
-          <p>Acceso restringido a personal</p>
-        </div>
-        
-        <form @submit.prevent="iniciarSesion" class="login-form">
-          <div class="input-group">
-            <label>Usuario</label>
-            <input type="text" v-model="usuario" placeholder="Introduce tu usuario" required>
-          </div>
-          <div class="input-group">
-            <label>Contraseña</label>
-            <input type="password" v-model="password" placeholder="••••••••" required>
-          </div>
+        <h2>Accés SIO</h2>
+        <form @submit.prevent="iniciarSesion">
+          <input v-model="usuario" placeholder="Usuari" required>
+          <input type="password" v-model="password" placeholder="Contrasenya" required>
           
-          <div v-if="errorLogin" class="error-msg">
-            Credenciales incorrectas. Inténtalo de nuevo.
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 15px; font-size: 0.9rem; color: #555;">
+            <input type="checkbox" v-model="recordarSesion" id="recordar" style="width: auto; margin: 0;">
+            <label for="recordar" style="cursor: pointer;">Recordar sessió</label>
           </div>
-          
-          <button type="submit" class="btn-login">ACCEDER</button>
+
+          <button type="submit">ENTRAR</button>
         </form>
-        <button class="btn-volver-login" @click="$emit('volver')">← Volver a la web pública</button>
       </div>
     </div>
 
-    <div v-else class="dashboard-container">
-      
+    <div v-else class="dashboard-grid">
       <aside class="sidebar">
-        <div class="sidebar-header">
-          <h3>Panel SIO</h3>
-          <span class="badge">Admin</span>
-        </div>
+        <h3 class="sidebar-title">Panel SIO</h3>
         <nav class="sidebar-nav">
-          <a href="#" class="nav-active">📊 Visión General</a>
-          <a href="#">🌊 Estado de Boyas</a>
-          <a href="#">🛠️ Equipamiento</a>
-          <a href="#">📁 Informes Técnicos</a>
-          <a href="#">⚙️ Configuración</a>
+          <a href="#" @click="cancelarEdicion" :class="{active: seccionActiva === 'dashboard'}">📊 Visión General</a>
+          <a href="#" @click="seccionActiva = 'instrumentacion'" :class="{active: seccionActiva === 'instrumentacion'}">
+            {{ editandoId ? '✏️ Editant Instrument' : '🛠️ Alta Instrumento' }}
+          </a>
+          <a href="/" target="_blank" class="btn-web">🌐 Ver Web Pública</a>
         </nav>
-        <div class="sidebar-footer">
-          <button @click="$emit('volver')" class="btn-ver-web">🌍 Ver Web Pública</button>
-          <button @click="cerrarSesion" class="btn-logout">Cerrar Sesión</button>
-        </div>
+        <button @click="cerrarSesion" class="btn-logout">Cerrar Sessió</button>
       </aside>
 
-      <main class="dashboard-main">
-        <header class="dashboard-topbar">
-          <h2>Visión General de Sistemas</h2>
-          <div class="user-profile">Hola, Equipo SIO</div>
-        </header>
-
-        <div class="dashboard-content">
+      <main class="main-content">
+        <div v-if="seccionActiva === 'instrumentacion'" class="admin-panel">
+          <h2>{{ editandoId ? '✏️ Editar Instrument' : '➕ Registrar Nou Instrument' }}</h2>
           
-          <div class="stats-grid">
-            <div class="stat-card">
-              <div class="stat-title">Instrumentos Activos</div>
-              <div class="stat-value">24</div>
-              <div class="stat-status text-green">● Operativos</div>
+          <form @submit.prevent="guardarInstrumento" class="grid-form">
+            
+            <div style="grid-column: span 2; display: flex; gap: 10px; margin-bottom: 5px;">
+              <div style="flex: 1;">
+                <label style="font-size: 0.85rem; font-weight: bold; color: #555;">Nom de l'equip:</label>
+                <input v-model="nuevoEquipo.nombre" placeholder="Ex: CTD-48M" required style="width: 100%; box-sizing: border-box;">
+              </div>
+              <div style="flex: 1;">
+                <label style="font-size: 0.85rem; font-weight: bold; color: #555;">Marca / Fabricant:</label>
+                <input v-model="nuevoEquipo.marca" placeholder="Ex: Sea-Bird" style="width: 100%; box-sizing: border-box;">
+              </div>
+              <div style="flex: 1; background-color: #fff3cd; padding: 5px 10px; border-radius: 4px; border: 1px dashed #ffeeba;">
+                <label style="color: #856404; font-size: 0.85rem; font-weight: bold;">🔒 Número de Sèrie (Privat):</label>
+                <input v-model="nuevoEquipo.numero_serie" placeholder="Ex: SN-180" style="background: white; width: 100%; box-sizing: border-box;" />
+              </div>
             </div>
-            <div class="stat-card">
-              <div class="stat-title">Mantenimientos Pendientes</div>
-              <div class="stat-value">3</div>
-              <div class="stat-status text-orange">● Esta semana</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-title">Datos Recopilados (Hoy)</div>
-              <div class="stat-value">12.4 GB</div>
-              <div class="stat-status text-blue">● Sincronizado</div>
-            </div>
-          </div>
 
-          <div class="data-section">
-            <h3>Monitorización en Tiempo Real</h3>
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Estación / Equipo</th>
-                  <th>Tipo</th>
-                  <th>Última Conexión</th>
-                  <th>Estado</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Boya Oceanográfica Costera</td>
-                  <td>CTD / Fluorímetro</td>
-                  <td>Hace 2 min</td>
-                  <td><span class="tag tag-green">En línea</span></td>
-                </tr>
-                <tr>
-                  <td>Glider Submarino (Misión 4)</td>
-                  <td>Perfilador</td>
-                  <td>Hace 15 min</td>
-                  <td><span class="tag tag-green">En línea</span></td>
-                </tr>
-                <tr>
-                  <td>Estación Meteorológica Port</td>
-                  <td>Viento / Temp</td>
-                  <td>Hace 4 horas</td>
-                  <td><span class="tag tag-orange">Revisión req.</span></td>
-                </tr>
-                <tr>
-                  <td>ROV Explorador (BLUE Lab)</td>
-                  <td>Cámara / Brazos</td>
-                  <td>Apagado</td>
-                  <td><span class="tag tag-gray">En taller</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+            <div style="grid-column: span 2; display: flex; gap: 10px; margin-bottom: 10px;">
+              <select v-model="nuevoEquipo.categoria" required style="flex: 1;">
+                <option value="" disabled selected>Categoria</option>
+                <option value="Física">Física</option>
+                <option value="Química">Química</option>
+                <option value="Biologia">Biologia</option>
+                <option value="Geologia">Geologia</option>
+              </select>
+              <select v-model="nuevoEquipo.subcategoria" required style="flex: 1;">
+                <option value="" disabled selected>Subcategoria</option>
+                <option value="General">General</option>
+                <option value="Sondes">Sondes</option>
+                <option value="Mostreig">Mostreig</option>
+                <option value="Sistemes Estacionaris">Sistemes Estacionaris</option>
+              </select>
+              <input v-model="nuevoEquipo.ultima_calibracion" type="date" required style="flex: 1;">
+            </div>
 
+            <div style="grid-column: span 2; margin-top: 10px;">
+              <label style="font-weight: bold; color: #333;">Descripció tècnica:</label>
+              <div style="background: white; border-radius: 4px;">
+                <QuillEditor theme="snow" v-model:content="nuevoEquipo.descripcion" contentType="html" toolbar="essential" />
+              </div>
+            </div>
+
+            <div style="grid-column: span 2; margin-top: 10px; margin-bottom: 20px;">
+              <label style="font-weight: bold; color: #333;">Paràmetres / Manuals:</label>
+              <div style="background: white; border-radius: 4px;">
+                <QuillEditor theme="snow" v-model:content="nuevoEquipo.parametros_tecnicos" contentType="html" toolbar="essential" />
+              </div>
+            </div>
+
+            <div style="grid-column: span 2; display: flex; gap: 10px;">
+              <button type="submit" style="flex: 1; padding: 12px; font-weight: bold; background: #012169; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                {{ editandoId ? '💾 Desar Canvis' : '➕ Registrar al Catàleg' }}
+              </button>
+              
+              <button v-if="editandoId" type="button" @click="cancelarEdicion" style="flex: 0.3; background: #ccc; color: #333; font-weight: bold; padding: 12px; border: none; border-radius: 4px; cursor: pointer;">
+                ❌ Cancel·lar
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div v-else class="dashboard-view">
+          <h3>Inventari actual</h3>
+          <table class="tabla-instrumentos">
+            <tr v-for="inst in instrumentos" :key="inst.id">
+              <td>
+                <strong>{{ inst.nombre }}</strong> <br> 
+                <small>{{ inst.marca }}</small>
+                <span v-if="inst.numero_serie" style="color: #d32f2f; font-size: 0.85em; margin-left: 10px; background: #ffebee; padding: 2px 6px; border-radius: 4px;">
+                  🔒 SN: {{ inst.numero_serie }}
+                </span>
+              </td>
+              <td style="text-align: right; width: 220px;">
+                <button @click="cargarParaEditar(inst)" class="btn-edit" style="margin-right: 5px;">✏️ Editar</button>
+                <button @click="eliminarInstrumento(inst.id)" class="btn-delete">🗑️ Esborrar</button>
+              </td>
+            </tr>
+          </table>
         </div>
       </main>
     </div>
-    
   </div>
 </template>
 
 <style scoped>
-/* Estilos Generales de la Intranet */
-.intranet-wrapper {
-  min-height: 80vh;
-  background-color: #f0f2f5;
-  display: flex;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-}
-
-/* --- ESTILOS DEL LOGIN --- */
-.login-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 50px 20px;
-}
-.login-box {
-  background: white;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-  width: 100%;
-  max-width: 400px;
-  border-top: 5px solid #012169;
-}
-.login-header h2 { margin: 0; color: #012169; font-size: 24px; }
-.login-header p { color: #666; margin-top: 5px; font-size: 14px; margin-bottom: 30px; }
-
-.input-group { display: flex; flex-direction: column; margin-bottom: 20px; }
-.input-group label { font-size: 12px; font-weight: bold; color: #333; margin-bottom: 5px; text-transform: uppercase; }
-.input-group input { padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; transition: border 0.3s; }
-.input-group input:focus { border-color: #0086c0; outline: none; }
-
-.error-msg { color: #d32f2f; background: #ffebee; padding: 10px; border-radius: 6px; font-size: 13px; margin-bottom: 20px; text-align: center; }
-
-.btn-login { width: 100%; padding: 14px; background: #0086c0; color: white; border: none; border-radius: 6px; font-weight: bold; font-size: 16px; cursor: pointer; transition: background 0.3s; }
-.btn-login:hover { background: #012169; }
-
-.btn-volver-login { width: 100%; background: none; border: none; color: #666; margin-top: 20px; font-size: 14px; cursor: pointer; }
-.btn-volver-login:hover { color: #012169; text-decoration: underline; }
-.btn-ver-web {
-  width: 100%;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid #0086c0;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-bottom: 10px;
-  transition: all 0.3s;
-} 
-.btn-ver-web:hover { background: #0086c0; }
-
-/* --- ESTILOS DEL DASHBOARD --- */
-.dashboard-container {
-  display: flex;
-  width: 100%;
-  min-height: 80vh;
-}
-
-/* Sidebar */
-.sidebar {
-  width: 250px;
-  background: #012169;
-  color: white;
-  display: flex;
-  flex-direction: column;
-}
-.sidebar-header { padding: 30px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: space-between; }
-.sidebar-header h3 { margin: 0; font-size: 18px; }
-.badge { background: #0086c0; font-size: 11px; padding: 3px 8px; border-radius: 20px; font-weight: bold; }
-
-.sidebar-nav { display: flex; flex-direction: column; padding: 20px 0; flex-grow: 1; }
-.sidebar-nav a { color: #a8bacc; text-decoration: none; padding: 15px 20px; font-size: 15px; transition: all 0.3s; }
-.sidebar-nav a:hover, .sidebar-nav a.nav-active { background: rgba(255,255,255,0.1); color: white; border-left: 4px solid #0086c0; }
-
-.sidebar-footer { padding: 20px; border-top: 1px solid rgba(255,255,255,0.1); }
-.btn-logout { width: 100%; padding: 10px; background: transparent; border: 1px solid rgba(255,255,255,0.3); color: white; border-radius: 6px; cursor: pointer; transition: all 0.3s; }
-.btn-logout:hover { background: rgba(255,255,255,0.1); border-color: white; }
-
-/* Main Content */
-.dashboard-main { flex-grow: 1; padding: 30px; overflow-y: auto; }
-.dashboard-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-.dashboard-topbar h2 { margin: 0; color: #333; }
-.user-profile { font-weight: bold; color: #012169; }
-
-/* Tarjetas de estadísticas */
-.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
-.stat-card { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 4px solid #012169; }
-.stat-title { font-size: 14px; color: #666; margin-bottom: 10px; }
-.stat-value { font-size: 32px; font-weight: bold; color: #333; margin-bottom: 10px; }
-.stat-status { font-size: 13px; font-weight: bold; }
-
-.text-green { color: #2e7d32; }
-.text-orange { color: #f57c00; }
-.text-blue { color: #0086c0; }
-
-/* Tabla de datos */
-.data-section { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-.data-section h3 { margin-top: 0; margin-bottom: 20px; color: #012169; }
-.data-table { width: 100%; border-collapse: collapse; text-align: left; }
-.data-table th { background: #f8f9fa; padding: 12px 15px; color: #555; font-size: 13px; text-transform: uppercase; border-bottom: 2px solid #eee; }
-.data-table td { padding: 15px; border-bottom: 1px solid #eee; font-size: 14px; color: #333; }
-
-.tag { padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
-.tag-green { background: #e8f5e9; color: #2e7d32; }
-.tag-orange { background: #fff3e0; color: #f57c00; }
-.tag-gray { background: #f5f5f5; color: #757575; }
-
-/* Responsive Dashboard */
-@media (max-width: 768px) {
-  .dashboard-container { flex-direction: column; }
-  .sidebar { width: 100%; }
-  .sidebar-nav { flex-direction: row; flex-wrap: wrap; justify-content: center; padding: 10px 0; }
-  .sidebar-nav a { padding: 10px; font-size: 13px; border-left: none; border-bottom: 2px solid transparent; }
-  .sidebar-nav a:hover, .sidebar-nav a.nav-active { border-left: none; border-bottom: 2px solid #0086c0; }
-  .data-section { overflow-x: auto; }
-}
+.btn-web { background: #8cc63f; color: white !important; margin-top: 15px; border-radius: 4px; padding: 10px; text-align: center; }
+.btn-web:hover { background: #7ab335; }
+.tabla-instrumentos { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.tabla-instrumentos td { padding: 15px; border-bottom: 1px solid #eee; vertical-align: middle; }
+.btn-delete { background: #d9534f; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; transition: 0.2s; }
+.btn-delete:hover { background: #c9302c; }
+.btn-edit { background: #0086c0; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; transition: 0.2s; }
+.btn-edit:hover { background: #005f8a; }
+.intranet-wrapper { min-height: 100vh; }
+.login-overlay { position: fixed; inset: 0; background: #012169; display: flex; align-items: center; justify-content: center; z-index: 100; }
+.login-box { background: white; padding: 40px; border-radius: 8px; width: 300px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+.login-box input { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;}
+.login-box button { width: 100%; padding: 10px; background: #8cc63f; color: #012169; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; }
+.dashboard-grid { display: flex; min-height: 100vh; }
+.sidebar { width: 250px; background: #012169; color: white; padding: 20px; display: flex; flex-direction: column; }
+.sidebar-nav a { display: block; color: #ccc; padding: 10px; text-decoration: none; border-radius: 4px; margin-bottom: 5px; }
+.sidebar-nav a:hover { background: rgba(255,255,255,0.1); }
+.sidebar-nav a.active { color: white; font-weight: bold; border-left: 3px solid #8cc63f; background: rgba(255,255,255,0.05); }
+.btn-logout { margin-top: auto; background: none; border: 1px solid white; color: white; padding: 10px; cursor: pointer; border-radius: 4px; transition: 0.2s; }
+.btn-logout:hover { background: white; color: #012169; }
+.main-content { flex-grow: 1; padding: 40px; background: #f4f7f9; }
+.grid-form { display: grid; gap: 10px; max-width: 800px; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+.grid-form input, .grid-form select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
 </style>

@@ -34,3 +34,19 @@ __screenshots__/
 
 # Vite
 *.timestamp-*-*.mjs
+
+# --- COSAS DE PYTHON Y BASE DE DATOS DEL SIO ---
+# Entorno virtual
+venv/
+env/
+
+# Archivos de caché de Python
+__pycache__/
+*.pyc
+
+# Base de datos SQLite (¡MUY IMPORTANTE NO SUBIRLA!)
+*.db
+*.sqlite3
+
+# Carpeta de compilación de Vue (opcional, pero recomendada para la rama principal)
+dist/
