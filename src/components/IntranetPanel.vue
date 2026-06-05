@@ -4,35 +4,68 @@ import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 
 const apiUrl = 'http://localhost:5000/api/instrumentos'
+const apiUrlProyectos = 'http://localhost:5000/api/proyectos'
 
 const estaLogueado = ref(false)
-const seccionActiva = ref('dashboard')
+const seccionActiva = ref('dashboard') // 'dashboard', 'instrumentacion', 'proyecto'
 const usuario = ref('')
 const password = ref('')
 const recordarSesion = ref(false)
-const instrumentos = ref([])
 
-// Variable per saber si estem editant o creant
-const editandoId = ref(null)
+// LLISTES DE DADES
+const instrumentos = ref([])
+const proyectos = ref([])
+
+// VARIABLES PER A L'EDICIÓ
+const editandoId = ref(null) 
+const editandoProyectoId = ref(null) 
 
 const nuevoEquipo = ref({ 
   nombre: '', marca: '', numero_serie: '', categoria: '', subcategoria: '', ultima_calibracion: '', descripcion: '', parametros_tecnicos: '' 
 })
 
+const nuevoProyecto = ref({
+  titulo: '', categoria: '', estado: '', descripcion: '', investigador_principal: '', financiacion: ''
+})
+
+// CONTROL DELS ACORDIONS DEL DASHBOARD (Oberts per defecte)
+const acordeonesDash = ref({
+  proyectos: true,
+  instrumentos: true
+})
+
+const toggleDashboard = (seccion) => {
+  acordeonesDash.value[seccion] = !acordeonesDash.value[seccion]
+}
+
+// ==============================
+// CÀRREGUES INICIALS
+// ==============================
 const cargarInstrumentos = async () => {
   try {
     const respuesta = await fetch(apiUrl)
     instrumentos.value = await respuesta.json()
-  } catch (error) { console.error("Error carregant:", error) }
+  } catch (error) { console.error("Error carregant instruments:", error) }
+}
+
+const cargarProyectos = async () => {
+  try {
+    const respuesta = await fetch(apiUrlProyectos)
+    proyectos.value = await respuesta.json()
+  } catch (error) { console.error("Error carregant projectes:", error) }
 }
 
 onMounted(() => {
   if (sessionStorage.getItem('sio_auth') === 'true' || localStorage.getItem('sio_auth') === 'true') {
     estaLogueado.value = true
     cargarInstrumentos()
+    cargarProyectos()
   }
 })
 
+// ==============================
+// AUTENTICACIÓ
+// ==============================
 const iniciarSesion = () => {
   if (usuario.value === 'sio' && password.value === 'admin') {
     if (recordarSesion.value) {
@@ -42,6 +75,7 @@ const iniciarSesion = () => {
     }
     estaLogueado.value = true
     cargarInstrumentos()
+    cargarProyectos()
   } else {
     alert("Usuari o contrasenya incorrectes")
   }
@@ -53,27 +87,29 @@ const cerrarSesion = () => {
   estaLogueado.value = false
 }
 
-// AQUÍ ESTÀ LA FUNCIÓ PER CARREGAR L'EDICIÓ
+// ==============================
+// NAVEGACIÓ I RESET
+// ==============================
+const volverDashboard = () => {
+  editandoId.value = null
+  editandoProyectoId.value = null
+  nuevoEquipo.value = { nombre: '', marca: '', numero_serie: '', categoria: '', subcategoria: '', ultima_calibracion: '', descripcion: '', parametros_tecnicos: '' }
+  nuevoProyecto.value = { titulo: '', categoria: '', estado: '', descripcion: '', investigador_principal: '', financiacion: '' }
+  seccionActiva.value = 'dashboard'
+}
+
+// ==============================
+// GESTIÓ D'INSTRUMENTS
+// ==============================
 const cargarParaEditar = (inst) => {
   editandoId.value = inst.id
   nuevoEquipo.value = { 
-    nombre: inst.nombre, 
-    marca: inst.marca || '', 
-    numero_serie: inst.numero_serie || '',
-    categoria: inst.categoria || '', 
-    subcategoria: inst.subcategoria || '', 
-    ultima_calibracion: inst.ultima_calibracion || '', 
-    descripcion: inst.descripcion || '', 
-    parametros_tecnicos: inst.parametros_tecnicos || '' 
+    nombre: inst.nombre, marca: inst.marca || '', numero_serie: inst.numero_serie || '',
+    categoria: inst.categoria || '', subcategoria: inst.subcategoria || '', ultima_calibracion: inst.ultima_calibracion || '', 
+    descripcion: inst.descripcion || '', parametros_tecnicos: inst.parametros_tecnicos || '' 
   }
-  seccionActiva.value = 'instrumentacion' // Canvia directament a la pestanya del formulari
+  seccionActiva.value = 'instrumentacion'
   window.scrollTo({ top: 0, behavior: 'smooth' })
-}
-
-const cancelarEdicion = () => {
-  editandoId.value = null
-  nuevoEquipo.value = { nombre: '', marca: '', numero_serie: '', categoria: '', subcategoria: '', ultima_calibracion: '', descripcion: '', parametros_tecnicos: '' }
-  seccionActiva.value = 'dashboard'
 }
 
 const guardarInstrumento = async () => {
@@ -88,7 +124,7 @@ const guardarInstrumento = async () => {
     })
     if (respuesta.ok) {
       alert(editandoId.value ? "✅ Instrument actualitzat!" : "✅ Equip registrat!")
-      cancelarEdicion()
+      volverDashboard()
       cargarInstrumentos()
     }
   } catch (error) { console.error(error) }
@@ -101,6 +137,66 @@ const eliminarInstrumento = async (id) => {
     if (respuesta.ok) {
       alert("🗑️ Instrument eliminat")
       cargarInstrumentos()
+    }
+  } catch (error) { console.error(error) }
+}
+
+// ==============================
+// GESTIÓ DE PROJECTES
+// ==============================
+const cargarParaEditarProyecto = (proj) => {
+  editandoProyectoId.value = proj.id
+  nuevoProyecto.value = { 
+    titulo: proj.titulo, categoria: proj.categoria || '', estado: proj.estado || '', 
+    descripcion: proj.descripcion || '', investigador_principal: proj.investigador_principal || '', financiacion: proj.financiacion || '' 
+  }
+  seccionActiva.value = 'proyecto'
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+const guardarProyecto = async () => {
+    console.log("¡Clica! Iniciant la funció guardarProyecto...");
+    
+    // Forcem l'IP si cal
+    if (nuevoProyecto.value.categoria === 'Infraestructura') {
+        nuevoProyecto.value.investigador_principal = 'Raül Bardaji';
+    }
+
+    const url = editandoProyectoId.value ? `${apiUrlProyectos}/${editandoProyectoId.value}` : apiUrlProyectos;
+    const metodo = editandoProyectoId.value ? 'PUT' : 'POST';
+
+    console.log("Enviant dades a:", url, "amb mètode:", metodo);
+
+    try {
+        const res = await fetch(url, {
+            method: metodo,
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(nuevoProyecto.value)
+        });
+        
+        const data = await res.json();
+        console.log("Resposta del servidor:", data);
+        
+        if(res.ok) { 
+            alert("✅ Projecte desat correctament!"); 
+            volverDashboard(); 
+            cargarDatos(); 
+        } else {
+            alert("Error al guardar: " + JSON.stringify(data));
+        }
+    } catch(e) {
+        console.error("Error catastrofic al guardar:", e);
+        alert("Error de xarxa. Mira la consola.");
+    }
+}
+
+const eliminarProyecto = async (id) => {
+  if (!confirm("Segur que vols esborrar aquest projecte/campanya?")) return
+  try {
+    const respuesta = await fetch(`${apiUrlProyectos}/${id}`, { method: 'DELETE' })
+    if (respuesta.ok) {
+      alert("🗑️ Projecte eliminat")
+      cargarProyectos()
     }
   } catch (error) { console.error(error) }
 }
@@ -127,100 +223,197 @@ const eliminarInstrumento = async (id) => {
     </div>
 
     <div v-else class="dashboard-grid">
+      
       <aside class="sidebar">
         <h3 class="sidebar-title">Panel SIO</h3>
         <nav class="sidebar-nav">
-          <a href="#" @click="cancelarEdicion" :class="{active: seccionActiva === 'dashboard'}">📊 Visión General</a>
+          <a href="#" @click="volverDashboard" :class="{active: seccionActiva === 'dashboard'}">📊 Visió General</a>
           <a href="#" @click="seccionActiva = 'instrumentacion'" :class="{active: seccionActiva === 'instrumentacion'}">
-            {{ editandoId ? '✏️ Editant Instrument' : '🛠️ Alta Instrumento' }}
+            {{ editandoId ? '✏️ Editant Instrument' : '🛠️ Alta Instrument' }}
           </a>
-          <a href="/" target="_blank" class="btn-web">🌐 Ver Web Pública</a>
+          <a href="#" @click="seccionActiva = 'proyecto'" :class="{active: seccionActiva === 'proyecto'}">
+            {{ editandoProyectoId ? '✏️ Editant Projecte' : '🚀 Alta Projecte' }}
+          </a>
+          <a href="/" target="_blank" class="btn-web">🌐 Veure Web Pública</a>
         </nav>
-        <button @click="cerrarSesion" class="btn-logout">Cerrar Sessió</button>
+        <button @click="cerrarSesion" class="btn-logout">Tancar Sessió</button>
       </aside>
 
       <main class="main-content">
-        <div v-if="seccionActiva === 'instrumentacion'" class="admin-panel">
-          <h2>{{ editandoId ? '✏️ Editar Instrument' : '➕ Registrar Nou Instrument' }}</h2>
-          
-          <form @submit.prevent="guardarInstrumento" class="grid-form">
-            
-            <div style="grid-column: span 2; display: flex; gap: 10px; margin-bottom: 5px;">
-              <div style="flex: 1;">
-                <label style="font-size: 0.85rem; font-weight: bold; color: #555;">Nom de l'equip:</label>
-                <input v-model="nuevoEquipo.nombre" placeholder="Ex: CTD-48M" required style="width: 100%; box-sizing: border-box;">
-              </div>
-              <div style="flex: 1;">
-                <label style="font-size: 0.85rem; font-weight: bold; color: #555;">Marca / Fabricant:</label>
-                <input v-model="nuevoEquipo.marca" placeholder="Ex: Sea-Bird" style="width: 100%; box-sizing: border-box;">
-              </div>
-              <div style="flex: 1; background-color: #fff3cd; padding: 5px 10px; border-radius: 4px; border: 1px dashed #ffeeba;">
-                <label style="color: #856404; font-size: 0.85rem; font-weight: bold;">🔒 Número de Sèrie (Privat):</label>
-                <input v-model="nuevoEquipo.numero_serie" placeholder="Ex: SN-180" style="background: white; width: 100%; box-sizing: border-box;" />
-              </div>
-            </div>
+        
+<div v-if="seccionActiva === 'instrumentacion'" class="admin-panel">
+  <h2>{{ editandoId ? '✏️ Editar Instrument' : '➕ Registrar Nou Instrument' }}</h2>
+  
+  <form @submit.prevent="guardarInstrumento" class="grid-form">
+    
+    <div style="grid-column: span 2; display: flex; gap: 10px; margin-bottom: 5px;">
+      <div style="flex: 1;">
+        <label style="font-size: 0.85rem; font-weight: bold; color: #555;">Nom de l'equip:</label>
+        <input v-model="nuevoEquipo.nombre" placeholder="Ex: CTD-48M" required style="width: 100%; box-sizing: border-box;">
+      </div>
+      <div style="flex: 1;">
+        <label style="font-size: 0.85rem; font-weight: bold; color: #555;">Marca / Fabricant:</label>
+        <input v-model="nuevoEquipo.marca" placeholder="Ex: Sea-Bird" style="width: 100%; box-sizing: border-box;">
+      </div>
+      <div style="flex: 1; background-color: #fff3cd; padding: 5px 10px; border-radius: 4px; border: 1px dashed #ffeeba;">
+        <label style="color: #856404; font-size: 0.85rem; font-weight: bold;">🔒 Número de Sèrie:</label>
+        <input v-model="nuevoEquipo.numero_serie" placeholder="Ex: SN-180" style="background: white; width: 100%; box-sizing: border-box;" />
+      </div>
+    </div>
 
-            <div style="grid-column: span 2; display: flex; gap: 10px; margin-bottom: 10px;">
-              <select v-model="nuevoEquipo.categoria" required style="flex: 1;">
-                <option value="" disabled selected>Categoria</option>
-                <option value="Física">Física</option>
-                <option value="Química">Química</option>
-                <option value="Biologia">Biologia</option>
-                <option value="Geologia">Geologia</option>
-              </select>
-              <select v-model="nuevoEquipo.subcategoria" required style="flex: 1;">
-                <option value="" disabled selected>Subcategoria</option>
-                <option value="General">General</option>
-                <option value="Sondes">Sondes</option>
-                <option value="Mostreig">Mostreig</option>
-                <option value="Sistemes Estacionaris">Sistemes Estacionaris</option>
-              </select>
-              <input v-model="nuevoEquipo.ultima_calibracion" type="date" required style="flex: 1;">
-            </div>
+    <div style="grid-column: span 2; display: flex; gap: 10px; margin-bottom: 10px;">
+      <select v-model="nuevoEquipo.categoria" required style="flex: 1;">
+        <option value="" disabled selected>Categoria</option>
+        <option value="Física">Física</option>
+        <option value="Química">Química</option>
+        <option value="Biologia">Biologia</option>
+        <option value="Geologia">Geologia</option>
+      </select>
+      <select v-model="nuevoEquipo.subcategoria" required style="flex: 1;">
+        <option value="" disabled selected>Subcategoria</option>
+        <option value="General">General</option>
+        <option value="Sondes">Sondes</option>
+        <option value="Mostreig">Mostreig</option>
+        <option value="Sistemes Estacionaris">Sistemes Estacionaris</option>
+      </select>
+      <input v-model="nuevoEquipo.ultima_calibracion" type="date" required style="flex: 1;">
+    </div>
 
-            <div style="grid-column: span 2; margin-top: 10px;">
-              <label style="font-weight: bold; color: #333;">Descripció tècnica:</label>
-              <div style="background: white; border-radius: 4px;">
-                <QuillEditor theme="snow" v-model:content="nuevoEquipo.descripcion" contentType="html" toolbar="essential" />
-              </div>
-            </div>
+    <div style="grid-column: span 2; margin-top: 10px;">
+      <label style="font-weight: bold; color: #333;">Descripció tècnica:</label>
+      <div style="background: white; border-radius: 4px; border: 1px solid #ccc;">
+        <QuillEditor theme="snow" v-model:content="nuevoEquipo.descripcion" contentType="html" toolbar="essential" />
+      </div>
+    </div>
 
-            <div style="grid-column: span 2; margin-top: 10px; margin-bottom: 20px;">
-              <label style="font-weight: bold; color: #333;">Paràmetres / Manuals:</label>
-              <div style="background: white; border-radius: 4px;">
-                <QuillEditor theme="snow" v-model:content="nuevoEquipo.parametros_tecnicos" contentType="html" toolbar="essential" />
-              </div>
-            </div>
+    <div style="grid-column: span 2; margin-top: 10px; margin-bottom: 20px;">
+      <label style="font-weight: bold; color: #333;">Paràmetres / Manuals:</label>
+      <div style="background: white; border-radius: 4px; border: 1px solid #ccc;">
+        <QuillEditor theme="snow" v-model:content="nuevoEquipo.parametros_tecnicos" contentType="html" toolbar="essential" />
+      </div>
+    </div>
 
-            <div style="grid-column: span 2; display: flex; gap: 10px;">
-              <button type="submit" style="flex: 1; padding: 12px; font-weight: bold; background: #012169; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                {{ editandoId ? '💾 Desar Canvis' : '➕ Registrar al Catàleg' }}
-              </button>
-              
-              <button v-if="editandoId" type="button" @click="cancelarEdicion" style="flex: 0.3; background: #ccc; color: #333; font-weight: bold; padding: 12px; border: none; border-radius: 4px; cursor: pointer;">
-                ❌ Cancel·lar
-              </button>
+    <div style="grid-column: span 2; display: flex; gap: 10px;">
+      <button type="submit" style="flex: 1; padding: 12px; font-weight: bold; background: #012169; color: white; border: none; border-radius: 4px; cursor: pointer;">
+        {{ editandoId ? '💾 Desar Canvis' : '➕ Registrar al Catàleg' }}
+      </button>
+      <button v-if="editandoId" type="button" @click="volverDashboard" style="flex: 0.3; background: #ccc; color: #333; font-weight: bold; padding: 12px; border: none; border-radius: 4px; cursor: pointer;">
+        ❌ Cancel·lar
+      </button>
+    </div>
+  </form>
+</div>
+
+<div v-else-if="seccionActiva === 'proyecto'" class="admin-panel">
+    <h2>{{ editandoProyectoId ? '✏️ Editar Projecte' : '🚀 Registrar Nou Projecte' }}</h2>
+    
+    <form @submit.prevent="guardarProyecto" class="grid-form">
+        
+        <label>Títol:</label>
+        <input v-model="nuevoProyecto.titulo" placeholder="Títol del projecte" required>
+
+        <div style="display: flex; gap: 20px;">
+            <div style="flex: 1;">
+                <label>Categoria:</label>
+                <select v-model="nuevoProyecto.categoria" required style="width: 100%;">
+                    <option value="Infraestructura">Infraestructura</option>
+                    <option value="Campanya">Campanya</option>
+                    <option value="I+D+I">I+D+I</option>
+                </select>
             </div>
-          </form>
+            <div style="flex: 1;">
+                <label>Estat:</label>
+                <select v-model="nuevoProyecto.estado" required style="width: 100%;">
+                    <option value="Sol·licitat">Sol·licitat</option>
+                    <option value="Aprovat">Aprovat</option>
+                    <option value="En Curs">En Curs</option>
+                    <option value="Finalitzat">Finalitzat</option>
+                </select>
+            </div>
         </div>
 
-        <div v-else class="dashboard-view">
-          <h3>Inventari actual</h3>
-          <table class="tabla-instrumentos">
-            <tr v-for="inst in instrumentos" :key="inst.id">
-              <td>
-                <strong>{{ inst.nombre }}</strong> <br> 
-                <small>{{ inst.marca }}</small>
-                <span v-if="inst.numero_serie" style="color: #d32f2f; font-size: 0.85em; margin-left: 10px; background: #ffebee; padding: 2px 6px; border-radius: 4px;">
-                  🔒 SN: {{ inst.numero_serie }}
+        <label>Descripció:</label>
+        <div style="background: white; border: 1px solid #ddd;">
+            <QuillEditor theme="snow" v-model:content="nuevoProyecto.descripcion" contentType="html" toolbar="essential" />
+        </div>
+
+        <button type="submit" class="btn-submit-main" style="margin-top: 10px; padding: 15px; cursor: pointer;">
+            {{ editandoProyectoId ? '💾 Desar Canvis' : '🚀 Registrar Projecte' }}
+        </button>
+</form>
+</div>
+
+<div v-else class="dashboard-view">
+          
+          <div class="acordeon-dash">
+            <div class="acordeon-dash-header" @click="toggleDashboard('proyectos')">
+              <div style="display: flex; align-items: center; gap: 15px;">
+                <h3 style="margin: 0; color: #012169;">Campanyes i Projectes ({{ proyectos.length }})</h3>
+              </div>
+              <div style="display: flex; align-items: center; gap: 20px;">
+                <button @click.stop="seccionActiva = 'proyecto'" class="btn-nou">+ Nou Projecte</button>
+                <span style="font-size: 1.5rem; color: #0086c0; font-weight: bold; width: 20px; text-align: center;">
+                  {{ acordeonesDash.proyectos ? '−' : '+' }}
                 </span>
-              </td>
-              <td style="text-align: right; width: 220px;">
-                <button @click="cargarParaEditar(inst)" class="btn-edit" style="margin-right: 5px;">✏️ Editar</button>
-                <button @click="eliminarInstrumento(inst.id)" class="btn-delete">🗑️ Esborrar</button>
-              </td>
-            </tr>
-          </table>
+              </div>
+            </div>
+            
+            <div class="acordeon-dash-body" v-show="acordeonesDash.proyectos">
+              <table class="tabla-instrumentos">
+                <tr v-for="proj in proyectos" :key="proj.id">
+                  <td>
+                    <strong style="color: #0086c0; font-size: 1.1rem;">{{ proj.titulo }}</strong> <br> 
+                    <small style="color: #666;">{{ proj.categoria }} | IP: {{ proj.investigador_principal || 'No assignat' }}</small>
+                  </td>
+                  <td>
+                    <span class="badge-estado">{{ proj.estado }}</span>
+                  </td>
+                  <td style="text-align: right; width: 220px;">
+                    <button @click="cargarParaEditarProyecto(proj)" class="btn-edit" style="margin-right: 5px;">✏️ Editar</button>
+                    <button @click="eliminarProyecto(proj.id)" class="btn-delete">🗑️ Esborrar</button>
+                  </td>
+                </tr>
+                <tr v-if="proyectos.length === 0">
+                  <td colspan="3" style="text-align: center; color: #777;">No hi ha projectes registrats.</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="acordeon-dash">
+            <div class="acordeon-dash-header" @click="toggleDashboard('instrumentos')">
+              <div style="display: flex; align-items: center; gap: 15px;">
+                <h3 style="margin: 0; color: #012169;">Inventari d'Instruments ({{ instrumentos.length }})</h3>
+              </div>
+              <div style="display: flex; align-items: center; gap: 20px;">
+                <button @click.stop="seccionActiva = 'instrumentacion'" class="btn-nou">+ Nou Instrument</button>
+                <span style="font-size: 1.5rem; color: #0086c0; font-weight: bold; width: 20px; text-align: center;">
+                  {{ acordeonesDash.instrumentos ? '−' : '+' }}
+                </span>
+              </div>
+            </div>
+            
+            <div class="acordeon-dash-body" v-show="acordeonesDash.instrumentos">
+              <table class="tabla-instrumentos">
+                <tr v-for="inst in instrumentos" :key="inst.id">
+                  <td>
+                    <strong>{{ inst.nombre }}</strong> <br> 
+                    <small>{{ inst.marca }}</small>
+                    <span v-if="inst.numero_serie" style="color: #d32f2f; font-size: 0.85em; margin-left: 10px; background: #ffebee; padding: 2px 6px; border-radius: 4px;">
+                      🔒 SN: {{ inst.numero_serie }}
+                    </span>
+                  </td>
+                  <td style="text-align: right; width: 220px;">
+                    <button @click="cargarParaEditar(inst)" class="btn-edit" style="margin-right: 5px;">✏️ Editar</button>
+                    <button @click="eliminarInstrumento(inst.id)" class="btn-delete">🗑️ Esborrar</button>
+                  </td>
+                </tr>
+                <tr v-if="instrumentos.length === 0">
+                  <td colspan="2" style="text-align: center; color: #777;">No hi ha instruments registrats.</td>
+                </tr>
+              </table>
+            </div>
+          </div>
         </div>
       </main>
     </div>
@@ -230,8 +423,9 @@ const eliminarInstrumento = async (id) => {
 <style scoped>
 .btn-web { background: #8cc63f; color: white !important; margin-top: 15px; border-radius: 4px; padding: 10px; text-align: center; }
 .btn-web:hover { background: #7ab335; }
-.tabla-instrumentos { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.tabla-instrumentos { width: 100%; border-collapse: collapse; background: white; }
 .tabla-instrumentos td { padding: 15px; border-bottom: 1px solid #eee; vertical-align: middle; }
+.tabla-instrumentos tr:last-child td { border-bottom: none; }
 .btn-delete { background: #d9534f; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; transition: 0.2s; }
 .btn-delete:hover { background: #c9302c; }
 .btn-edit { background: #0086c0; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; transition: 0.2s; }
@@ -251,4 +445,44 @@ const eliminarInstrumento = async (id) => {
 .main-content { flex-grow: 1; padding: 40px; background: #f4f7f9; }
 .grid-form { display: grid; gap: 10px; max-width: 800px; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
 .grid-form input, .grid-form select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
+.badge-estado { background-color: #e1eef5; color: #0086c0; padding: 4px 10px; border-radius: 12px; font-size: 0.85rem; font-weight: bold; }
+
+/* ESTILS DELS NOUS ACORDIONS DEL DASHBOARD */
+.acordeon-dash {
+  background: white;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  overflow: hidden;
+}
+.acordeon-dash-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.acordeon-dash-header:hover {
+  background-color: #f8fcfd;
+}
+.btn-nou {
+  background: #8cc63f; 
+  color: #012169; 
+  border: none; 
+  padding: 6px 15px; 
+  border-radius: 4px; 
+  cursor: pointer; 
+  font-weight: bold;
+  transition: transform 0.1s, background-color 0.2s;
+}
+.btn-nou:hover {
+  background: #7ab335;
+  transform: scale(1.02);
+}
+.acordeon-dash-body {
+  background-color: #ffffff;
+}
 </style>
