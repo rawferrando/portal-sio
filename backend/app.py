@@ -106,6 +106,99 @@ def modificar_instrumento(id):
             return jsonify({'mensaje': 'Instrumento actualizado correctamente'}), 200
         except Exception as e:
             return jsonify({"error": str(e)}), 500
+# =======================================================
+# RUTAS PARA PROYECTOS (Añadido con las nuevas descripciones y PIT)
+# =======================================================
+
+@app.route('/api/proyectos', methods=['GET', 'POST'])
+def gestionar_proyectos():
+    
+    # LEER proyectos
+    if request.method == 'GET':
+        try:
+            conexion = conectar_bd()
+            proyectos = conexion.execute('SELECT * FROM proyectos').fetchall()
+            conexion.close()
+            return jsonify([dict(fila) for fila in proyectos])
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    # GUARDAR nuevo proyecto
+    if request.method == 'POST':
+        try:
+            datos = request.json
+            conexion = conectar_bd()
+            cursor = conexion.cursor()
+            
+            # AÑADIDO: pit en el INSERT
+            cursor.execute('''
+                INSERT INTO proyectos 
+                (titulo, categoria, estado, descripcion_corta, descripcion_ampliada, investigador_principal, pit)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            ''', (
+                datos.get('titulo', ''),
+                datos.get('categoria', ''),
+                datos.get('estado', ''),
+                datos.get('descripcion_corta', ''),
+                datos.get('descripcion_ampliada', ''),
+                datos.get('investigador_principal', ''),
+                datos.get('pit', '') # <-- Aquí recogemos el PIT
+            ))
+            
+            conexion.commit()
+            conexion.close()
+            return jsonify({"mensaje": "Projecte registrat correctament"}), 201
+            
+        except Exception as e:
+            print("Error en POST:", e)
+            return jsonify({"error": str(e)}), 500
+
+
+@app.route('/api/proyectos/<int:id>', methods=['PUT', 'DELETE', 'OPTIONS'])
+def modificar_proyecto(id):
+    if request.method == 'OPTIONS':
+        return '', 200
+
+    # ELIMINAR proyecto
+    if request.method == 'DELETE':
+        conn = conectar_bd()
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM proyectos WHERE id = ?', (id,))
+        conn.commit()
+        conn.close()
+        return '', 204
+
+    # EDITAR proyecto
+    if request.method == 'PUT':
+        try:
+            datos = request.json
+            conn = conectar_bd()
+            cursor = conn.cursor()
+            
+            # AÑADIDO: pit = ? en el UPDATE
+            cursor.execute('''
+                UPDATE proyectos 
+                SET titulo = ?, categoria = ?, estado = ?, 
+                    descripcion_corta = ?, descripcion_ampliada = ?, investigador_principal = ?, pit = ?
+                WHERE id = ?
+            ''', (
+                datos.get('titulo'), 
+                datos.get('categoria'), 
+                datos.get('estado'), 
+                datos.get('descripcion_corta'), 
+                datos.get('descripcion_ampliada'), 
+                datos.get('investigador_principal'),
+                datos.get('pit'), # <-- Aquí recogemos el PIT
+                id
+            ))
+            
+            conn.commit()
+            conn.close()
+            return jsonify({'mensaje': 'Projecte actualitzat correctament'}), 200
+        except Exception as e:
+            print("Error en PUT:", e)
+            return jsonify({"error": str(e)}), 500
+
 
 if __name__ == '__main__':
     print("🚀 Arrancando el motor del SIO en http://localhost:5000 ...")
